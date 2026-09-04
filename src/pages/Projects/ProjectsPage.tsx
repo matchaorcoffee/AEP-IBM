@@ -1,4 +1,4 @@
-﻿import styles from './ProjectsPage.module.scss'
+import styles from './ProjectsPage.module.scss'
 import projectsImg from './assets/Projects.png'
 
 const sections = [
@@ -66,6 +66,11 @@ export default function ProjectsPage() {
 
       {/* Hero image */}
       <img src={projectsImg} alt="Projects" className={styles.image} />
+
+      {/* Centered title block */}
+      <div className={styles.titleBlock}>
+        <h1 className={styles.pageTitle}>Projects</h1>
+      </div>
 
       {/* Navigation links */}
       <nav className={styles.navBar}>

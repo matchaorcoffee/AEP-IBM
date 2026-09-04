@@ -1,6 +1,10 @@
-﻿.page { min-height: calc(100vh - var(--header-total-height)); background: #fff; scroll-behavior: smooth; }
+.page { min-height: calc(100vh - var(--header-total-height)); background: #fff; scroll-behavior: smooth; }
 
 .image { width: 100%; display: block; }
+
+/* ── Title block ──────────────────────────────────── */
+.titleBlock { text-align: center; padding: 2.5rem 2rem 1rem; }
+.pageTitle { font-size: 2rem; font-weight: 400; color: #1f2328; margin: 0; }
 
 /* ── Navigation bar ───────────────────────────────── */
 .navBar {
