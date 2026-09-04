@@ -4,23 +4,25 @@
   left: 0;
   right: 0;
   height: var(--nav-tabs-height);
-  background: var(--color-nav-tabs-bg);
+  background: rgba(6, 6, 15, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
-  padding: 0 var(--spacing-05);
+  padding: 0 var(--spacing-06);
   z-index: 199;
   gap: 0;
   overflow: visible;
 }
 
-// Channel identity (AEP IBM branding)
+// Channel identity
 .channelId {
   display: flex;
   align-items: center;
   gap: var(--spacing-03);
   flex-shrink: 0;
-  padding-right: var(--spacing-05);
+  padding-right: var(--spacing-06);
 }
 
 .channelLogoLink {
@@ -36,6 +38,7 @@
   object-fit: contain;
   display: block;
   flex-shrink: 0;
+  filter: brightness(1.1);
 }
 
 .channelDivider {
@@ -73,32 +76,34 @@
   height: 100%;
   padding: 0 var(--spacing-05);
   font-size: var(--font-size-sm);
+  font-weight: 500;
   color: var(--color-text-secondary);
   text-decoration: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 2px solid transparent;
   white-space: nowrap;
-  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
   cursor: pointer;
   gap: var(--spacing-02);
+  letter-spacing: 0.01em;
 
   &:hover {
-    background: var(--color-top-bar-bg);
     color: var(--color-text-primary);
+    background: var(--color-hover);
     text-decoration: none;
   }
 
   &.active {
     color: var(--color-text-primary);
-    border-bottom-color: var(--color-active-tab);
+    border-bottom-color: var(--color-accent);
     font-weight: var(--font-weight-semibold);
   }
 }
 
-// For items with dropdown: tab is a flex row containing link + chevron button
 .tabLink {
   color: inherit;
   text-decoration: none;
   font-size: var(--font-size-sm);
+  font-weight: inherit;
 
   &:hover {
     text-decoration: none;
@@ -120,21 +125,23 @@
   }
 }
 
-// Portfolios dropdown panel — portalled to body, uses fixed positioning
+// ── Portfolio dropdown panel ──────────────────────────────────────────────────
 .portfolioDropdown {
   position: fixed;
   display: flex;
   flex-direction: row;
-  background: #fff;
+  background: rgba(15, 15, 26, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--color-border);
-  border-radius: 6px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+  border-radius: 12px;
+  box-shadow: var(--shadow-dropdown);
   z-index: 9999;
   margin: 0;
   overflow: hidden;
 }
 
-// Left panel — title, description, see-all link
+// Left panel
 .portfolioDropdownLeft {
   display: flex;
   flex-direction: column;
@@ -150,43 +157,48 @@
   border: none;
   padding: 0;
   margin: 0 0 12px 0;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--color-text-primary);
   cursor: pointer;
   text-align: left;
   line-height: 1.2;
+  letter-spacing: -0.01em;
 
   &:hover {
-    text-decoration: underline;
+    color: var(--color-accent-light);
   }
 }
 
 .portfolioDropdownDesc {
-  margin: 0 0 16px 0;
+  margin: 0 0 20px 0;
   font-size: var(--font-size-sm);
   font-style: italic;
   color: var(--color-text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .portfolioDropdownSeeAll {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: none;
-  border: none;
-  padding: 0;
+  border: 1px solid var(--color-accent);
+  border-radius: 20px;
+  padding: 6px 14px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-active-tab);
+  color: var(--color-accent-light);
   cursor: pointer;
   text-align: left;
+  transition: background var(--transition-fast), color var(--transition-fast);
 
   &:hover {
-    text-decoration: underline;
+    background: var(--color-accent-glow);
+    color: #fff;
   }
 }
 
-// Vertical divider between left and right panels
 .portfolioDropdownDivider {
   width: 1px;
   background: var(--color-border);
@@ -194,7 +206,6 @@
   margin: 20px 0;
 }
 
-// Right panel — scrollable list of portfolio links
 .portfolioDropdownRight {
   list-style: none;
   margin: 0;
@@ -204,31 +215,31 @@
   max-height: 400px;
 
   scrollbar-width: thin;
-  scrollbar-color: #c1c7cd transparent;
-  &::-webkit-scrollbar { width: 6px; }
-  &::-webkit-scrollbar-thumb { background: #c1c7cd; border-radius: 3px; }
+  scrollbar-color: rgba(139,92,246,0.3) transparent;
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 4px; }
 }
 
-// Sub-item rows — no dash, plain text
 .portfolioDropdownItem {
   display: block;
   width: 100%;
-  padding: 10px 28px;
+  padding: 10px 24px;
   text-align: left;
   font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   background: none;
   border: none;
   cursor: pointer;
-  transition: background var(--transition-fast);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  letter-spacing: 0.01em;
 
   &:hover {
-    background: var(--color-hover);
     color: var(--color-text-primary);
+    background: var(--color-hover);
   }
 }
 
-// Mobile hamburger button — hidden on desktop
+// ── Mobile ────────────────────────────────────────────────────────────────────
 .mobileMenuBtn {
   display: none;
   width: 40px;
@@ -240,27 +251,31 @@
   cursor: pointer;
   margin-left: auto;
 
+  img {
+    filter: invert(1) opacity(0.7);
+  }
+
   &:focus-visible {
     outline: 2px solid var(--color-focus);
   }
 }
 
-// Mobile backdrop
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
   z-index: 498;
 }
 
-// Mobile slide-over drawer
 .mobileDrawer {
   position: fixed;
   top: 0;
   left: 0;
   width: 280px;
   height: 100vh;
-  background: #fff;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
   z-index: 499;
   display: flex;
   flex-direction: column;
@@ -294,6 +309,10 @@
   width: 40px;
   height: 40px;
 
+  img {
+    filter: invert(1) opacity(0.7);
+  }
+
   &:focus-visible {
     outline: 2px solid var(--color-focus);
   }
@@ -310,24 +329,24 @@
   display: block;
   padding: var(--spacing-04) var(--spacing-06);
   font-size: var(--font-size-base);
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   text-decoration: none;
-  border-left: 3px solid transparent;
-  transition: background var(--transition-fast);
+  border-left: 2px solid transparent;
+  transition: color var(--transition-fast), background var(--transition-fast);
 
   &:hover {
+    color: var(--color-text-primary);
     background: var(--color-hover);
     text-decoration: none;
   }
 }
 
 .drawerItemActive {
-  border-left-color: var(--color-active-tab);
-  color: var(--color-active-tab);
+  border-left-color: var(--color-accent);
+  color: var(--color-accent-light);
   font-weight: var(--font-weight-semibold);
 }
 
-// ─── Responsive ──────────────────────────────────────────────────────────────
 @media (max-width: 768px) {
   .tabList {
     display: none;
@@ -341,4 +360,3 @@
     display: flex;
   }
 }
-

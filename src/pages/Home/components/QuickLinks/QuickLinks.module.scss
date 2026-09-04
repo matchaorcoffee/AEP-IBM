@@ -1,22 +1,21 @@
 .section {
   background: var(--color-page-bg);
-  padding: var(--spacing-08) 0;
+  padding: var(--spacing-10) 0 var(--spacing-11);
 }
 
 .inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--spacing-09);
+  padding: 0 var(--spacing-07);
 }
 
 .sectionTitle {
-  font-size: var(--font-size-h3);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
   font-size: var(--font-size-xs);
-  margin-bottom: var(--spacing-05);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+  margin-bottom: var(--spacing-06);
 }
 
 .grid {
@@ -26,20 +25,23 @@
 }
 
 .tile {
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  border-radius: 12px;
   padding: var(--spacing-06) var(--spacing-05);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-03);
   text-decoration: none;
-  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
   text-align: center;
 
   &:hover {
-    box-shadow: var(--shadow-card-hover);
-    border-color: var(--color-active-tab);
+    border-color: rgba(139, 92, 246, 0.4);
+    background: var(--color-glass-hover);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.12);
+    transform: translateY(-2px);
     text-decoration: none;
   }
 }
@@ -47,15 +49,15 @@
 .iconWrapper {
   width: 40px;
   height: 40px;
-  background: var(--color-tag-purple-bg);
-  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 
   img {
-    filter: invert(27%) sepia(87%) saturate(2000%) hue-rotate(246deg) brightness(80%);
+    filter: invert(75%) sepia(30%) saturate(800%) hue-rotate(220deg) brightness(110%);
   }
 }
 
@@ -68,7 +70,7 @@
 
 .desc {
   font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   line-height: 1.4;
 }
 
@@ -84,6 +86,6 @@
   }
 
   .inner {
-    padding: 0 var(--spacing-06);
+    padding: 0 var(--spacing-05);
   }
 }

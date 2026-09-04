@@ -1,65 +1,73 @@
 // IBM Client Vantage – AEP IBM Design Tokens
-// Based on IBM Carbon Design System v11
+// Dark SaaS theme inspired by modern design
 
 :root {
   // ─── Layout ───────────────────────────────────────────────────────────────
   --top-bar-height: 0px;
-  --nav-tabs-height: 48px;
-  --header-total-height: 48px;
+  --nav-tabs-height: 56px;
+  --header-total-height: 56px;
 
-  // ─── Colors ───────────────────────────────────────────────────────────────
-  // Brand / Active states (from reference screenshot)
-  --color-active-tab:       #6929c4;   // Purple – active nav tab underline
-  --color-active-tab-dark:  #491d8b;   // Purple dark – hover
-  --color-brand-blue:       #0f62fe;   // IBM Blue 60 – links, buttons
-  --color-brand-blue-dark:  #0043ce;   // IBM Blue 70 – hover states
-  --color-brand-navy:       #001d6c;   // IBM Blue 90
+  // ─── Brand / Accent ───────────────────────────────────────────────────────
+  --color-accent:           #8b5cf6;   // violet-500
+  --color-accent-dark:      #7c3aed;   // violet-600
+  --color-accent-light:     #a78bfa;   // violet-400
+  --color-accent-glow:      rgba(139, 92, 246, 0.25);
+  --color-active-tab:       #8b5cf6;
+  --color-active-tab-dark:  #7c3aed;
+  --color-brand-blue:       #818cf8;   // indigo-400 on dark
+  --color-brand-blue-dark:  #6366f1;
 
-  // Header surfaces
-  --color-top-bar-bg:       #f4f4f4;   // Light gray utility bar
-  --color-nav-tabs-bg:      #ffffff;   // White tab row
+  // ─── Surfaces ─────────────────────────────────────────────────────────────
+  --color-bg:               #06060f;   // near-black
+  --color-surface:          #0f0f1a;   // dark card bg
+  --color-surface-2:        #16162a;   // slightly lighter
+  --color-surface-3:        #1c1c35;   // hover surface
+  --color-glass:            rgba(255, 255, 255, 0.04);
+  --color-glass-border:     rgba(255, 255, 255, 0.08);
+  --color-glass-hover:      rgba(255, 255, 255, 0.07);
 
-  // Page & card surfaces
-  --color-page-bg:          #f4f4f4;   // Main content background
-  --color-card-bg:          #ffffff;
-  --color-section-alt:      #ffffff;   // Alternating section bg
+  // Legacy aliases (keep so existing components don't break)
+  --color-top-bar-bg:       #0f0f1a;
+  --color-nav-tabs-bg:      #0a0a15;
+  --color-page-bg:          #06060f;
+  --color-card-bg:          #0f0f1a;
+  --color-section-alt:      #0a0a15;
 
-  // Text
-  --color-text-primary:     #161616;   // Carbon Gray 100
-  --color-text-secondary:   #525252;   // Carbon Gray 70
-  --color-text-inverse:     #ffffff;
-  --color-text-link:        #0f62fe;
-  --color-text-muted:       #a8a8a8;   // Carbon Gray 40
+  // ─── Text ─────────────────────────────────────────────────────────────────
+  --color-text-primary:     #f1f0ff;
+  --color-text-secondary:   #a09fc0;
+  --color-text-muted:       #5a5980;
+  --color-text-inverse:     #06060f;
+  --color-text-link:        #a78bfa;
 
-  // Borders & UI
-  --color-border:           #e0e0e0;   // Carbon Gray 20
-  --color-hover:            #e8e8e8;   // Hover background
-  --color-focus:            #0f62fe;
+  // ─── Borders & dividers ───────────────────────────────────────────────────
+  --color-border:           rgba(255, 255, 255, 0.08);
+  --color-border-strong:    rgba(255, 255, 255, 0.14);
+  --color-hover:            rgba(255, 255, 255, 0.06);
+  --color-focus:            #8b5cf6;
 
-  // Semantic
-  --color-success:          #198038;   // Carbon Green 50
-  --color-warning:          #f1c21b;   // Carbon Yellow 30
-  --color-error:            #da1e28;   // Carbon Red 60
-  --color-info:             #0043ce;   // Carbon Blue 70
+  // ─── Semantic ─────────────────────────────────────────────────────────────
+  --color-success:          #34d399;
+  --color-warning:          #fbbf24;
+  --color-error:            #f87171;
+  --color-info:             #60a5fa;
 
-  // Tags
-  --color-tag-blue-bg:      #d0e2ff;   // Blue 20
-  --color-tag-blue-text:    #002d9c;   // Blue 80
-  --color-tag-green-bg:     #defbe6;   // Green 10
-  --color-tag-green-text:   #044317;   // Green 90
-  --color-tag-purple-bg:    #e8daff;   // Purple 10
-  --color-tag-purple-text:  #31135e;   // Purple 90
-  --color-tag-gray-bg:      #e8e8e8;
-  --color-tag-gray-text:    #525252;
+  // ─── Tags ─────────────────────────────────────────────────────────────────
+  --color-tag-blue-bg:      rgba(99, 102, 241, 0.2);
+  --color-tag-blue-text:    #a5b4fc;
+  --color-tag-green-bg:     rgba(52, 211, 153, 0.15);
+  --color-tag-green-text:   #6ee7b7;
+  --color-tag-purple-bg:    rgba(139, 92, 246, 0.2);
+  --color-tag-purple-text:  #c4b5fd;
+  --color-tag-gray-bg:      rgba(255,255,255,0.08);
+  --color-tag-gray-text:    #a09fc0;
 
-  // AEP emblem
-  --color-aep-emblem:       #da1e28;   // Red – AEP IBM flag badge
-
-  // Sidebar (dark footer area)
-  --color-dark-bg:          #161616;   // Carbon Gray 100
-  --color-dark-text:        #f4f4f4;   // Carbon Gray 10
-  --color-dark-link:        #78a9ff;   // Blue 40 on dark bg
-  --color-dark-border:      #393939;   // Carbon Gray 80
+  // ─── Dark surface (footer etc.) ───────────────────────────────────────────
+  --color-dark-bg:          #03030a;
+  --color-dark-text:        #a09fc0;
+  --color-dark-link:        #a78bfa;
+  --color-dark-border:      rgba(255, 255, 255, 0.06);
+  --color-aep-emblem:       #f87171;
 
   // ─── Spacing (Carbon scale) ────────────────────────────────────────────────
   --spacing-01:  2px;
@@ -77,12 +85,12 @@
   --spacing-13: 160px;
 
   // ─── Typography ────────────────────────────────────────────────────────────
-  --font-family:           'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-family:           'Inter', 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   --font-family-mono:      'IBM Plex Mono', 'Courier New', Courier, monospace;
 
-  --font-size-xs:   12px;   // caption
-  --font-size-sm:   14px;   // body small, button
-  --font-size-base: 16px;   // body
+  --font-size-xs:   12px;
+  --font-size-sm:   14px;
+  --font-size-base: 16px;
   --font-size-h4:   18px;
   --font-size-h3:   20px;
   --font-size-h2:   28px;
@@ -91,18 +99,21 @@
   --font-weight-light:    300;
   --font-weight-regular:  400;
   --font-weight-semibold: 600;
+  --font-weight-bold:     700;
 
   --line-height-tight:  1.25;
   --line-height-normal: 1.5;
-  --line-height-body:   1.625;
+  --line-height-body:   1.7;
 
   // ─── Motion ────────────────────────────────────────────────────────────────
-  --transition-fast:   110ms ease;
-  --transition-medium: 200ms ease;
-  --transition-slow:   300ms ease;
+  --transition-fast:   120ms ease;
+  --transition-medium: 220ms ease;
+  --transition-slow:   350ms ease;
 
-  // ─── Shadows ───────────────────────────────────────────────────────────────
-  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.16);
-  --shadow-dropdown:   0 4px 16px rgba(0, 0, 0, 0.16);
-  --shadow-drawer:     4px 0 16px rgba(0, 0, 0, 0.24);
+  // ─── Shadows & Glows ───────────────────────────────────────────────────────
+  --shadow-card:       0 1px 3px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-card-hover: 0 0 0 1px rgba(139,92,246,0.4), 0 8px 32px rgba(139,92,246,0.15);
+  --shadow-dropdown:   0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+  --shadow-drawer:     4px 0 24px rgba(0,0,0,0.6);
+  --glow-accent:       0 0 40px rgba(139,92,246,0.3);
 }
