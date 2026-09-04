@@ -1,4 +1,4 @@
-import styles from './ProjectsPage.module.scss'
+﻿import styles from './ProjectsPage.module.scss'
 import projectsImg from './assets/Projects.png'
 
 const sections = [
@@ -70,7 +70,7 @@ export default function ProjectsPage() {
       {/* Navigation links */}
       <nav className={styles.navBar}>
         {sections.map(s => (
-          <a key={s.id} href={`#${s.id}`} className={styles.navLink}>{s.label}</a>
+          <button key={s.id} className={styles.navLink} onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' })}>{s.label}</button>
         ))}
       </nav>
 
@@ -87,7 +87,7 @@ export default function ProjectsPage() {
                   <p key={i} className={i === 0 && s.id === 'avg-fulfillment' ? styles.subLabel : styles.sectionDesc}>{para}</p>
                 ))}
                 <p className={styles.lastUpdate}>{LAST_UPDATE}</p>
-                <a href="#top" className={styles.backToTop}>back to top</a>
+                <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
               </div>
 
               {/* Chart placeholder */}

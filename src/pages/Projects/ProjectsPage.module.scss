@@ -1,4 +1,4 @@
-.page { min-height: calc(100vh - var(--header-total-height)); background: #fff; scroll-behavior: smooth; }
+﻿.page { min-height: calc(100vh - var(--header-total-height)); background: #fff; scroll-behavior: smooth; }
 
 .image { width: 100%; display: block; }
 
@@ -13,6 +13,7 @@
 }
 
 .navLink {
+  background: none; border: none; padding: 0; cursor: pointer;
   font-size: 0.875rem;
   color: #3b4fc8;
   text-decoration: none;
@@ -80,6 +81,7 @@
 }
 
 .backToTop {
+  background: none; border: none; padding: 0; cursor: pointer;
   font-size: 0.8125rem;
   color: #3b4fc8;
   text-decoration: none;

@@ -1,4 +1,4 @@
-import styles from './SecurityPage.module.scss'
+﻿import styles from './SecurityPage.module.scss'
 import securityHero from './assets/Security.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -92,7 +92,7 @@ export default function SecurityPage() {
       {/* Nav links */}
       <nav className={styles.navBar}>
         {sections.map(s => (
-          <a key={s.id} href={`#${s.id}`} className={styles.navLink}>{s.label}</a>
+          <button key={s.id} className={styles.navLink} onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' })}>{s.label}</button>
         ))}
       </nav>
 
@@ -104,7 +104,7 @@ export default function SecurityPage() {
           <section key={s.id} id={s.id} className={styles.section}>
             <div className={styles.highlightsHeader}>
               <h2 className={styles.highlightsTitle}>Highlights</h2>
-              <a href="#top" className={styles.backToTop}>Back to top</a>
+              <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
             </div>
 
             <div className={styles.highlightsGrid}>
@@ -153,7 +153,7 @@ export default function SecurityPage() {
                 {s.subLabel && <p className={styles.subLabel}>{s.subLabel}</p>}
                 <p className={styles.sectionDesc}>{s.description}</p>
                 <p className={styles.lastUpdate}>{LAST_UPDATE}</p>
-                <a href="#top" className={styles.backToTop}>Back to top</a>
+                <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
               </div>
               <div className={styles.chartSide}>
                 <div className={styles.chartPlaceholder}>Chart</div>
