@@ -37,7 +37,7 @@ function LoadingBar() {
 export default function App() {
   return (
     <ContentProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/AEP-IBM">
         <NavTabs />
         <main id="main-content" className={styles.mainContent}>
           <Suspense fallback={<LoadingBar />}>
