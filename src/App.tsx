@@ -4,6 +4,7 @@ import styles from './App.module.scss'
 import NavTabs from './components/layout/NavTabs/NavTabs'
 import Footer from './components/layout/Footer/Footer'
 import { ContentProvider } from './context/ContentContext'
+import ScrollToTop from './components/ScrollToTop'
 
 const HomePage                = lazy(() => import('./pages/Home/HomePage'))
 const PortfoliosPage          = lazy(() => import('./pages/Portfolios/PortfoliosPage'))
@@ -38,6 +39,7 @@ export default function App() {
   return (
     <ContentProvider>
       <HashRouter>
+        <ScrollToTop />
         <NavTabs />
         <main id="main-content" className={styles.mainContent}>
           <Suspense fallback={<LoadingBar />}>
