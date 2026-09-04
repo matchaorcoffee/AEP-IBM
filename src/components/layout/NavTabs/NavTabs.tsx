@@ -33,7 +33,7 @@ export default function NavTabs() {
   const [portfolioDropdownOpen, setPortfolioDropdownOpen] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const portfolioTabRef = useRef<HTMLLIElement>(null)
-  const dropdownRef = useRef<HTMLUListElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 })
 
   // Position dropdown under the Portfolios tab
@@ -138,35 +138,49 @@ export default function NavTabs() {
 
       {/* Dropdown rendered via portal so it's never clipped */}
       {portfolioDropdownOpen && createPortal(
-        <ul
+        <div
           ref={dropdownRef}
           className={styles.portfolioDropdown}
           role="menu"
           style={{ top: dropdownPos.top, left: dropdownPos.left }}
         >
-          {/* Header */}
-          <li role="none">
+          {/* Left panel */}
+          <div className={styles.portfolioDropdownLeft}>
             <button
-              role="menuitem"
-              className={styles.portfolioDropdownHeader}
+              className={styles.portfolioDropdownTitle}
               onClick={() => { setPortfolioDropdownOpen(false); navigate('/portfolios') }}
             >
               Portfolios
             </button>
-          </li>
-          {/* Sub-items */}
-          {PORTFOLIO_ITEMS.map(item => (
-            <li key={item.label} role="none">
-              <button
-                role="menuitem"
-                className={styles.portfolioDropdownItem}
-                onClick={() => handlePortfolioItemClick(item.path)}
-              >
-                - {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>,
+            <p className={styles.portfolioDropdownDesc}>
+              IBM Vantage AEP portfolio areas and domains.
+            </p>
+            <button
+              className={styles.portfolioDropdownSeeAll}
+              onClick={() => { setPortfolioDropdownOpen(false); navigate('/portfolios') }}
+            >
+              See All ›
+            </button>
+          </div>
+
+          {/* Divider */}
+          <div className={styles.portfolioDropdownDivider} aria-hidden="true" />
+
+          {/* Right panel — sub-items */}
+          <ul className={styles.portfolioDropdownRight} role="none">
+            {PORTFOLIO_ITEMS.map(item => (
+              <li key={item.label} role="none">
+                <button
+                  role="menuitem"
+                  className={styles.portfolioDropdownItem}
+                  onClick={() => handlePortfolioItemClick(item.path)}
+                >
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>,
         document.body
       )}
 

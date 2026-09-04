@@ -123,53 +123,100 @@
 // Portfolios dropdown panel — portalled to body, uses fixed positioning
 .portfolioDropdown {
   position: fixed;
-  min-width: 240px;
-  max-height: 280px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: row;
   background: #fff;
   border: 1px solid var(--color-border);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.14);
   z-index: 9999;
-  list-style: none;
-  padding: var(--spacing-02) 0;
   margin: 0;
+  overflow: hidden;
+}
 
-  /* thin scrollbar */
+// Left panel — title, description, see-all link
+.portfolioDropdownLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 28px;
+  min-width: 200px;
+  max-width: 220px;
+}
+
+.portfolioDropdownTitle {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.2;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.portfolioDropdownDesc {
+  margin: 0 0 16px 0;
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.portfolioDropdownSeeAll {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-active-tab);
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Vertical divider between left and right panels
+.portfolioDropdownDivider {
+  width: 1px;
+  background: var(--color-border);
+  align-self: stretch;
+  margin: 20px 0;
+}
+
+// Right panel — scrollable list of portfolio links
+.portfolioDropdownRight {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0;
+  overflow-y: auto;
+  min-width: 260px;
+  max-height: 400px;
+
   scrollbar-width: thin;
   scrollbar-color: #c1c7cd transparent;
   &::-webkit-scrollbar { width: 6px; }
   &::-webkit-scrollbar-thumb { background: #c1c7cd; border-radius: 3px; }
 }
 
-/* "Portfolios" header row — bold, underlined, no dash */
-.portfolioDropdownHeader {
-  display: block;
-  width: 100%;
-  padding: var(--spacing-03) var(--spacing-05);
-  text-align: left;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  text-decoration: underline;
-  background: none;
-  border: none;
-  border-bottom: 2px solid var(--color-active-tab);
-  cursor: pointer;
-  margin-bottom: var(--spacing-01);
-
-  &:hover {
-    background: var(--color-hover);
-  }
-}
-
-/* "- Item" sub-rows */
+// Sub-item rows — no dash, plain text
 .portfolioDropdownItem {
   display: block;
   width: 100%;
-  padding: var(--spacing-03) var(--spacing-05);
+  padding: 10px 28px;
   text-align: left;
   font-size: var(--font-size-sm);
-  color: var(--color-brand-blue);
+  color: var(--color-text-primary);
   background: none;
   border: none;
   cursor: pointer;
@@ -177,6 +224,7 @@
 
   &:hover {
     background: var(--color-hover);
+    color: var(--color-text-primary);
   }
 }
 
