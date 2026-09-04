@@ -4,27 +4,31 @@ const principles = [
   {
     id: 'cross-sector',
     title: 'Cross-sector collaboration',
-    body: 'We work closely with the public and private sectors, including local, regional and national governments, nonprofit organizations, universities, research organizations and school systems. We engage with highly qualified public and civic entities that are deeply committed to solving problems.',
+    body: 'We work closely with the public and private sectors, including local, regional and national governments, nonprofit organizations, universities, research organizations and school systems.',
     gradient: 'teal',
+    icon: '🤝',
   },
   {
     id: 'solving-problems',
     title: "Solving client's problems",
-    body: "To address some of the world's most vexing problems at their roots requires more than simply writing checks. We take a hands-on approach to identify and implement solutions, drawing on all of IBM's technologies and expertise. We focus on building innovative solutions and then bringing them to scale.",
+    body: "To address some of the world's most vexing problems at their roots requires more than simply writing checks. We take a hands-on approach to identify and implement solutions.",
     gradient: 'lavender',
+    icon: '💡',
   },
   {
     id: 'impact',
     title: 'Impact and measurement',
-    body: 'We measure that change by developing a set of comprehensive desired outcomes and key performance indicators for each program we initiate. To maximize the impact of our investments, we plan for the longevity and sustainability of our solutions by ensuring that they are scalable and transferable.',
+    body: 'We measure change by developing comprehensive desired outcomes and key performance indicators for each program. We plan for longevity and sustainability of our solutions.',
     gradient: 'mint',
+    icon: '📊',
   },
 ]
 
 export default function IbmGuidingPrinciples() {
   return (
     <section className={styles.section}>
-      <div className={styles.header}>
+      <div className={styles.sectionHeader}>
+        <div className={styles.sectionLabel}>Our Approach</div>
         <h2 className={styles.sectionTitle}>IBM Guiding Principles</h2>
         <p className={styles.sectionBody}>
           A company must be true to its values in all of its activities — both internal and
@@ -35,7 +39,8 @@ export default function IbmGuidingPrinciples() {
 
       <div className={styles.cards}>
         {principles.map((p) => (
-          <div key={p.id} className={`${styles.card} ${styles[p.gradient]}`}>
+          <div key={p.id} className={styles.card}>
+            <div className={`${styles.cardIcon} ${styles[p.gradient]}`}>{p.icon}</div>
             <h3 className={styles.cardTitle}>{p.title}</h3>
             <p className={styles.cardBody}>{p.body}</p>
           </div>

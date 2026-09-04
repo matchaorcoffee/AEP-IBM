@@ -13,6 +13,7 @@ export default function CleanEnergyFuture() {
         <div className={styles.accent} aria-hidden="true" />
       </div>
       <div className={styles.content}>
+        <div className={styles.label}>Clean Energy</div>
         <h2 className={styles.heading}>Building a bright future together</h2>
         <p className={styles.body}>
           Together with our customers, we&apos;re redefining the future of energy. Investing in a

@@ -54,6 +54,10 @@ export default function TabPanel() {
 
   return (
     <section className={styles.section}>
+      <div className={styles.sectionHeader}>
+        <div className={styles.sectionLabel}>Featured Insights</div>
+        <h2 className={styles.sectionTitle}>AEP &amp; IBM in Action</h2>
+      </div>
       <div className={styles.tabBar}>
         {tabs.map((t, i) => (
           <button

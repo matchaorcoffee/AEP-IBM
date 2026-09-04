@@ -1,30 +1,42 @@
 // ── IBM Guiding Principles section ───────────────────────────────────────────
 
 .section {
-  background: var(--color-page-bg);
-  padding: var(--spacing-09) var(--spacing-09) var(--spacing-10);
+  background: var(--color-section-alt);
+  padding: var(--spacing-11) var(--spacing-07) var(--spacing-12);
 }
 
-.header {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: var(--spacing-07);
-  margin-bottom: var(--spacing-08);
-  align-items: start;
+.sectionHeader {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--spacing-10);
+}
+
+.sectionLabel {
+  display: inline-flex;
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-04);
 }
 
 .sectionTitle {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
-  line-height: var(--line-height-tight);
-  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 var(--spacing-04);
 }
 
 .sectionBody {
   font-size: var(--font-size-base);
-  color: var(--color-text-primary);
-  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
   margin: 0;
 }
 
@@ -32,62 +44,62 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-05);
-  padding-left: calc(200px + var(--spacing-07));
 }
 
 .card {
-  border-radius: 24px 24px 0 24px;
-  padding: var(--spacing-09) var(--spacing-07);
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-08) var(--spacing-07);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-06);
+  gap: var(--spacing-05);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-3px);
+    border-color: var(--color-accent);
+  }
 }
 
-.teal {
-  background: linear-gradient(135deg, #b2e8e0 0%, #d4f0eb 100%);
+.cardIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
 }
 
-.lavender {
-  background: linear-gradient(135deg, #c8c8e8 0%, #ddddf4 100%);
-}
-
-.mint {
-  background: linear-gradient(135deg, #c8e8d8 0%, #ddf4e8 100%);
-}
+.teal { background: linear-gradient(135deg, #ccfbf1, #99f6e4); }
+.lavender { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+.mint { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
 
 .cardTitle {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
   margin: 0;
-  line-height: var(--line-height-tight);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .cardBody {
   font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
   margin: 0;
 }
 
 @media (max-width: 960px) {
-  .cards {
-    padding-left: 0;
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .cards { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .section {
-    padding: var(--spacing-07) var(--spacing-06) var(--spacing-08);
-  }
-
-  .header {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-04);
-  }
-
-  .cards {
-    grid-template-columns: 1fr;
-  }
+  .section { padding: var(--spacing-09) var(--spacing-05) var(--spacing-10); }
+  .cards { grid-template-columns: 1fr; }
 }

@@ -1,8 +1,7 @@
 .footer {
   background: var(--color-dark-bg);
   color: var(--color-dark-text);
-  min-height: 64px;
-  padding: 0 var(--spacing-07);
+  padding: var(--spacing-08) var(--spacing-07);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,10 +12,8 @@
   @media (max-width: 672px) {
     flex-direction: column;
     align-items: center;
-    padding: var(--spacing-05);
     text-align: center;
     gap: var(--spacing-04);
-    min-height: auto;
   }
 }
 
@@ -26,26 +23,28 @@
 
 .ibmText {
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
   color: #fff;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: var(--spacing-02);
+  gap: var(--spacing-04);
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .link {
   font-size: var(--font-size-xs);
-  color: var(--color-dark-link);
+  color: var(--color-dark-text);
   text-decoration: none;
+  transition: color var(--transition-fast);
 
   &:hover {
-    text-decoration: underline;
+    color: #ffffff;
+    text-decoration: none;
   }
 }
 
@@ -56,7 +55,7 @@
 
 .copyright {
   font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+  color: var(--color-dark-text);
   white-space: nowrap;
   flex-shrink: 0;
 }

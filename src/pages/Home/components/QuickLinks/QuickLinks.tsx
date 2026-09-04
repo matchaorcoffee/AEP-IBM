@@ -10,7 +10,10 @@ export default function QuickLinks({ links }: QuickLinksProps) {
   return (
     <section className={styles.section} aria-labelledby="quick-links-heading">
       <div className={styles.inner}>
-        <h2 id="quick-links-heading" className={styles.sectionTitle}>Quick Access</h2>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionLabel}>Navigation</div>
+          <h2 id="quick-links-heading" className={styles.sectionTitle}>Quick Access</h2>
+        </div>
         <div className={styles.grid}>
           {links.map(item => (
             <Link key={item.id} to={item.path} className={styles.tile}>

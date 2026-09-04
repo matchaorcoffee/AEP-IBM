@@ -1,42 +1,81 @@
 .welcome {
   background: var(--color-section-alt);
-  padding: var(--spacing-09) 0;
+  padding: var(--spacing-12) 0 var(--spacing-11);
 }
 
 .inner {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 var(--spacing-09);
+  padding: 0 var(--spacing-07);
   text-align: center;
 }
 
-.heading {
-  font-size: var(--font-size-h1);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-text-primary);
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
   margin-bottom: var(--spacing-05);
-  line-height: var(--line-height-tight);
+}
+
+.heading {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: var(--spacing-06);
 }
 
 .subtitle {
-  font-size: var(--font-size-h3);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  line-height: var(--line-height-normal);
-  max-width: 760px;
-  margin: 0 auto;
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0 auto var(--spacing-08);
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-10);
+  padding-top: var(--spacing-08);
+  border-top: 1px solid var(--color-border);
+}
+
+.stat {
+  text-align: center;
+}
+
+.statNumber {
+  display: block;
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-02);
 }
 
 @media (max-width: 768px) {
-  .inner {
-    padding: 0 var(--spacing-06);
-  }
-
-  .heading {
-    font-size: var(--font-size-h2);
-  }
-
-  .subtitle {
-    font-size: var(--font-size-base);
-  }
+  .welcome { padding: var(--spacing-10) 0; }
+  .inner { padding: 0 var(--spacing-05); }
+  .heading { font-size: var(--font-size-h2); }
+  .subtitle { font-size: var(--font-size-base); }
+  .stats { gap: var(--spacing-07); }
+  .statNumber { font-size: 1.6rem; }
 }
