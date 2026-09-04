@@ -1,0 +1,153 @@
+// ─── Page wrapper ────────────────────────────────────────────────────────────
+.page {
+  min-height: calc(100vh - var(--header-total-height));
+  background: #fff;
+}
+
+// ─── Full-width video banner ──────────────────────────────────────────────────
+.videoBanner {
+  width: 100%;
+  height: 380px;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  flex-shrink: 0;
+}
+
+.bannerVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+// ─── Centered title ───────────────────────────────────────────────────────────
+.titleSection {
+  background: #fff;
+  padding: var(--spacing-06) var(--spacing-09) var(--spacing-03);
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+}
+
+// ─── Inset diagonal country strip ────────────────────────────────────────────
+.stripSection {
+  background: #fff;
+  padding: 0 var(--spacing-09);
+}
+
+.locationsTrack {
+  display: flex;
+  height: 200px;
+  margin: 0 -10px;
+
+  // collapse entirely when all slices have no background image loaded
+  &:empty { height: 0; }
+}
+
+.locationSlice {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
+  margin: 0 -3px;
+
+  &:first-child { clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 0% 100%); }
+  &:last-child  { clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%); }
+}
+
+.locationImg {
+  position: absolute;
+  inset: -8%;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.82);
+  transition: filter var(--transition-medium);
+
+  .locationSlice:hover & {
+    filter: brightness(1);
+  }
+}
+
+// ─── Centered description ─────────────────────────────────────────────────────
+.descSection {
+  background: #fff;
+  padding: var(--spacing-03) var(--spacing-09) var(--spacing-09);
+}
+
+.descText {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+// ─── Country info cards ───────────────────────────────────────────────────────
+.cardsSection {
+  background: var(--color-page-bg);
+  padding: var(--spacing-10) var(--spacing-09) var(--spacing-11);
+}
+
+.cardsGrid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+}
+
+.countryCard {
+  background: var(--color-page-bg);
+  padding: var(--spacing-08) var(--spacing-07);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+}
+
+.countryTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--spacing-04);
+  letter-spacing: 0.5px;
+}
+
+.countryBody {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+}
+
+// ─── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 1056px) {
+  .cardsGrid { grid-template-columns: repeat(2, 1fr); }
+  .locationsTrack { height: 170px; }
+  .videoBanner { height: 300px; }
+}
+
+@media (max-width: 768px) {
+  .videoBanner { height: 220px; }
+  .titleSection { padding: var(--spacing-08) var(--spacing-06) var(--spacing-06); }
+  .stripSection { padding: var(--spacing-06) var(--spacing-06); }
+  .locationsTrack { height: 130px; }
+  .descSection { padding: var(--spacing-08) var(--spacing-06) var(--spacing-09); }
+  .cardsSection { padding: var(--spacing-08) var(--spacing-06) var(--spacing-09); }
+  .cardsGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .videoBanner { height: 160px; }
+  .locationsTrack { height: 100px; }
+}

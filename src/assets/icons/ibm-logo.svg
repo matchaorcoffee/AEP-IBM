@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 32" fill="currentColor">
+  <!-- IBM 8-bar logo simplified representation -->
+  <rect x="0" y="0" width="80" height="4"/>
+  <rect x="8" y="7" width="64" height="4"/>
+  <rect x="8" y="14" width="64" height="4"/>
+  <rect x="0" y="21" width="80" height="4"/>
+  <rect x="8" y="28" width="64" height="4"/>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160" fill="none">
+  <!-- Red parallelogram border (open bottom-right corner) -->
+  <!-- Top edge -->
+  <line x1="18" y1="18" x2="148" y2="8" stroke="#e02020" stroke-width="8" stroke-linecap="square"/>
+  <!-- Left edge -->
+  <line x1="18" y1="18" x2="8" y2="148" stroke="#e02020" stroke-width="8" stroke-linecap="square"/>
+  <!-- Bottom edge (partial – stops before right) -->
+  <line x1="8" y1="148" x2="118" y2="152" stroke="#e02020" stroke-width="8" stroke-linecap="square"/>
+  <!-- Right edge (partial – starts near top, stops short of bottom) -->
+  <line x1="148" y1="8" x2="152" y2="88" stroke="#e02020" stroke-width="8" stroke-linecap="square"/>
+
+  <!-- AMERICAN -->
+  <text x="52" y="68"
+    font-family="Arial Black, Arial, sans-serif"
+    font-weight="900"
+    font-size="36"
+    font-style="italic"
+    fill="#111111"
+    letter-spacing="-0.5">AMERICAN</text>
+
+  <!-- ELECTRIC -->
+  <text x="52" y="108"
+    font-family="Arial Black, Arial, sans-serif"
+    font-weight="900"
+    font-size="36"
+    font-style="italic"
+    fill="#111111"
+    letter-spacing="-0.5">ELECTRIC</text>
+
+  <!-- POWER® -->
+  <text x="52" y="148"
+    font-family="Arial Black, Arial, sans-serif"
+    font-weight="900"
+    font-size="36"
+    font-style="italic"
+    fill="#111111"
+    letter-spacing="-0.5">POWER</text>
+  <text x="188" y="142"
+    font-family="Arial, sans-serif"
+    font-weight="400"
+    font-size="14"
+    fill="#111111">®</text>
+</svg>

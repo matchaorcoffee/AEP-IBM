@@ -1,0 +1,116 @@
+.page { min-height: calc(100vh - var(--header-total-height)); }
+
+// ── Hero banner ───────────────────────────────────────────────────────────────
+
+.hero {
+  height: 320px;
+  overflow: hidden;
+}
+
+.heroImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+// ── Title block ───────────────────────────────────────────────────────────────
+
+.titleBlock {
+  background: #fff;
+  text-align: center;
+  padding: var(--spacing-10) var(--spacing-09);
+}
+
+.pageTitle {
+  font-size: clamp(var(--font-size-h2), 6vw, 64px);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+// ── Country grid ──────────────────────────────────────────────────────────────
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-07) var(--spacing-09) var(--spacing-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-08);
+}
+
+.row3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-06);
+}
+
+.row4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-06);
+}
+
+.countryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-05);
+  text-decoration: none;
+
+  &:hover .countryImg {
+    opacity: 0.85;
+  }
+
+  &:hover .countryLabel {
+    text-decoration: underline;
+  }
+}
+
+.imgWrapper {
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.countryImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.countryLabel {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-brand-blue);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+
+@media (max-width: 768px) {
+  .hero {
+    height: 200px;
+  }
+
+  .row3,
+  .row4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding-left: var(--spacing-06);
+    padding-right: var(--spacing-06);
+  }
+
+  .row3,
+  .row4 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,296 @@
+.navTabs {
+  position: fixed;
+  top: var(--top-bar-height);
+  left: 0;
+  right: 0;
+  height: var(--nav-tabs-height);
+  background: var(--color-nav-tabs-bg);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-05);
+  z-index: 199;
+  gap: 0;
+  overflow: visible;
+}
+
+// Channel identity (AEP IBM branding)
+.channelId {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  flex-shrink: 0;
+  padding-right: var(--spacing-05);
+}
+
+.channelLogoLink {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.channelLogo {
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.channelDivider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+  margin-left: var(--spacing-03);
+}
+
+// Desktop tab list
+.tabList {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: visible;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tabItem {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--spacing-05);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  cursor: pointer;
+  gap: var(--spacing-02);
+
+  &:hover {
+    background: var(--color-top-bar-bg);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  &.active {
+    color: var(--color-text-primary);
+    border-bottom-color: var(--color-active-tab);
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+// For items with dropdown: tab is a flex row containing link + chevron button
+.tabLink {
+  color: inherit;
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.dropdownToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 0 var(--spacing-02);
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+  }
+}
+
+// Portfolios dropdown panel — portalled to body, uses fixed positioning
+.portfolioDropdown {
+  position: fixed;
+  min-width: 240px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  list-style: none;
+  padding: var(--spacing-02) 0;
+  margin: 0;
+
+  /* thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #c1c7cd transparent;
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-thumb { background: #c1c7cd; border-radius: 3px; }
+}
+
+/* "Portfolios" header row — bold, underlined, no dash */
+.portfolioDropdownHeader {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-03) var(--spacing-05);
+  text-align: left;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  border-bottom: 2px solid var(--color-active-tab);
+  cursor: pointer;
+  margin-bottom: var(--spacing-01);
+
+  &:hover {
+    background: var(--color-hover);
+  }
+}
+
+/* "- Item" sub-rows */
+.portfolioDropdownItem {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-03) var(--spacing-05);
+  text-align: left;
+  font-size: var(--font-size-sm);
+  color: var(--color-brand-blue);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--color-hover);
+  }
+}
+
+// Mobile hamburger button — hidden on desktop
+.mobileMenuBtn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: auto;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+  }
+}
+
+// Mobile backdrop
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 498;
+}
+
+// Mobile slide-over drawer
+.mobileDrawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: #fff;
+  z-index: 499;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform var(--transition-medium);
+  box-shadow: var(--shadow-drawer);
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: 0 var(--spacing-05);
+  height: var(--nav-tabs-height);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+}
+
+.drawerClose {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+  }
+}
+
+.drawerList {
+  list-style: none;
+  padding: var(--spacing-03) 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.drawerItem {
+  display: block;
+  padding: var(--spacing-04) var(--spacing-06);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--color-hover);
+    text-decoration: none;
+  }
+}
+
+.drawerItemActive {
+  border-left-color: var(--color-active-tab);
+  color: var(--color-active-tab);
+  font-weight: var(--font-weight-semibold);
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .tabList {
+    display: none;
+  }
+
+  .channelId {
+    flex: 1;
+  }
+
+  .mobileMenuBtn {
+    display: flex;
+  }
+}
+

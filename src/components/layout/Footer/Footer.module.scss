@@ -1,0 +1,62 @@
+.footer {
+  background: var(--color-dark-bg);
+  color: var(--color-dark-text);
+  min-height: 64px;
+  padding: 0 var(--spacing-07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-06);
+  border-top: 1px solid var(--color-dark-border);
+  flex-wrap: wrap;
+
+  @media (max-width: 672px) {
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-05);
+    text-align: center;
+    gap: var(--spacing-04);
+    min-height: auto;
+  }
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.ibmText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.link {
+  font-size: var(--font-size-xs);
+  color: var(--color-dark-link);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.sep {
+  font-size: var(--font-size-xs);
+  color: var(--color-dark-border);
+}
+
+.copyright {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}

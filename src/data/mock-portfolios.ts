@@ -1,0 +1,88 @@
+import type { Portfolio } from '../models/Portfolio'
+
+export const MOCK_PORTFOLIOS: Portfolio[] = [
+  {
+    id: 'p1',
+    name: 'AI & Watson Enablement Portfolio',
+    description: 'Comprehensive collection of technical assets, sales enablement materials, and customer-facing resources for IBM Watson and AI services.',
+    status: 'Active',
+    date: 'Updated Dec 8, 2024',
+    cardCount: 24,
+    link: '/portfolios/p1',
+  },
+  {
+    id: 'p2',
+    name: 'IBM Cloud Hybrid Infrastructure',
+    description: 'Resources covering IBM Cloud architecture, Red Hat OpenShift on IBM Cloud, storage solutions, and network design patterns for hybrid workloads.',
+    status: 'Active',
+    date: 'Updated Nov 30, 2024',
+    cardCount: 18,
+    link: '/portfolios/p2',
+  },
+  {
+    id: 'p3',
+    name: 'Security & Compliance Accelerator',
+    description: 'Sales plays, technical documentation, and proof-of-concept guides for IBM Security QRadar, Guardium, and MaaS360 mobile security solutions.',
+    status: 'Active',
+    date: 'Updated Nov 15, 2024',
+    cardCount: 12,
+    link: '/portfolios/p3',
+  },
+  {
+    id: 'p4',
+    name: 'AEP Partner Onboarding 2023',
+    description: 'Archived onboarding resources from the 2023 AEP partner programme, including welcome kits, training schedules, and benefit guides.',
+    status: 'Archived',
+    date: 'Archived Jan 2024',
+    cardCount: 8,
+    link: '/portfolios/p4',
+  },
+  {
+    id: 'p5',
+    name: 'IBM Sustainability & ESG Resources',
+    description: 'Collection of IBM sustainability initiatives, ESG reporting frameworks, and green computing resources for partners engaging in sustainability conversations.',
+    status: 'Completed',
+    date: 'Completed Oct 2024',
+    cardCount: 10,
+    link: '/portfolios/p5',
+  },
+]
+
+export const MOCK_PROJECTS: Portfolio[] = [
+  {
+    id: 'pr1',
+    name: 'Watson AI POC – FinServ Client',
+    description: 'Proof-of-concept project for a financial services client exploring Watson NLP for document processing and compliance automation.',
+    status: 'Active',
+    date: 'Started Nov 2024',
+    cardCount: 6,
+    link: '/projects/pr1',
+  },
+  {
+    id: 'pr2',
+    name: 'Cloud Migration Assessment',
+    description: 'Discovery and assessment project for migrating legacy on-premises workloads to IBM Cloud, including infrastructure sizing and cost modelling.',
+    status: 'Completed',
+    date: 'Completed Oct 2024',
+    cardCount: 9,
+    link: '/projects/pr2',
+  },
+  {
+    id: 'pr3',
+    name: 'IBM Z Modernisation Roadmap',
+    description: 'Strategic roadmap development for modernising a Fortune 500 client\'s mainframe infrastructure, including containerisation and API exposure.',
+    status: 'Active',
+    date: 'Started Oct 2024',
+    cardCount: 7,
+    link: '/projects/pr3',
+  },
+  {
+    id: 'pr4',
+    name: 'Security Posture Improvement Initiative',
+    description: 'Multi-phase security improvement project deploying IBM QRadar SIEM and integrating with existing SOC workflows for enhanced threat detection.',
+    status: 'Active',
+    date: 'Started Sep 2024',
+    cardCount: 11,
+    link: '/projects/pr4',
+  },
+]

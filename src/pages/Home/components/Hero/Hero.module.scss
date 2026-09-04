@@ -1,0 +1,34 @@
+.hero {
+  width: 100%;
+  height: 320px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+}
+
+// Used when a local video file is set as the hero background
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 160px;
+  }
+}

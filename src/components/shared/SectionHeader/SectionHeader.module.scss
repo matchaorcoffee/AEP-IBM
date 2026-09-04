@@ -1,0 +1,32 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-06);
+}
+
+.title {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+}
+
+.viewAll {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  font-size: var(--font-size-sm);
+  color: var(--color-brand-blue);
+  font-weight: var(--font-weight-regular);
+  text-decoration: none;
+  flex-shrink: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  img {
+    opacity: 0.8;
+  }
+}

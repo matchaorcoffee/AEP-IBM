@@ -1,0 +1,187 @@
+.topBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--top-bar-height);
+  background: var(--color-top-bar-bg);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-05);
+  z-index: 200;
+  gap: var(--spacing-05);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-04);
+  flex-shrink: 0;
+}
+
+.aepLogo {
+  height: 36px;
+  width: 36px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.brandName {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+
+  strong {
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: auto;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+  margin: 0 var(--spacing-02);
+}
+
+.iconBtn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background var(--transition-fast);
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--color-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  &:hover img {
+    opacity: 1;
+  }
+}
+
+.avatarBtn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+.avatarCircle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-active-tab);
+  color: #fff;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+}
+
+.searchExpand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchInput {
+  flex: 1;
+  height: 36px;
+  border: none;
+  border-bottom: 2px solid var(--color-brand-blue);
+  background: transparent;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  padding: 0 var(--spacing-03);
+  outline: none;
+  transition: border-color var(--transition-fast);
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  &:focus {
+    border-bottom-color: var(--color-brand-blue-dark);
+  }
+}
+
+// User dropdown menu
+.userMenu {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-dropdown);
+  z-index: 300;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-04) var(--spacing-05);
+  text-align: left;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--color-hover);
+  }
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--spacing-02) 0;
+}
+
+// Responsive: hide brand text on small screens
+@media (max-width: 480px) {
+  .brandName {
+    display: none;
+  }
+
+  .topBar {
+    padding: 0 var(--spacing-03);
+  }
+}
