@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import styles from './App.module.scss'
 import NavTabs from './components/layout/NavTabs/NavTabs'
 import Footer from './components/layout/Footer/Footer'
@@ -37,7 +37,7 @@ function LoadingBar() {
 export default function App() {
   return (
     <ContentProvider>
-      <BrowserRouter basename="/AEP-IBM">
+      <HashRouter>
         <NavTabs />
         <main id="main-content" className={styles.mainContent}>
           <Suspense fallback={<LoadingBar />}>
@@ -66,7 +66,7 @@ export default function App() {
           </Suspense>
         </main>
         <Footer />
-      </BrowserRouter>
+      </HashRouter>
     </ContentProvider>
   )
 }
