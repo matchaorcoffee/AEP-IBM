@@ -1,107 +1,101 @@
-// NavTabs — clean white sticky header, modern SaaS style
+// NavTabs — AEP-style floating card navbar
 
-.navTabs {
+// ── Outer wrapper — sits fixed at top, full-width, provides the padding context
+.navOuter {
   position: fixed;
-  top: var(--top-bar-height);
+  top: 0;
   left: 0;
   right: 0;
-  height: 56px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-xs);
+  z-index: 199;
+  padding: 12px 24px;
+  pointer-events: none;           // let clicks through to background
+}
+
+// ── The floating card itself
+.navCard {
+  pointer-events: all;
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 60px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
-  padding: 0 var(--spacing-07);
-  z-index: 199;
+  padding: 0 24px;
   gap: 0;
   overflow: visible;
 }
 
-.channelId {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-04);
-  flex-shrink: 0;
-  padding-right: var(--spacing-07);
-}
-
-.channelLogoLink {
+// ── Logo
+.logoLink {
   display: flex;
   align-items: center;
   flex-shrink: 0;
   text-decoration: none;
+  margin-right: 28px;
 }
 
-.channelLogo {
-  height: 40px;
+.logo {
+  height: 36px;
   width: auto;
   object-fit: contain;
   display: block;
-  flex-shrink: 0;
 }
 
-.channelDivider {
-  width: 1px;
-  height: 24px;
-  background: var(--color-border);
-  margin-left: var(--spacing-03);
-}
-
+// ── Tab list — takes remaining space, centered
 .tabList {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   height: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
+  flex: 1;
+  justify-content: flex-start;
+  gap: 2px;
   overflow: visible;
-  scrollbar-width: none;
-  gap: var(--spacing-01);
-
-  &::-webkit-scrollbar { display: none; }
 }
 
 .tabItem {
   position: relative;
   display: flex;
-  align-items: stretch;
+  align-items: center;
 }
 
 .tab {
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 var(--spacing-04);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
   text-decoration: none;
-  border-bottom: 2px solid transparent;
   white-space: nowrap;
-  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
   cursor: pointer;
-  gap: var(--spacing-02);
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  gap: 6px;
+  border-radius: 8px;
+  transition: color 120ms ease, background 120ms ease;
+  border-bottom: none;
 
   &:hover {
-    color: var(--color-text-primary);
-    background: var(--color-hover);
+    color: #111;
+    background: #f5f5f5;
     text-decoration: none;
   }
 
   &.active {
-    color: var(--color-accent);
-    border-bottom-color: var(--color-accent);
-    font-weight: var(--font-weight-semibold);
+    color: #c8102e;
+    font-weight: 700;
+    background: transparent;
   }
 }
 
 .tabLink {
   color: inherit;
   text-decoration: none;
-  font-size: var(--font-size-sm);
+  font-size: inherit;
   font-weight: inherit;
 
   &:hover { text-decoration: none; }
@@ -115,9 +109,51 @@
   border: none;
   cursor: pointer;
   color: inherit;
-  padding: 0 var(--spacing-02);
+  padding: 2px;
 
-  &:focus-visible { outline: 2px solid var(--color-focus); }
+  &:focus-visible { outline: 2px solid #c8102e; border-radius: 4px; }
+}
+
+// ── Right actions (search + hamburger)
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.searchBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: #c8102e;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 120ms ease;
+  flex-shrink: 0;
+
+  &:hover { background: #9e0b22; text-decoration: none; }
+}
+
+.mobileMenuBtn {
+  display: none;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #333;
+  flex-shrink: 0;
+
+  &:hover { background: #f5f5f5; }
+  &:focus-visible { outline: 2px solid #c8102e; }
 }
 
 // ── Portfolio dropdown ────────────────────────────────────────────────────────
@@ -126,8 +162,8 @@
   display: flex;
   flex-direction: row;
   background: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
   z-index: 9999;
   margin: 0;
@@ -181,15 +217,15 @@
   color: #c8102e;
   cursor: pointer;
   text-align: left;
-  transition: color var(--transition-fast);
+  transition: color 120ms ease;
   text-decoration: none;
 
-  &:hover { color: #c8102e; text-decoration: underline; }
+  &:hover { text-decoration: underline; }
 }
 
 .portfolioDropdownDivider {
   width: 1px;
-  background: var(--color-border);
+  background: #e5e7eb;
   align-self: stretch;
   margin: 20px 0;
 }
@@ -218,32 +254,13 @@
   background: none;
   border: none;
   cursor: pointer;
-  transition: color var(--transition-fast);
+  transition: color 120ms ease;
   letter-spacing: 0.01em;
 
-  &:hover {
-    color: #c8102e;
-    background: none;
-  }
+  &:hover { color: #c8102e; }
 }
 
 // ── Mobile ────────────────────────────────────────────────────────────────────
-.mobileMenuBtn {
-  display: none;
-  width: 40px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-left: auto;
-  border-radius: var(--radius-md);
-
-  &:hover { background: var(--color-hover); }
-  &:focus-visible { outline: 2px solid var(--color-focus); }
-}
-
 .backdrop {
   position: fixed;
   inset: 0;
@@ -263,8 +280,8 @@
   display: flex;
   flex-direction: column;
   transform: translateX(-100%);
-  transition: transform var(--transition-medium);
-  box-shadow: var(--shadow-drawer);
+  transition: transform 220ms ease;
+  box-shadow: 4px 0 16px rgba(0,0,0,0.12);
 }
 
 .drawerOpen { transform: translateX(0); }
@@ -272,11 +289,9 @@
 .drawerHeader {
   display: flex;
   align-items: center;
-  gap: var(--spacing-03);
-  padding: 0 var(--spacing-05);
-  height: 56px;
-  border-bottom: 1px solid var(--color-border);
-  font-size: var(--font-size-sm);
+  padding: 0 20px;
+  height: 60px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .drawerClose {
@@ -289,45 +304,48 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
+  color: #333;
 
-  &:hover { background: var(--color-hover); }
-  &:focus-visible { outline: 2px solid var(--color-focus); }
+  &:hover { background: #f5f5f5; }
+  &:focus-visible { outline: 2px solid #c8102e; }
 }
 
 .drawerList {
   list-style: none;
-  padding: var(--spacing-03) var(--spacing-03);
+  padding: 8px 12px;
   flex: 1;
   overflow-y: auto;
 }
 
 .drawerItem {
   display: block;
-  padding: 10px var(--spacing-04);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
   text-decoration: none;
-  border-radius: var(--radius-md);
-  transition: color var(--transition-fast), background var(--transition-fast);
+  border-radius: 8px;
+  transition: color 120ms ease, background 120ms ease;
 
   &:hover {
-    color: var(--color-accent);
-    background: var(--color-accent-subtle);
+    color: #c8102e;
+    background: #fff0f1;
     text-decoration: none;
   }
 }
 
 .drawerItemActive {
-  color: var(--color-accent);
-  background: var(--color-accent-subtle);
-  font-weight: var(--font-weight-semibold);
+  color: #c8102e;
+  background: #fff0f1;
+  font-weight: 700;
 }
 
+// ── Responsive
 @media (max-width: 768px) {
   .tabList { display: none; }
-  .channelId { flex: 1; }
   .mobileMenuBtn { display: flex; }
-  .navTabs { padding: 0 var(--spacing-05); }
+  .navOuter { padding: 10px 16px; }
+  .navCard { padding: 0 16px; }
+  .logoLink { margin-right: 0; }
 }

@@ -36,15 +36,13 @@ export default function NavTabs() {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 })
 
-  // Position dropdown under the Portfolios tab
   useEffect(() => {
     if (portfolioDropdownOpen && portfolioTabRef.current) {
       const rect = portfolioTabRef.current.getBoundingClientRect()
-      setDropdownPos({ top: rect.bottom + 1, left: rect.left })
+      setDropdownPos({ top: rect.bottom + 8, left: rect.left })
     }
   }, [portfolioDropdownOpen])
 
-  // Close on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       const target = e.target as Node
@@ -55,13 +53,10 @@ export default function NavTabs() {
         setPortfolioDropdownOpen(false)
       }
     }
-    if (portfolioDropdownOpen) {
-      document.addEventListener('mousedown', handleClick)
-    }
+    if (portfolioDropdownOpen) document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
   }, [portfolioDropdownOpen])
 
-  // Close on route change
   useEffect(() => {
     setMobileNavOpen(false)
     setPortfolioDropdownOpen(false)
@@ -77,66 +72,85 @@ export default function NavTabs() {
   }
 
   return (
-    <nav className={styles.navTabs} aria-label="Main navigation">
-      {/* Channel identity */}
-      <div className={styles.channelId}>
-        <Link to="/" className={styles.channelLogoLink} aria-label="Go to home">
-          <img
-            src={aepLogo}
-            alt="American Electric Power"
-            className={styles.channelLogo}
-          />
-        </Link>
-        <span className={styles.channelDivider} />
-      </div>
+    <div className={styles.navOuter}>
+      <nav className={styles.navCard} aria-label="Main navigation">
 
-      {/* Desktop tab list */}
-      <ul className={styles.tabList} role="list">
-        {NAV_ITEMS.map(item =>
-          item.hasDropdown ? (
-            <li key={item.path} className={styles.tabItem} ref={portfolioTabRef}>
-              <div className={`${styles.tab} ${isActive(item.path) ? styles.active : ''}`}>
+        {/* Logo */}
+        <Link to="/" className={styles.logoLink} aria-label="Go to home">
+          <img src={aepLogo} alt="American Electric Power" className={styles.logo} />
+        </Link>
+
+        {/* Desktop nav links — centered */}
+        <ul className={styles.tabList} role="list">
+          {NAV_ITEMS.map(item =>
+            item.hasDropdown ? (
+              <li key={item.path} className={styles.tabItem} ref={portfolioTabRef}>
+                <div className={`${styles.tab} ${isActive(item.path) ? styles.active : ''}`}>
+                  <Link
+                    to={item.path}
+                    aria-current={isActive(item.path) ? 'page' : undefined}
+                    className={styles.tabLink}
+                  >
+                    {item.label}
+                  </Link>
+                  <button
+                    className={styles.dropdownToggle}
+                    onClick={() => setPortfolioDropdownOpen(v => !v)}
+                    aria-label="Portfolios submenu"
+                    aria-expanded={portfolioDropdownOpen}
+                    aria-haspopup="menu"
+                  >
+                    <svg
+                      viewBox="0 0 10 6" width="10" height="6" fill="currentColor"
+                      style={{ transform: portfolioDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 150ms ease' }}
+                    >
+                      <path d="M0 0l5 6 5-6z" />
+                    </svg>
+                  </button>
+                </div>
+              </li>
+            ) : (
+              <li key={item.path} className={styles.tabItem}>
                 <Link
                   to={item.path}
+                  className={`${styles.tab} ${isActive(item.path) ? styles.active : ''}`}
                   aria-current={isActive(item.path) ? 'page' : undefined}
-                  className={styles.tabLink}
                 >
                   {item.label}
                 </Link>
-                <button
-                  className={styles.dropdownToggle}
-                  onClick={() => setPortfolioDropdownOpen(v => !v)}
-                  aria-label="Portfolios submenu"
-                  aria-expanded={portfolioDropdownOpen}
-                  aria-haspopup="menu"
-                >
-                  <svg
-                    viewBox="0 0 10 6"
-                    width="10"
-                    height="6"
-                    fill="currentColor"
-                    style={{ transform: portfolioDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 150ms ease' }}
-                  >
-                    <path d="M0 0l5 6 5-6z" />
-                  </svg>
-                </button>
-              </div>
-            </li>
-          ) : (
-            <li key={item.path} className={styles.tabItem}>
-              <Link
-                to={item.path}
-                className={`${styles.tab} ${isActive(item.path) ? styles.active : ''}`}
-                aria-current={isActive(item.path) ? 'page' : undefined}
-              >
-                {item.label}
-              </Link>
-            </li>
-          )
-        )}
-      </ul>
+              </li>
+            )
+          )}
+        </ul>
 
-      {/* Dropdown rendered via portal so it's never clipped */}
+        {/* Right actions */}
+        <div className={styles.actions}>
+          <Link to="/search" className={styles.searchBtn} aria-label="Search">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </Link>
+          <button
+            className={styles.mobileMenuBtn}
+            onClick={() => setMobileNavOpen(v => !v)}
+            aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileNavOpen}
+          >
+            {mobileNavOpen ? (
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+              </svg>
+            )}
+          </button>
+        </div>
+
+      </nav>
+
+      {/* Portfolio dropdown */}
       {portfolioDropdownOpen && createPortal(
         <div
           ref={dropdownRef}
@@ -144,7 +158,6 @@ export default function NavTabs() {
           role="menu"
           style={{ top: dropdownPos.top, left: dropdownPos.left }}
         >
-          {/* Left panel */}
           <div className={styles.portfolioDropdownLeft}>
             <button
               className={styles.portfolioDropdownTitle}
@@ -162,11 +175,7 @@ export default function NavTabs() {
               See All ›
             </button>
           </div>
-
-          {/* Divider */}
           <div className={styles.portfolioDropdownDivider} aria-hidden="true" />
-
-          {/* Right panel — sub-items */}
           <ul className={styles.portfolioDropdownRight} role="none">
             {PORTFOLIO_ITEMS.map(item => (
               <li key={item.label} role="none">
@@ -184,28 +193,9 @@ export default function NavTabs() {
         document.body
       )}
 
-      {/* Mobile hamburger */}
-      <button
-        className={styles.mobileMenuBtn}
-        onClick={() => setMobileNavOpen(v => !v)}
-        aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
-        aria-expanded={mobileNavOpen}
-        aria-controls="mobile-nav-drawer"
-      >
-        {mobileNavOpen ? (
-          <img src="/src/assets/icons/icon-close.svg" alt="" width={20} height={20} />
-        ) : (
-          <img src="/src/assets/icons/icon-menu.svg" alt="" width={20} height={20} />
-        )}
-      </button>
-
       {/* Mobile backdrop */}
       {mobileNavOpen && (
-        <div
-          className={styles.backdrop}
-          onClick={() => setMobileNavOpen(false)}
-          aria-hidden="true"
-        />
+        <div className={styles.backdrop} onClick={() => setMobileNavOpen(false)} aria-hidden="true" />
       )}
 
       {/* Mobile drawer */}
@@ -217,17 +207,11 @@ export default function NavTabs() {
         aria-modal="true"
       >
         <div className={styles.drawerHeader}>
-          <img
-            src="/src/assets/icons/aep-logo.svg"
-            alt="American Electric Power"
-            height={28}
-          />
-          <button
-            className={styles.drawerClose}
-            onClick={() => setMobileNavOpen(false)}
-            aria-label="Close navigation menu"
-          >
-            <img src="/src/assets/icons/icon-close.svg" alt="" width={20} height={20} />
+          <img src={aepLogo} alt="American Electric Power" height={32} />
+          <button className={styles.drawerClose} onClick={() => setMobileNavOpen(false)} aria-label="Close menu">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
           </button>
         </div>
         <ul className={styles.drawerList}>
@@ -243,6 +227,6 @@ export default function NavTabs() {
           ))}
         </ul>
       </div>
-    </nav>
+    </div>
   )
 }
