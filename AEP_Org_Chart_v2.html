@@ -30,34 +30,35 @@
 
     body {
       font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
-      background: #f0f2f5;
+      background: #ffffff;
       min-height: 100vh;
-      padding: 1.8rem 1rem 3.5rem;
-      color: #1f2328;
+      padding: 2rem 1.2rem 4rem;
+      color: #1c1b1f;
     }
 
-    h1 { text-align: center; font-size: 1.55rem; font-weight: 700; color: #1f2328; margin-bottom: 0.3rem; }
-    .subtitle { text-align: center; font-size: 0.78rem; color: #9ca3af; margin-bottom: 0.75rem; margin-top: 0.6rem; }
+    h1 { text-align: center; font-size: 1.65rem; font-weight: 800; color: #1c1b1f; margin-bottom: 0.25rem; letter-spacing: -0.03em; }
+    .subtitle { text-align: center; font-size: 0.8rem; color: #6e6977; margin-bottom: 1rem; margin-top: 0.5rem; }
 
     /* ── Controls ── */
     .controls-bar {
-      display: flex; justify-content: center; align-items: center; gap: 0.65rem;
-      margin-bottom: 1.4rem; flex-wrap: wrap;
+      display: flex; justify-content: center; align-items: center; gap: 0.6rem;
+      margin-bottom: 1.8rem; flex-wrap: wrap;
     }
     .ctrl-btn {
-      display: inline-flex; align-items: center; gap: 0.38rem;
-      font-size: 0.8rem; font-weight: 600; line-height: 1;
-      padding: 0.42rem 1.1rem;
-      border: none; border-radius: 20px;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 600; line-height: 1;
+      padding: 0.48rem 1.2rem;
+      border: none; border-radius: 999px;
       cursor: pointer; outline: none;
       transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
       white-space: nowrap;
+      letter-spacing: 0.01em;
     }
-    .ctrl-btn:hover  { filter: brightness(1.08); box-shadow: 0 3px 8px rgba(0,0,0,0.16); }
+    .ctrl-btn:hover  { filter: brightness(1.06); box-shadow: 0 4px 12px rgba(0,0,0,0.14); }
     .ctrl-btn:active { transform: scale(0.97); filter: brightness(0.96); box-shadow: none; }
-    #btnTogDet  { background: linear-gradient(135deg,#3b6bc8,#5b8de8); color: #fff; }
-    #btnColTeams { background: linear-gradient(135deg,#7c5cd8,#a07cf0); color: #fff; }
+    #btnTogDet   { background: #c8102e; color: #fff; }
+    #btnColTeams { background: #1c1b1f; color: #fff; }
     .ctrl-btn svg { flex-shrink: 0; }
 
     /* ── Vertical tree wrapper ── */
@@ -69,12 +70,13 @@
 
     /* ── Root card (Venkata) ── */
     .card-root {
-      width: 23rem; background: #fff;
-      border: 2px solid #1f2328; border-radius: 0.85rem;
-      padding: 1.3rem 1.5rem; position: relative;
+      width: 24rem; background: #fff;
+      border: 2px solid #c8102e; border-radius: 1rem;
+      padding: 1.4rem 1.6rem; position: relative;
+      box-shadow: 0 4px 20px rgba(200,16,46,0.12), 0 1px 4px rgba(0,0,0,0.06);
     }
-    .root-name { font-size: 1.35rem; font-weight: 700; color: #1f2328; margin-bottom: 0.22rem; }
-    .root-role { font-size: 1.05rem; font-weight: 600; color: #57606a; margin-bottom: 0.3rem; }
+    .root-name { font-size: 1.4rem; font-weight: 800; color: #1c1b1f; margin-bottom: 0.22rem; letter-spacing: -0.02em; }
+    .root-role { font-size: 1.0rem; font-weight: 600; color: #6e6977; margin-bottom: 0.3rem; }
 
     /* ── Connector line ── */
     .conn { width: 2px; background: #c8cdd5; margin: 0 auto; }
@@ -121,19 +123,24 @@
       flex-shrink: 0; align-self: flex-start;
       transition: opacity 0.25s ease, filter 0.25s ease;
     }
-    /* Dim all non-active leader blocks when a panel is open */
-    .band-dimmed .leader-block {
+    /* Dim all non-active leader blocks when a TEAM (not DPE) panel is open */
+    .band-dimmed:not(.dpe-active) .leader-block {
       opacity: 0.35;
       filter: blur(1.5px);
     }
-    .band-dimmed .leader-block.team-expanded {
+    .band-dimmed:not(.dpe-active) .leader-block.team-expanded {
+      opacity: 1;
+      filter: none;
+    }
+    /* When DPE panel is open, show all leaders at full opacity — no dimming */
+    .band-dimmed.dpe-active .leader-block {
       opacity: 1;
       filter: none;
     }
     /* Highlight the active leader */
     .leader-block.team-expanded > .pg-members > .card-leader {
-      box-shadow: 0 0 0 3px #3b6bc8, 0 6px 20px rgba(59,107,200,0.22);
-      border-color: #3b6bc8 !important;
+      box-shadow: 0 0 0 3px #c8102e, 0 6px 20px rgba(200,16,46,0.18);
+      border-color: #c8102e !important;
       transform: translateY(-2px);
     }
     .leader-block.team-expanded > .pg-members > .card-leader.style-pmo {
@@ -167,17 +174,18 @@
 
     /* ── Leader card — uniform size across all leaders ── */
     .card-leader {
-      width: 19rem; min-height: 8.8rem; background: #fff;
-      border: 1.5px solid #e5e7eb; border-radius: 0.7rem;
-      padding: 0.9rem 1.05rem; user-select: none;
-      transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s; position: relative;
+      width: 19rem; min-height: 9rem; background: #fff;
+      border: 1.5px solid #e8eaed; border-radius: 14px;
+      padding: 1rem 1.1rem; user-select: none;
+      transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s; position: relative;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.05);
     }
-    .card-leader:hover  { box-shadow: 0 3px 14px rgba(0,0,0,0.09); border-color: #b0b8c8; }
-    .card-leader.style-leadership { border-left: 4px solid #3b6bc8; background: linear-gradient(135deg,#f0f4ff,#fff); }
+    .card-leader:hover  { box-shadow: 0 4px 16px rgba(0,0,0,0.10); border-color: #c8cdd5; transform: translateY(-1px); }
+    .card-leader.style-leadership { border-left: 4px solid #c8102e; background: linear-gradient(135deg,#fff5f5,#fff); }
     .card-leader.style-pmo        { border-left: 4px solid #854d0e; background: linear-gradient(135deg,#fefce8,#fff); }
     .card-leader.style-solution   { border-left: 4px solid #7c5cd8; background: linear-gradient(135deg,#f5f0ff,#fff); }
-    .card-leader.style-dpe      { border-left: 4px solid #166534; background: linear-gradient(135deg,#f0fdf4,#fff); }
-    .card-leader.style-strategy { border-left: 4px solid #0891b2; background: linear-gradient(135deg,#ecfeff,#fff); }
+    .card-leader.style-dpe        { border-left: 4px solid #166534; background: linear-gradient(135deg,#f0fdf4,#fff); }
+    .card-leader.style-strategy   { border-left: 4px solid #0891b2; background: linear-gradient(135deg,#ecfeff,#fff); }
     /* DPE panel — styled window matching team panels */
     .dpe-panel {
       overflow: hidden;
@@ -211,12 +219,13 @@
 
     /* ── Member card (inside team panels) ── */
     .card-member {
-      width: 17rem; min-height: 7.6rem; background: #fff;
-      border: 1.5px solid #e5e7eb; border-radius: 0.65rem;
-      padding: 0.82rem 0.95rem; user-select: none;
+      width: 17rem; min-height: 7.8rem; background: #fff;
+      border: 1.5px solid #e8eaed; border-radius: 12px;
+      padding: 0.85rem 1rem; user-select: none;
       transition: box-shadow 0.15s, border-color 0.15s; position: relative;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
-    .card-member:hover  { box-shadow: 0 3px 10px rgba(0,0,0,0.08); border-color: #b0b8c8; }
+    .card-member:hover  { box-shadow: 0 3px 12px rgba(0,0,0,0.09); border-color: #c8cdd5; }
     /* Role-based accents (onshore/offshore/program within a team) */
     .card-member.style-onshore  { border-left: 4px solid #1d4ed8; background: linear-gradient(135deg,#eff6ff,#fff); }
     .card-member.style-offshore { border-left: 4px solid #0891b2; background: linear-gradient(135deg,#ecfeff,#fff); }
@@ -377,7 +386,8 @@
     /* Label above the panel showing whose team it is */
     .panel-owner-label {
       text-align: center; font-size: 0.72rem; font-weight: 700;
-      color: #57606a; padding: 0.55rem 0 0; letter-spacing: 0.3px;
+      color: #6e6977; padding: 0.55rem 0 0; letter-spacing: 0.4px;
+      text-transform: uppercase;
     }
 
     /* Inner panel: Portfolio | Programs side by side, centred */
@@ -450,9 +460,9 @@
 
     /* ── Footer ── */
     footer {
-      text-align: center; margin-top: 2.5rem; font-size: 0.82rem; color: #9ca3af;
-      border-top: 1px solid #e5e7eb; padding-top: 1rem;
-      max-width: 900px; margin-left: auto; margin-right: auto;
+      text-align: center; margin-top: 2.5rem; font-size: 0.78rem; color: #9ca3af;
+      border-top: 1px solid #f0f0f2; padding-top: 1rem;
+      max-width: 960px; margin-left: auto; margin-right: auto;
     }
   </style>
 </head>
@@ -1079,8 +1089,11 @@ Made with IBM Bob<img src="data:image/webp;base64,UklGRjIsAABXRUJQVlA4TCUsAAAv/8
       });
       document.querySelectorAll(".team-btn").forEach(b => { b.innerHTML = "&#9660; Show team"; });
       document.querySelectorAll(".dpe-btn").forEach(b => { b.innerHTML = "&#9660; Show DPEs"; });
-      // Remove dim from band
-      document.querySelectorAll(".band").forEach(b => b.classList.remove("band-dimmed"));
+      // Remove dim and dpe-active from band
+      document.querySelectorAll(".band").forEach(b => {
+        b.classList.remove("band-dimmed");
+        b.classList.remove("dpe-active");
+      });
     }
 
     // ─────────────────────────────────────────────
@@ -1118,7 +1131,7 @@ Made with IBM Bob<img src="data:image/webp;base64,UklGRjIsAABXRUJQVlA4TCUsAAAv/8
         });
       });
 
-      // DPE button — same one-at-a-time behaviour
+      // DPE button — opens DPE panel WITHOUT dimming other leaders
       document.querySelectorAll(".dpe-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const key = btn.dataset.tkey; // "6"
@@ -1131,9 +1144,11 @@ Made with IBM Bob<img src="data:image/webp;base64,UklGRjIsAABXRUJQVlA4TCUsAAAv/8
             const lb = document.getElementById("lb_" + key);
             if (lb) lb.classList.add("team-expanded");
             btn.innerHTML = "&#9650; Hide DPEs";
-            // Dim all other leader blocks
-            document.querySelectorAll(".band").forEach(b => b.classList.add("band-dimmed"));
-          } else {
+            // Mark band as dpe-active so CSS knows NOT to dim other leaders
+            document.querySelectorAll(".band").forEach(b => {
+              b.classList.add("band-dimmed");
+              b.classList.add("dpe-active");
+            });
           }
         });
       });
@@ -1260,6 +1275,10 @@ Made with IBM Bob<img src="data:image/webp;base64,UklGRjIsAABXRUJQVlA4TCUsAAAv/8
     // ─────────────────────────────────────────────
     people.forEach(p => { detHidden[p.id] = true; });
     render();
+
+    // After render, mark DPE panel button label and add dpe-active so leaders aren't dimmed
+    document.querySelectorAll(".dpe-btn").forEach(b => { b.innerHTML = "&#9650; Hide DPEs"; });
+    document.querySelectorAll(".band").forEach(b => b.classList.add("dpe-active"));
   </script>
 </body>
 </html>
