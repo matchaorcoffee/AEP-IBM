@@ -1,116 +1,254 @@
-.page { min-height: calc(100vh - var(--header-total-height)); }
+// ── Page shell ────────────────────────────────────────────────────────────────
+.page {
+  min-height: calc(100vh - var(--header-total-height));
+  background: var(--color-page-bg);
+}
 
-// ── Hero banner ───────────────────────────────────────────────────────────────
-
+// ── Hero ─────────────────────────────────────────────────────────────────────
 .hero {
-  height: 320px;
+  width: 100%;
+  height: 520px;
+  position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .heroImg {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
-// ── Title block ───────────────────────────────────────────────────────────────
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 15, 26, 0.65) 0%,
+    rgba(200, 16, 46, 0.35) 100%
+  );
+  z-index: 1;
+}
 
-.titleBlock {
-  background: #fff;
+.heroContent {
+  position: relative;
+  z-index: 2;
   text-align: center;
-  padding: var(--spacing-10) var(--spacing-09);
+  padding: 0 var(--spacing-07);
+  max-width: 760px;
 }
 
-.pageTitle {
-  font-size: clamp(var(--font-size-h2), 6vw, 64px);
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-full);
+  padding: 5px 14px;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  margin: 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--spacing-05);
+  backdrop-filter: blur(8px);
 }
 
-// ── Country grid ──────────────────────────────────────────────────────────────
+.heroHeading {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: var(--spacing-05);
+}
 
-.content {
+.heroSub {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+// ── Intro section ─────────────────────────────────────────────────────────────
+.intro {
+  background: var(--color-section-alt);
+  padding: var(--spacing-11) 0 var(--spacing-10);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.introInner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-07);
+  text-align: center;
+}
+
+.introLabel {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-05);
+}
+
+.introHeading {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-05);
+}
+
+.introSub {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+// ── Cards section ─────────────────────────────────────────────────────────────
+.cardsSection {
+  background: var(--color-page-bg);
+  padding: var(--spacing-10) 0 var(--spacing-12);
+}
+
+.cardsInner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-07) var(--spacing-09) var(--spacing-10);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-08);
+  padding: 0 var(--spacing-07);
 }
 
-.row3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-06);
-}
-
-.row4 {
+// ── Grid ──────────────────────────────────────────────────────────────────────
+.grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-06);
+  gap: 20px;
 }
 
-.countryCard {
+// ── Card ──────────────────────────────────────────────────────────────────────
+.card {
+  position: relative;
+  display: block;
+  height: 240px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+    text-decoration: none;
+
+    .cardImg img { transform: scale(1.07); }
+    .cardOverlay {
+      background: linear-gradient(
+        135deg,
+        rgba(15, 15, 26, 0.80) 0%,
+        rgba(200, 16, 46, 0.58) 100%
+      );
+    }
+    .cardCta { opacity: 1; transform: translateY(0); }
+  }
+}
+
+.cardImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 350ms ease;
+  }
+}
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 15, 26, 0.55) 0%,
+    rgba(200, 16, 46, 0.30) 100%
+  );
+  transition: background var(--transition-medium);
+  z-index: 1;
+}
+
+.cardBody {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-05);
-  text-decoration: none;
-
-  &:hover .countryImg {
-    opacity: 0.85;
-  }
-
-  &:hover .countryLabel {
-    text-decoration: underline;
-  }
-}
-
-.imgWrapper {
-  width: 100%;
-  height: 260px;
-  overflow: hidden;
-  background: var(--color-border);
-}
-
-.countryImg {
-  width: 100%;
+  justify-content: center;
   height: 100%;
-  object-fit: cover;
-  display: block;
+  padding: var(--spacing-06);
+  text-align: center;
+  gap: var(--spacing-03);
 }
 
-.countryLabel {
-  font-size: var(--font-size-h3);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-brand-blue);
+.cardLabel {
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-bold);
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+.cardCta {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: rgba(255, 255, 255, 0.88);
   letter-spacing: 0.02em;
-  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--transition-medium), transform var(--transition-medium);
 }
 
 // ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
 
 @media (max-width: 768px) {
-  .hero {
-    height: 200px;
-  }
-
-  .row3,
-  .row4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .hero { height: 400px; }
+  .heroHeading { font-size: var(--font-size-h1); }
+  .heroSub { font-size: var(--font-size-base); }
+  .heroContent { padding: 0 var(--spacing-05); }
+  .introInner { padding: 0 var(--spacing-05); }
+  .cardsInner { padding: 0 var(--spacing-05); }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .card { height: 200px; }
+  .intro { padding: var(--spacing-10) 0 var(--spacing-09); }
 }
 
 @media (max-width: 480px) {
-  .content {
-    padding-left: var(--spacing-06);
-    padding-right: var(--spacing-06);
-  }
-
-  .row3,
-  .row4 {
-    grid-template-columns: 1fr;
-  }
+  .hero { height: 340px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .card { height: 180px; }
 }
