@@ -1,10 +1,11 @@
 // ── Page shell ────────────────────────────────────────────────────────────────
 .page {
   min-height: calc(100vh - var(--header-total-height));
-  background: var(--color-page-bg);
+  background: #f4f6fb;
+  font-family: var(--font-family);
 }
 
-// ── Hero — full-width image + overlay, identical to homepage ──────────────────
+// ── Hero — full-width image + overlay ────────────────────────────────────────
 .hero {
   width: 100%;
   height: 520px;
@@ -78,88 +79,169 @@
   margin: 0 auto;
 }
 
-// ── Intro section ─────────────────────────────────────────────────────────────
-.intro {
-  background: var(--color-section-alt);
-  padding: var(--spacing-11) 0 var(--spacing-10);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.introInner {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-07);
-  text-align: center;
-}
-
-.introLabel {
-  display: inline-flex;
-  align-items: center;
-  background: var(--color-accent-subtle);
-  color: var(--color-accent);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
+// ── Shared section heading ────────────────────────────────────────────────────
+.sectionEyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 5px 14px;
-  border-radius: var(--radius-full);
-  margin-bottom: var(--spacing-05);
+  color: var(--color-accent);
+  background: var(--color-accent-subtle);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
 }
 
-.introHeading {
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
+.sectionTitle {
+  font-size: clamp(1.75rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  color: #1c1b1f;
   letter-spacing: -0.025em;
   line-height: 1.15;
-  margin: 0 0 var(--spacing-05);
+  margin: 0 0 12px;
 }
 
-.introSub {
-  font-size: var(--font-size-h4);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-text-secondary);
-  line-height: 1.7;
-  max-width: 520px;
+.sectionSub {
+  font-size: 1rem;
+  color: #49454f;
+  line-height: 1.65;
+  max-width: 540px;
+  margin: 0;
+}
+
+// ── Highlights section ────────────────────────────────────────────────────────
+.highlights {
+  background: #fff;
+  padding: 72px 0 80px;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.highlightsInner {
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 40px;
+}
+
+.sectionHead {
+  text-align: center;
+  margin-bottom: 48px;
+
+  .sectionSub {
+    margin: 0 auto;
+  }
+}
+
+// ── MD3 tonal card grid ───────────────────────────────────────────────────────
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+// MD3 "secondary container" tonal surface — matches designprompts.dev lavender cards
+.card {
+  background: #ede7f6;          // M3 secondary container tint
+  border-radius: 20px;
+  padding: 32px 28px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: box-shadow 200ms ease, transform 200ms ease;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(103, 58, 183, 0.14), 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+  }
+}
+
+.cardIcon {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    color: #4a148c;
+    stroke: #4a148c;
+  }
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1c1b1f;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.cardDesc {
+  font-size: 0.9rem;
+  color: #49454f;
+  line-height: 1.65;
+  margin: 0;
 }
 
 // ── Org chart section ─────────────────────────────────────────────────────────
 .chartSection {
-  background: var(--color-page-bg);
-  padding: var(--spacing-09) 0 var(--spacing-12);
+  background: #f4f6fb;
+  padding: 64px 0 80px;
 }
 
 .chartInner {
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 var(--spacing-07);
+  padding: 0 40px;
+}
+
+.chartHead {
+  text-align: center;
+  margin-bottom: 40px;
+
+  .sectionSub {
+    margin: 0 auto;
+  }
 }
 
 .orgChartFrame {
   width: 100%;
-  height: 85vh;
-  min-height: 640px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  height: 88vh;
+  min-height: 700px;
+  border: 1px solid #e8eaed;
+  border-radius: 20px;
   display: block;
   background: #fff;
-  box-shadow: var(--shadow-card);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.07);
 }
 
 // ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 1024px) {
+  .cardsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 768px) {
   .hero { height: 400px; }
   .heroHeading { font-size: var(--font-size-h1); }
   .heroSub { font-size: var(--font-size-base); }
   .heroContent { padding: 0 var(--spacing-05); }
-  .introInner { padding: 0 var(--spacing-05); }
-  .chartInner { padding: 0 var(--spacing-05); }
-  .intro { padding: var(--spacing-10) 0 var(--spacing-09); }
-  .orgChartFrame { min-height: 500px; border-radius: var(--radius-md); }
+  .highlightsInner { padding: 0 24px; }
+  .chartInner { padding: 0 24px; }
+  .highlights { padding: 48px 0 56px; }
+  .cardsGrid { grid-template-columns: 1fr; gap: 16px; }
+  .orgChartFrame { min-height: 560px; border-radius: 16px; }
 }
 
 @media (max-width: 480px) {
   .hero { height: 320px; }
-  .chartInner { padding: 0 var(--spacing-04); }
+  .highlightsInner { padding: 0 16px; }
+  .chartInner { padding: 0 16px; }
 }
