@@ -29,7 +29,8 @@ const sections = [
   {
     id: 'avg-fulfillment',
     label: 'Average Fulfillment Time (last 6 months)',
-    description: 'In days\n\nThis chart offers a comprehensive view of fulfillment times and lead times by projects, empowering leadership to make informed decisions regarding project management and resource allocation.',
+    description: 'This chart offers a comprehensive view of fulfillment times and lead times by projects, empowering leadership to make informed decisions regarding project management and resource allocation.',
+    subLabel: 'In days',
     chartSide: 'right',
   },
   {
@@ -64,18 +65,26 @@ export default function ProjectsPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
-      <img src={projectsImg} alt="Projects" className={styles.image} />
+      {/* Hero */}
+      <div className={styles.hero}>
+        <img src={projectsImg} alt="Projects" className={styles.heroImg} />
+      </div>
 
-      {/* Centered title block */}
+      {/* Title overlaid at bottom of hero */}
       <div className={styles.titleBlock}>
         <h1 className={styles.pageTitle}>Projects</h1>
       </div>
 
-      {/* Navigation links */}
+      {/* Sticky pill nav */}
       <nav className={styles.navBar}>
         {sections.map(s => (
-          <button key={s.id} className={styles.navLink} onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' })}>{s.label}</button>
+          <button
+            key={s.id}
+            className={styles.navLink}
+            onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            {s.label}
+          </button>
         ))}
       </nav>
 
@@ -88,11 +97,17 @@ export default function ProjectsPage() {
               {/* Text side */}
               <div className={styles.textSide}>
                 <h2 className={styles.sectionTitle}>{s.label}</h2>
-                {s.description.split('\n\n').map((para, i) => (
-                  <p key={i} className={i === 0 && s.id === 'avg-fulfillment' ? styles.subLabel : styles.sectionDesc}>{para}</p>
-                ))}
+                {'subLabel' in s && s.subLabel && (
+                  <p className={styles.subLabel}>{s.subLabel}</p>
+                )}
+                <p className={styles.sectionDesc}>{s.description}</p>
                 <p className={styles.lastUpdate}>{LAST_UPDATE}</p>
-                <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
+                <button
+                  className={styles.backToTop}
+                  onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Back to top
+                </button>
               </div>
 
               {/* Chart placeholder */}

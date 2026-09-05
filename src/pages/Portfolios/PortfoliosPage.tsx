@@ -98,19 +98,20 @@ export default function PortfoliosPage() {
           </div>
           <div className={styles.grid}>
             {SUB_ITEMS.map(item => (
-              <Link key={item.path} to={item.path} className={styles.card}>
-                <div className={styles.cardImg}>
-                  <img src={item.img} alt={item.label} />
-                </div>
-                <div className={styles.cardBody}>
-                  <span className={styles.cardLabel}>{item.label}</span>
-                  <span className={styles.cardDesc}>{item.desc}</span>
-                </div>
-                <svg className={styles.cardArrow} viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 8h10M9 4l4 4-4 4"/>
-                </svg>
-              </Link>
-            ))}
+                <Link key={item.path} to={item.path} className={styles.card}>
+                  <div className={styles.cardImg}>
+                    <img src={item.img} alt={item.label} />
+                  </div>
+                  <div className={styles.cardOverlay} aria-hidden="true" />
+                  <div className={styles.cardBody}>
+                    <span className={styles.cardLabel}>{item.label}</span>
+                    <span className={styles.cardDesc}>{item.desc}</span>
+                  </div>
+                  <svg className={styles.cardArrow} viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 8h10M9 4l4 4-4 4"/>
+                  </svg>
+                </Link>
+              ))}
           </div>
         </div>
       </section>

@@ -112,40 +112,35 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 20px;
 }
 
 /* ── Card ──────────────────────────────────────────────────────────────── */
 .card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  position: relative;
+  display: block;
+  height: 200px;
   border-radius: 12px;
-  padding: 14px 16px 14px 14px;
-  text-decoration: none;
-  transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
   overflow: hidden;
+  text-decoration: none;
+  transition: transform 200ms ease, box-shadow 200ms ease;
 
   &:hover {
-    border-color: #c8102e;
-    box-shadow: 0 4px 16px rgba(200, 16, 46, 0.10);
-    background: #fff5f5;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
     text-decoration: none;
 
-    .cardArrow { opacity: 1; transform: translateX(0); color: #c8102e; }
     .cardImg img { transform: scale(1.06); }
+    .cardOverlay { background: linear-gradient(135deg, rgba(15, 15, 26, 0.78) 0%, rgba(200, 16, 46, 0.55) 100%); }
+    .cardArrow { opacity: 1; transform: translate(2px, -2px); }
   }
 }
 
 .cardImg {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: #f0edf8;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 
   img {
     width: 100%;
@@ -156,39 +151,51 @@
   }
 }
 
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(15, 15, 26, 0.65) 0%, rgba(200, 16, 46, 0.38) 100%);
+  transition: background 200ms ease;
+  z-index: 1;
+}
+
 .cardBody {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  flex: 1;
-  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  gap: 6px;
 }
 
 .cardLabel {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .cardDesc {
-  font-size: 0.8125rem;
-  color: #777;
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.45;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 .cardArrow {
-  flex-shrink: 0;
-  color: #aaa;
-  opacity: 0.5;
-  transform: translateX(-4px);
-  transition: opacity 150ms ease, transform 150ms ease, color 150ms ease;
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0.7;
+  transition: opacity 150ms ease, transform 150ms ease;
 }
 
 /* ── Responsive ────────────────────────────────────────────────────────── */
