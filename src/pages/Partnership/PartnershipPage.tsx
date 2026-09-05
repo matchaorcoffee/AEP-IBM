@@ -76,6 +76,23 @@ export default function PartnershipPage() {
         </div>
       </div>
 
+      {/* ── Org chart section ─────────────────────────────────────────── */}
+      <section className={styles.chartSection}>
+        <div className={styles.chartHead}>
+          <span className={styles.sectionEyebrow}>Account Organisation</span>
+          <h2 className={styles.sectionTitle}>AEP Account Org Chart</h2>
+          <p className={styles.sectionSub}>
+            Explore the leadership structure and team organisation across the AEP–IBM engagement.
+          </p>
+        </div>
+        <iframe
+          src="AEP_Org_Chart_v2.html"
+          className={styles.orgChartFrame}
+          title="AEP Account Org Chart"
+          sandbox="allow-scripts allow-same-origin"
+        />
+      </section>
+
       {/* ── Highlights section ────────────────────────────────────────── */}
       <section className={styles.highlights}>
         <div className={styles.highlightsInner}>
@@ -96,23 +113,6 @@ export default function PartnershipPage() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* ── Org chart section ─────────────────────────────────────────── */}
-      <section className={styles.chartSection}>
-        <div className={styles.chartHead}>
-          <span className={styles.sectionEyebrow}>Account Organisation</span>
-          <h2 className={styles.sectionTitle}>AEP Account Org Chart</h2>
-          <p className={styles.sectionSub}>
-            Explore the leadership structure and team organisation across the AEP–IBM engagement.
-          </p>
-        </div>
-        <iframe
-          src="AEP_Org_Chart_v2.html"
-          className={styles.orgChartFrame}
-          title="AEP Account Org Chart"
-          sandbox="allow-scripts allow-same-origin"
-        />
       </section>
 
     </div>
