@@ -5,49 +5,78 @@
   font-family: var(--font-family);
 }
 
-// ── Top header bar ────────────────────────────────────────────────────────────
-// Material Design 3 "large top app bar" style — clean white, left-aligned,
-// generous padding, no image. Matches the designprompts.dev heading style.
-.topBar {
-  background: #fff;
-  border-bottom: 1px solid #e8eaed;
-  padding: 56px 0 48px;
+// ── Hero — full-width image with overlay, identical to homepage ───────────────
+.hero {
+  width: 100%;
+  height: 520px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.topBarInner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
+.heroImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
-.topBarEyebrow {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 15, 26, 0.65) 0%,
+    rgba(200, 16, 46, 0.35) 100%
+  );
+  z-index: 1;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 var(--spacing-07);
+  max-width: 760px;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-full);
+  padding: 5px 14px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-accent);
-  background: var(--color-accent-subtle);
-  padding: 4px 12px;
-  border-radius: 999px;
-  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--spacing-05);
+  backdrop-filter: blur(8px);
 }
 
-.topBarTitle {
-  font-size: clamp(2.4rem, 5vw, 3.75rem);
-  font-weight: 700;
-  color: #1c1b1f;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin: 0 0 16px;
+.heroHeading {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: var(--spacing-05);
 }
 
-.topBarSub {
-  font-size: 1rem;
-  color: #49454f;
-  line-height: 1.65;
-  max-width: 540px;
-  margin: 0;
+.heroSub {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto;
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -187,8 +216,10 @@
 }
 
 @media (max-width: 768px) {
-  .topBar { padding: 40px 0 36px; }
-  .topBarInner { padding: 0 24px; }
+  .hero { height: 400px; }
+  .heroHeading { font-size: var(--font-size-h1); }
+  .heroSub { font-size: var(--font-size-base); }
+  .heroContent { padding: 0 var(--spacing-05); }
   .inner { padding: 0 24px; }
   .main { padding: 36px 0 60px; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -196,7 +227,7 @@
 }
 
 @media (max-width: 480px) {
-  .topBarInner { padding: 0 16px; }
+  .hero { height: 320px; }
   .inner { padding: 0 16px; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .cardMedia { height: 120px; }

@@ -1,4 +1,5 @@
 import styles from './IbmHolidaysPage.module.scss'
+import holidaysImg    from './assets/Holidays.jpg'
 import brazilImg      from './assets/Brazil.png'
 import costaRicaImg   from './assets/CostaRica.png'
 import indiaImg       from './assets/India.png'
@@ -21,16 +22,18 @@ export default function IbmHolidaysPage() {
   return (
     <div className={styles.page}>
 
-      {/* ── Top header bar ────────────────────────────────────────────── */}
-      <header className={styles.topBar}>
-        <div className={styles.topBarInner}>
-          <span className={styles.topBarEyebrow}>IBM · AEP</span>
-          <h1 className={styles.topBarTitle}>IBM Holidays</h1>
-          <p className={styles.topBarSub}>
+      {/* ── Hero ──────────────────────────────────────────────────────── */}
+      <div className={styles.hero}>
+        <img src={holidaysImg} alt="IBM Holidays" className={styles.heroImg} />
+        <div className={styles.heroOverlay} aria-hidden="true" />
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.heroHeading}>IBM Holidays</h1>
+          <p className={styles.heroSub}>
             Public holiday calendars for every IBM AEP country location — all in one place.
           </p>
         </div>
-      </header>
+      </div>
 
       {/* ── Main content ──────────────────────────────────────────────── */}
       <main className={styles.main}>
