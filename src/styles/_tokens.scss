@@ -8,12 +8,12 @@
   --header-total-height: 56px;
 
   // ─── Brand / Accent ───────────────────────────────────────────────────────
-  --color-accent:           #6929c4;
-  --color-accent-dark:      #491d8b;
-  --color-accent-light:     #8a3ffc;
-  --color-accent-subtle:    #f3eeff;
-  --color-active-tab:       #6929c4;
-  --color-active-tab-dark:  #491d8b;
+  --color-accent:           #c8102e;
+  --color-accent-dark:      #9e0b22;
+  --color-accent-light:     #e8324a;
+  --color-accent-subtle:    #fff0f1;
+  --color-active-tab:       #c8102e;
+  --color-active-tab-dark:  #9e0b22;
   --color-brand-blue:       #0f62fe;
   --color-brand-blue-dark:  #0043ce;
   --color-brand-navy:       #001d6c;
@@ -24,20 +24,20 @@
   --color-page-bg:          #f8f8fb;
   --color-card-bg:          #ffffff;
   --color-section-alt:      #ffffff;
-  --color-section-tinted:   #f3eeff;
+  --color-section-tinted:   #fff0f1;
 
   // ─── Text ─────────────────────────────────────────────────────────────────
   --color-text-primary:     #0f0f1a;
   --color-text-secondary:   #52525b;
   --color-text-muted:       #a1a1aa;
   --color-text-inverse:     #ffffff;
-  --color-text-link:        #6929c4;
+  --color-text-link:        #c8102e;
 
   // ─── Borders & UI ─────────────────────────────────────────────────────────
   --color-border:           #e4e4e7;
   --color-border-strong:    #d1d1d6;
   --color-hover:            #f4f4f6;
-  --color-focus:            #6929c4;
+  --color-focus:            #c8102e;
 
   // ─── Semantic ─────────────────────────────────────────────────────────────
   --color-success:          #16a34a;
@@ -50,15 +50,15 @@
   --color-tag-blue-text:    #1e40af;
   --color-tag-green-bg:     #dcfce7;
   --color-tag-green-text:   #166534;
-  --color-tag-purple-bg:    #f3e8ff;
-  --color-tag-purple-text:  #6b21a8;
+  --color-tag-purple-bg:    #fff0f1;
+  --color-tag-purple-text:  #9e0b22;
   --color-tag-gray-bg:      #f4f4f5;
   --color-tag-gray-text:    #52525b;
 
   // ─── Dark surface (footer) ────────────────────────────────────────────────
   --color-dark-bg:          #0f0f1a;
   --color-dark-text:        #a1a1aa;
-  --color-dark-link:        #a78bfa;
+  --color-dark-link:        #f87171;
   --color-dark-border:      #27272a;
   --color-aep-emblem:       #da1e28;
 
@@ -110,7 +110,7 @@
   --shadow-md:         0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
   --shadow-lg:         0 10px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
   --shadow-card:       0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
-  --shadow-card-hover: 0 8px 32px rgba(105,41,196,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-card-hover: 0 8px 32px rgba(200,16,46,0.12), 0 2px 8px rgba(0,0,0,0.06);
   --shadow-dropdown:   0 8px 24px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.05);
   --shadow-drawer:     4px 0 16px rgba(0,0,0,0.12);
 

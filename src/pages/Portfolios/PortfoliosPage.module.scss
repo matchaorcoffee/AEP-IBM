@@ -30,7 +30,7 @@
   background: linear-gradient(
     135deg,
     rgba(15, 15, 26, 0.68) 0%,
-    rgba(105, 41, 196, 0.38) 100%
+    rgba(200, 16, 46, 0.38) 100%
   );
   z-index: 1;
 }
@@ -129,12 +129,12 @@
   overflow: hidden;
 
   &:hover {
-    border-color: #6929c4;
-    box-shadow: 0 4px 16px rgba(105, 41, 196, 0.10);
-    background: #faf8ff;
+    border-color: #c8102e;
+    box-shadow: 0 4px 16px rgba(200, 16, 46, 0.10);
+    background: #fff5f5;
     text-decoration: none;
 
-    .cardArrow { opacity: 1; transform: translateX(0); color: #6929c4; }
+    .cardArrow { opacity: 1; transform: translateX(0); color: #c8102e; }
     .cardImg img { transform: scale(1.06); }
   }
 }

@@ -1,4 +1,4 @@
-﻿.page { min-height: calc(100vh - var(--header-total-height)); background: #fff; scroll-behavior: smooth; }
+.page { min-height: calc(100vh - var(--header-total-height)); background: #fff; scroll-behavior: smooth; }
 
 /* Hero */
 .hero { width: 100%; overflow: hidden; max-height: 280px; }
@@ -20,7 +20,7 @@
 .navLink {
   background: none; border: none; padding: 0; cursor: pointer;
   font-size: 0.875rem;
-  color: #3b4fc8;
+  color: #c8102e;
   text-decoration: none;
   line-height: 1.8;
   &:hover { text-decoration: underline; }
@@ -51,7 +51,7 @@
 .sectionDesc { font-size: 0.9375rem; color: #1f2328; line-height: 1.6; margin: 0; }
 .lastUpdate { font-size: 0.8125rem; color: #57606a; margin: 0.25rem 0 0; }
 .backToTop {
-  background: none; border: none; padding: 0; cursor: pointer; font-size: 0.8125rem; color: #3b4fc8; text-decoration: none; margin-top: 0.125rem; &:hover { text-decoration: underline; } }
+  background: none; border: none; padding: 0; cursor: pointer; font-size: 0.8125rem; color: #c8102e; text-decoration: none; margin-top: 0.125rem; &:hover { text-decoration: underline; } }
 
 /* Chart side */
 .chartSide { flex: 1; min-height: 220px; }
@@ -68,7 +68,7 @@
 .asset { width: 100%; display: block; }
 .video { width: 100%; display: block; }
 
-/* ── Highlights ─────────────────────────────────────────────────── */
+/* -- Highlights --------------------------------------------------- */
 .highlightsHeader {
   text-align: center;
   padding-bottom: 1.25rem;
@@ -150,7 +150,7 @@
 }
 .nicheItem {
   font-size: 0.875rem;
-  color: #3b4fc8;
+  color: #c8102e;
   text-align: center;
   line-height: 1.5;
 }
