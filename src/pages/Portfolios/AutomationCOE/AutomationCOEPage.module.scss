@@ -1,158 +1,317 @@
-.page { min-height: calc(100vh - var(--header-total-height)); background: #fff; scroll-behavior: smooth; }
+/* ── Page shell ──────────────────────────────────────────────────────────── */
+.page {
+  min-height: calc(100vh - var(--header-total-height));
+  background: #fff;
+  scroll-behavior: smooth;
+}
 
-/* Hero */
-.hero { width: 100%; overflow: hidden; max-height: 280px; }
-.heroImg { width: 100%; height: 280px; object-fit: cover; display: block; }
+/* ── Hero ──────────────────────────────────────────────────────────────────
+   The hero div wraps the plain <img>. We make it tall, add a gradient
+   overlay via ::after, and keep the image absolutely covering the box.   */
+.hero {
+  width: 100%;
+  height: 420px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-/* Centered title block */
-.titleBlock { text-align: center; padding: 2.5rem 2rem 1rem; }
-.pageTitle { font-size: 2rem; font-weight: 400; color: #1f2328; margin: 0; }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(15, 15, 26, 0.68) 0%,
+      rgba(200, 16, 46, 0.38) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+}
 
-/* Nav links */
+.heroImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ── Title block — sits at the bottom of the hero via negative margin ────── */
+.titleBlock {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: -120px;           /* pull up into hero */
+  padding: 0 2rem 2.5rem;
+  pointer-events: none;         /* clicks pass through to hero */
+}
+
+.pageTitle {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+}
+
+/* ── Sticky section nav bar ─────────────────────────────────────────────── */
 .navBar {
+  position: sticky;
+  top: var(--header-total-height);
+  z-index: 100;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.25rem 2.5rem;
-  padding: 0.75rem 3rem 1rem;
+  gap: 4px 6px;
+  padding: 12px 2rem;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid #e5e7eb;
-}
-.navLink {
-  background: none; border: none; padding: 0; cursor: pointer;
-  font-size: 0.875rem;
-  color: #c8102e;
-  text-decoration: none;
-  line-height: 1.8;
-  &:hover { text-decoration: underline; }
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
-/* Sections */
-.sections { padding: 0 3rem; }
+.navLink {
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 5px 14px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #444;
+  text-decoration: none;
+  line-height: 1.4;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+
+  &:hover {
+    background: #fff0f1;
+    border-color: #c8102e;
+    color: #c8102e;
+  }
+}
+
+/* ── Sections wrapper ──────────────────────────────────────────────────── */
+.sections {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
 
 .section {
-  padding: 2.5rem 0;
+  padding: 3rem 0;
   border-bottom: 1px solid #e5e7eb;
+
   &:last-child { border-bottom: none; }
 }
 
-/* Two-column row */
-.row { display: flex; align-items: flex-start; gap: 2.5rem; }
+/* ── Two-column chart row ──────────────────────────────────────────────── */
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
 .rowReverse { flex-direction: row-reverse; }
 
-/* Text side */
+/* ── Text side ─────────────────────────────────────────────────────────── */
 .textSide {
-  flex: 0 0 340px;
+  flex: 0 0 320px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.sectionTitle { font-size: 1.375rem; font-weight: 700; color: #1f2328; margin: 0 0 0.5rem; line-height: 1.3; }
-.subLabel { font-size: 0.9375rem; font-style: italic; color: #57606a; margin: 0; }
-.sectionDesc { font-size: 0.9375rem; color: #1f2328; line-height: 1.6; margin: 0; }
-.lastUpdate { font-size: 0.8125rem; color: #57606a; margin: 0.25rem 0 0; }
-.backToTop {
-  background: none; border: none; padding: 0; cursor: pointer; font-size: 0.8125rem; color: #c8102e; text-decoration: none; margin-top: 0.125rem; &:hover { text-decoration: underline; } }
 
-/* Chart side */
-.chartSide { flex: 1; min-height: 220px; }
-.chartPlaceholder {
-  width: 100%; height: 220px;
-  background: #f7f8fa;
-  border: 1px solid #e5e7eb;
-  display: flex; align-items: center; justify-content: center;
-  color: #57606a; font-size: 0.875rem;
-}
-
-/* Extra assets */
-.content { display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0 2rem; }
-.asset { width: 100%; display: block; }
-.video { width: 100%; display: block; }
-
-/* -- Highlights --------------------------------------------------- */
-.highlightsHeader {
-  text-align: center;
-  padding-bottom: 1.25rem;
-}
-.highlightsTitle {
-  font-size: 1.375rem;
+.sectionTitle {
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2328;
-  margin: 0 0 0.25rem;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
+}
+
+.subLabel {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #666;
+  margin: 0;
+}
+
+.sectionDesc {
+  font-size: 0.9375rem;
+  color: #444;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.lastUpdate {
+  font-size: 0.8rem;
+  color: #999;
+  margin: 0.25rem 0 0;
+}
+
+.backToTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #c8102e;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  transition: color 120ms ease;
+
+  &:hover { text-decoration: underline; }
+}
+
+/* ── Chart side ─────────────────────────────────────────────────────────── */
+.chartSide {
+  flex: 1;
+  min-height: 240px;
+}
+
+.chartPlaceholder {
+  width: 100%;
+  height: 240px;
+  background: #f8f8fb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Extra assets ──────────────────────────────────────────────────────── */
+.content { display: flex; flex-direction: column; gap: 1rem; padding: 1rem 0 2rem; }
+.asset   { width: 100%; display: block; }
+.video   { width: 100%; display: block; border-radius: 8px; }
+
+/* ── Highlights ─────────────────────────────────────────────────────────── */
+.highlightsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+}
+
+.highlightsTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
 }
 
 .highlightsGrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 0;
+  gap: 16px;
   align-items: stretch;
 }
 
-/* Dark red cards (left & right) */
+/* Dark red cards */
 .hlCardRed {
-  background: #8b0000;
+  background: #c8102e;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 }
+
 .hlCardContent {
   padding: 1.5rem;
   flex: 1;
 }
+
 .hlCardTitle {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 700;
   color: #fff;
   text-align: center;
   margin: 0 0 1rem;
+  letter-spacing: 0.01em;
 }
+
 .hlCardText {
   font-size: 0.8125rem;
-  color: #fff;
-  line-height: 1.6;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.65;
   margin: 0 0 0.75rem;
+
   &:last-child { margin-bottom: 0; }
 }
+
 .hlDivider {
   border: none;
-  border-top: 1px solid rgba(255,255,255,0.35);
-  margin: 1rem 0;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  margin: 0.875rem 0;
 }
+
 .hlCardImg {
   width: 100%;
   display: block;
   object-fit: cover;
-  max-height: 320px;
+  max-height: 280px;
 }
 
 /* Light grey center card */
 .hlCardGrey {
-  background: #f0f0f0;
+  background: #f8f8fb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .hlCardTitleDark {
-  font-size: 1rem;
-  font-weight: 400;
-  color: #1f2328;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1a1a1a;
   text-align: center;
   margin: 0 0 1.25rem;
 }
+
 .nicheList {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.625rem;
   width: 100%;
 }
+
 .nicheItem {
   font-size: 0.875rem;
   color: #c8102e;
   text-align: center;
   line-height: 1.5;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child { border-bottom: none; }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero { height: 340px; }
+  .titleBlock { margin-top: -90px; }
 }
 
 @media (max-width: 768px) {
@@ -160,4 +319,7 @@
   .row, .rowReverse { flex-direction: column; }
   .textSide { flex: none; width: 100%; }
   .highlightsGrid { grid-template-columns: 1fr; }
+  .navBar { position: static; }
+  .hero { height: 280px; }
+  .titleBlock { margin-top: -70px; }
 }
