@@ -9,7 +9,7 @@ const highlights = [
       </svg>
     ),
     title: 'Strategic Leadership',
-    desc: 'A dedicated team of IBM leaders aligned with AEP's business priorities, driving executive engagement and account governance.',
+    desc: "A dedicated team of IBM leaders aligned with AEP's business priorities, driving executive engagement and account governance.",
   },
   {
     icon: (
@@ -18,7 +18,7 @@ const highlights = [
       </svg>
     ),
     title: 'Innovation at Scale',
-    desc: 'Leveraging IBM's vast portfolio of AI, automation, and cloud technologies to propel groundbreaking advancements across AEP.',
+    desc: "Leveraging IBM's vast portfolio of AI, automation, and cloud technologies to propel groundbreaking advancements across AEP.",
   },
   {
     icon: (
