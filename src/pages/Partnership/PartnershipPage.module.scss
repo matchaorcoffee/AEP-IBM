@@ -191,8 +191,8 @@
 
 // ── Org chart section ─────────────────────────────────────────────────────────
 .chartSection {
-  background: #f4f6fb;
-  padding: 64px 0 80px;
+  background: #ffffff;
+  padding: 64px 0 0;
 }
 
 .chartInner {
@@ -204,6 +204,7 @@
 .chartHead {
   text-align: center;
   margin-bottom: 40px;
+  padding: 0 40px;
 
   .sectionSub {
     margin: 0 auto;
@@ -212,15 +213,12 @@
 
 .orgChartFrame {
   width: 100%;
-  height: 88vh;
-  min-height: 700px;
-  border: 1px solid #e8eaed;
-  border-radius: 20px;
+  height: 92vh;
+  min-height: 820px;
+  border: none;
+  border-top: 1px solid #f0f0f2;
   display: block;
   background: #fff;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.06),
-    0 4px 16px rgba(0, 0, 0, 0.07);
 }
 
 // ── Responsive ────────────────────────────────────────────────────────────────
@@ -234,14 +232,15 @@
   .heroSub { font-size: var(--font-size-base); }
   .heroContent { padding: 0 var(--spacing-05); }
   .highlightsInner { padding: 0 24px; }
-  .chartInner { padding: 0 24px; }
+  .chartInner { padding: 0 16px; }
   .highlights { padding: 48px 0 56px; }
   .cardsGrid { grid-template-columns: 1fr; gap: 16px; }
-  .orgChartFrame { min-height: 560px; border-radius: 16px; }
+  .orgChartFrame { min-height: 640px; }
 }
 
 @media (max-width: 480px) {
   .hero { height: 320px; }
   .highlightsInner { padding: 0 16px; }
-  .chartInner { padding: 0 16px; }
+  .chartInner { padding: 0 12px; }
+  .orgChartFrame { min-height: 560px; }
 }
