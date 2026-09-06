@@ -8,7 +8,7 @@
 // ── Hero — full-width image with overlay, identical to homepage ───────────────
 .hero {
   width: 100%;
-  height: 520px;
+  height: 380px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -62,7 +62,7 @@
 }
 
 .heroHeading {
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: var(--font-weight-bold);
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -71,7 +71,7 @@
 }
 
 .heroSub {
-  font-size: var(--font-size-h4);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-regular);
   color: rgba(255, 255, 255, 0.78);
   line-height: 1.6;
@@ -216,9 +216,9 @@
 }
 
 @media (max-width: 768px) {
-  .hero { height: 400px; }
-  .heroHeading { font-size: var(--font-size-h1); }
-  .heroSub { font-size: var(--font-size-base); }
+  .hero { height: 300px; }
+  .heroHeading { font-size: var(--font-size-h2); }
+  .heroSub { font-size: var(--font-size-sm); }
   .heroContent { padding: 0 var(--spacing-05); }
   .inner { padding: 0 24px; }
   .main { padding: 36px 0 60px; }
@@ -227,7 +227,7 @@
 }
 
 @media (max-width: 480px) {
-  .hero { height: 320px; }
+  .hero { height: 260px; }
   .inner { padding: 0 16px; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .cardMedia { height: 120px; }
