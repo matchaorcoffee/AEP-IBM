@@ -9,6 +9,9 @@
   z-index: 199;
   padding: 12px 24px;
   pointer-events: none;           // let clicks through to background
+  // Lock total height so zoom never shifts page content down
+  height: 84px;
+  box-sizing: border-box;
 }
 
 // ── The floating card itself
@@ -17,6 +20,8 @@
   max-width: 1100px;
   margin: 0 auto;
   height: 60px;
+  min-height: 60px;
+  max-height: 60px;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06);
@@ -24,7 +29,7 @@
   align-items: center;
   padding: 0 24px;
   gap: 0;
-  overflow: visible;
+  overflow: hidden;
 }
 
 // ── Logo
@@ -54,13 +59,17 @@
   flex: 1;
   justify-content: flex-start;
   gap: 2px;
-  overflow: visible;
+  overflow: hidden;       // never wraps regardless of zoom level
+  flex-wrap: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .tabItem {
   position: relative;
   display: flex;
   align-items: center;
+  flex-shrink: 0;         // items never compress or wrap
 }
 
 .tab {
@@ -68,7 +77,7 @@
   align-items: center;
   height: 100%;
   padding: 0 14px;
-  font-size: 14px;
+  font-size: 14px;        // px — intentionally not rem, stays fixed under zoom
   font-weight: 500;
   color: #333;
   text-decoration: none;
