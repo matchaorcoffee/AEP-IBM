@@ -1,20 +1,21 @@
-// ─── Page wrapper ────────────────────────────────────────────────────────────
+// ── Page shell ────────────────────────────────────────────────────────────────
 .page {
   min-height: calc(100vh - var(--header-total-height));
-  background: #fff;
+  background: var(--color-page-bg);
 }
 
-// ─── Full-width video banner ──────────────────────────────────────────────────
-.videoBanner {
+// ── Hero — identical to homepage Hero ─────────────────────────────────────────
+.hero {
   width: 100%;
-  height: 380px;
+  height: 560px;
   position: relative;
   overflow: hidden;
-  background: #000;
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.bannerVideo {
+.heroVideo {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -23,131 +24,328 @@
   object-position: center;
 }
 
-// ─── Centered title ───────────────────────────────────────────────────────────
-.titleSection {
-  background: #fff;
-  padding: var(--spacing-06) var(--spacing-09) var(--spacing-03);
-  text-align: center;
-}
-
-.pageTitle {
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-  font-weight: var(--font-weight-light);
-  color: var(--color-text-primary);
-  letter-spacing: -0.5px;
-}
-
-// ─── Inset diagonal country strip ────────────────────────────────────────────
-.stripSection {
-  background: #fff;
-  padding: 0 var(--spacing-09);
-}
-
-.locationsTrack {
-  display: flex;
-  height: 200px;
-  margin: 0 -10px;
-
-  // collapse entirely when all slices have no background image loaded
-  &:empty { height: 0; }
-}
-
-.locationSlice {
-  position: relative;
-  flex: 1;
-  overflow: hidden;
-  clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
-  margin: 0 -3px;
-
-  &:first-child { clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 0% 100%); }
-  &:last-child  { clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%); }
-}
-
-.locationImg {
+.heroOverlay {
   position: absolute;
-  inset: -8%;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.82);
-  transition: filter var(--transition-medium);
-
-  .locationSlice:hover & {
-    filter: brightness(1);
-  }
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 15, 26, 0.65) 0%,
+    rgba(200, 16, 46, 0.35) 100%
+  );
+  z-index: 1;
 }
 
-// ─── Centered description ─────────────────────────────────────────────────────
-.descSection {
-  background: #fff;
-  padding: var(--spacing-03) var(--spacing-09) var(--spacing-09);
+.heroContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 var(--spacing-07);
+  max-width: 760px;
 }
 
-.descText {
-  max-width: 1000px;
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-full);
+  padding: 5px 14px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--spacing-06);
+  backdrop-filter: blur(8px);
+}
+
+.heroHeading {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: var(--spacing-05);
+}
+
+.heroSub {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+  max-width: 560px;
   margin: 0 auto;
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-body);
-  color: var(--color-text-primary);
+}
+
+// ── Intro / Welcome section — matches WelcomeSection ──────────────────────────
+.intro {
+  background: var(--color-section-alt);
+  padding: var(--spacing-12) 0 var(--spacing-11);
+}
+
+.introInner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-07);
   text-align: center;
 }
 
-// ─── Country info cards ───────────────────────────────────────────────────────
-.cardsSection {
-  background: var(--color-page-bg);
-  padding: var(--spacing-10) var(--spacing-09) var(--spacing-11);
+.introLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-05);
 }
 
-.cardsGrid {
-  max-width: 1200px;
-  margin: 0 auto;
+.introHeading {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: var(--spacing-06);
+}
+
+.introSub {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0 auto var(--spacing-08);
+}
+
+// Stats row — matches WelcomeSection
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-10);
+  padding-top: var(--spacing-08);
+  border-top: 1px solid var(--color-border);
+}
+
+.stat {
+  text-align: center;
+}
+
+.statNumber {
+  display: block;
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-02);
+}
+
+// ── Shared section header ─────────────────────────────────────────────────────
+.sectionHeader {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--spacing-10);
+}
+
+.sectionHeaderCentered {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--spacing-10);
+}
+
+.sectionLabel {
+  display: inline-flex;
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-04);
+}
+
+.sectionTitle {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 var(--spacing-04);
+}
+
+.sectionBody {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+// ── Capabilities section — matches IbmGuidingPrinciples ───────────────────────
+.capabilities {
+  background: var(--color-page-bg);
+  padding: var(--spacing-11) var(--spacing-07) var(--spacing-12);
+}
+
+.capabilityCards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--color-border);
-  border: 1px solid var(--color-border);
+  gap: var(--spacing-05);
 }
 
-.countryCard {
-  background: var(--color-page-bg);
+.capabilityCard {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   padding: var(--spacing-08) var(--spacing-07);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-04);
+  gap: var(--spacing-05);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-3px);
+    border-color: var(--color-accent);
+  }
 }
 
-.countryTitle {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
+.capabilityIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.capabilityTitle {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
-  text-align: center;
-  margin-bottom: var(--spacing-04);
-  letter-spacing: 0.5px;
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-.countryBody {
+.capabilityBody {
   font-size: var(--font-size-sm);
-  line-height: var(--line-height-body);
   color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin: 0;
 }
 
-// ─── Responsive ───────────────────────────────────────────────────────────────
-@media (max-width: 1056px) {
-  .cardsGrid { grid-template-columns: repeat(2, 1fr); }
-  .locationsTrack { height: 170px; }
-  .videoBanner { height: 300px; }
+// ── Location cards section — matches IbmGuidingPrinciples on alt background ───
+.locations {
+  background: var(--color-section-alt);
+  padding: var(--spacing-11) var(--spacing-07) var(--spacing-12);
+}
+
+.locationsInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.locationCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-05);
+}
+
+.locationCard {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-08) var(--spacing-07);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-3px);
+    border-color: var(--color-accent);
+  }
+}
+
+.locationIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text-primary);
+}
+
+.locationTitle {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.locationBody {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+// ── Gradient colour swatches (shared by capability & location icons) ───────────
+.teal     { background: linear-gradient(135deg, #ccfbf1, #99f6e4); }
+.lavender { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+.mint     { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+.sky      { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
+.orange   { background: linear-gradient(135deg, #ffedd5, #fed7aa); }
+.rose     { background: linear-gradient(135deg, #ffe4e6, #fecdd3); }
+.green    { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 960px) {
+  .capabilityCards  { grid-template-columns: repeat(2, 1fr); }
+  .locationCards    { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .videoBanner { height: 220px; }
-  .titleSection { padding: var(--spacing-08) var(--spacing-06) var(--spacing-06); }
-  .stripSection { padding: var(--spacing-06) var(--spacing-06); }
-  .locationsTrack { height: 130px; }
-  .descSection { padding: var(--spacing-08) var(--spacing-06) var(--spacing-09); }
-  .cardsSection { padding: var(--spacing-08) var(--spacing-06) var(--spacing-09); }
-  .cardsGrid { grid-template-columns: 1fr; }
+  .hero           { height: 420px; }
+  .heroHeading    { font-size: var(--font-size-h1); }
+  .heroSub        { font-size: var(--font-size-base); }
+  .heroContent    { padding: 0 var(--spacing-05); }
+  .introInner     { padding: 0 var(--spacing-05); }
+  .intro          { padding: var(--spacing-10) 0; }
+  .stats          { gap: var(--spacing-07); }
+  .statNumber     { font-size: 1.6rem; }
+
+  .capabilities,
+  .locations      { padding: var(--spacing-09) var(--spacing-05) var(--spacing-10); }
+  .capabilityCards { grid-template-columns: 1fr; }
+  .locationCards   { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-  .videoBanner { height: 160px; }
-  .locationsTrack { height: 100px; }
+  .hero { height: 360px; }
+  .heroHeading { font-size: var(--font-size-h2); }
 }
