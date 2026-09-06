@@ -1,31 +1,30 @@
 // NavTabs — AEP-style floating card navbar
 
-// ── Outer wrapper — full-width, no padding gaps
+// ── Outer wrapper — sits fixed at top, full-width, provides the padding context
 .navOuter {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 199;
-  padding: 0;
-  pointer-events: none;
+  padding: 12px 24px;
+  pointer-events: none;           // let clicks through to background
 }
 
-// ── The nav bar — full 100% width, no floating card
+// ── The floating card itself
 .navCard {
   pointer-events: all;
-  width: 100%;
-  height: 72px;
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 60px;
   background: #ffffff;
-  border-radius: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
-  padding: 0 32px;
+  padding: 0 24px;
   gap: 0;
   overflow: visible;
-  box-sizing: border-box;
 }
 
 // ── Logo
@@ -38,7 +37,7 @@
 }
 
 .logo {
-  height: 40px;
+  height: 36px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -68,8 +67,8 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 16px;
-  font-size: 15px;
+  padding: 0 14px;
+  font-size: 14px;
   font-weight: 500;
   color: #333;
   text-decoration: none;
@@ -128,8 +127,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   background: #c8102e;
   color: #fff;
   border-radius: 8px;
@@ -346,7 +345,7 @@
 @media (max-width: 768px) {
   .tabList { display: none; }
   .mobileMenuBtn { display: flex; }
-  .navOuter { padding: 0; }
-  .navCard { padding: 0 16px; height: 64px; }
+  .navOuter { padding: 10px 16px; }
+  .navCard { padding: 0 16px; }
   .logoLink { margin-right: 0; }
 }
