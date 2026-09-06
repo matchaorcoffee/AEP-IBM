@@ -1,4 +1,4 @@
-﻿import styles from './WAMPage.module.scss'
+import styles from './WAMPage.module.scss'
 import wamHero from './assets/WAM.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -74,14 +74,14 @@ export default function WAMPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={wamHero} alt="WAM" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>WAM Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>WAM</h1>
+          <p className={styles.heroSub}>Work &amp; Asset Management solutions</p>
+        </div>
       </div>
 
       {/* Nav links */}

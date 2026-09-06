@@ -1,4 +1,4 @@
-﻿import styles from './AutomationCOEPage.module.scss'
+import styles from './AutomationCOEPage.module.scss'
 import automationCOEHero from './assets/AutomationCOE.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -70,14 +70,14 @@ export default function AutomationCOEPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={automationCOEHero} alt="Automation COE" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Automation COE Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Automation COE</h1>
+          <p className={styles.heroSub}>Intelligent automation &amp; RPA initiatives</p>
+        </div>
       </div>
 
       {/* Nav links */}

@@ -1,4 +1,4 @@
-﻿import styles from './SharedServicesPage.module.scss'
+import styles from './SharedServicesPage.module.scss'
 import sharedServicesHero from './assets/SharedServices.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -69,14 +69,14 @@ export default function SharedServicesPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={sharedServicesHero} alt="Shared Services" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Shared Services Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Shared Services</h1>
+          <p className={styles.heroSub}>Enterprise-wide shared capabilities</p>
+        </div>
       </div>
 
       {/* Nav links */}

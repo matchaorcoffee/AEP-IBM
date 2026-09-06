@@ -1,4 +1,4 @@
-﻿import styles from './EnergyDeliveryPage.module.scss'
+import styles from './EnergyDeliveryPage.module.scss'
 import energyDeliveryHero from './assets/EnergyDelivery.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -69,14 +69,14 @@ export default function EnergyDeliveryPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={energyDeliveryHero} alt="Energy Delivery" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Energy Delivery Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Energy Delivery</h1>
+          <p className={styles.heroSub}>Reliable energy transmission &amp; distribution</p>
+        </div>
       </div>
 
       {/* Nav links */}

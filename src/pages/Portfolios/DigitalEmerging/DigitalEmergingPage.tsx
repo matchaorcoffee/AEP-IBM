@@ -1,4 +1,4 @@
-﻿import styles from './DigitalEmergingPage.module.scss'
+import styles from './DigitalEmergingPage.module.scss'
 import digitalEmergingHero from './assets/DigitalEmerging.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -71,14 +71,14 @@ export default function DigitalEmergingPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={digitalEmergingHero} alt="Digital Emerging Technology" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Digital Emerging Technology Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Digital Emerging Technology</h1>
+          <p className={styles.heroSub}>Next-gen digital &amp; emerging tech programs</p>
+        </div>
       </div>
 
       {/* Nav links */}

@@ -1,4 +1,4 @@
-﻿import styles from './ICOEPage.module.scss'
+import styles from './ICOEPage.module.scss'
 import icoeHero from './assets/ICOE.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -69,14 +69,14 @@ export default function ICOEPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={icoeHero} alt="ICOE" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>ICOE Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>ICOE</h1>
+          <p className={styles.heroSub}>Innovation Center of Excellence</p>
+        </div>
       </div>
 
       {/* Nav links */}

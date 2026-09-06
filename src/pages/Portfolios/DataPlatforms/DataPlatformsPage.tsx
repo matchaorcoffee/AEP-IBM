@@ -1,4 +1,4 @@
-﻿import styles from './DataPlatformsPage.module.scss'
+import styles from './DataPlatformsPage.module.scss'
 import dataPlatformsHero from './assets/DataPlatforms.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -70,14 +70,14 @@ export default function DataPlatformsPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={dataPlatformsHero} alt="Data Platforms" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Data Platforms Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Data Platforms</h1>
+          <p className={styles.heroSub}>Data infrastructure &amp; analytics platforms</p>
+        </div>
       </div>
 
       {/* Nav links */}

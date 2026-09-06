@@ -1,4 +1,4 @@
-﻿import styles from './GenerationCommercialPage.module.scss'
+import styles from './GenerationCommercialPage.module.scss'
 import generationCommercialHero from './assets/GenerationCommercial.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -70,14 +70,14 @@ export default function GenerationCommercialPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={generationCommercialHero} alt="Generation & Commercial Ops" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Generation &amp; Commercial Ops Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Generation &amp; Commercial Ops</h1>
+          <p className={styles.heroSub}>Power generation &amp; commercial optimization</p>
+        </div>
       </div>
 
       {/* Nav links */}

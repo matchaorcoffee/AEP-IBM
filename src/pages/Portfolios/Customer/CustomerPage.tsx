@@ -1,4 +1,4 @@
-﻿import styles from './CustomerPage.module.scss'
+import styles from './CustomerPage.module.scss'
 import customerHero from './assets/Customer.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -76,14 +76,14 @@ export default function CustomerPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={customerHero} alt="Customer" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Customer Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Customer</h1>
+          <p className={styles.heroSub}>Customer experience &amp; engagement</p>
+        </div>
       </div>
 
       {/* Nav links */}

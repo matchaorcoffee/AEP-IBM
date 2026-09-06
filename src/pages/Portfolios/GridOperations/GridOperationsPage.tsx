@@ -1,4 +1,4 @@
-﻿import styles from './GridOperationsPage.module.scss'
+import styles from './GridOperationsPage.module.scss'
 import gridOperationsHero from './assets/GridOperations.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -69,14 +69,14 @@ export default function GridOperationsPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={gridOperationsHero} alt="Grid Operations" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Grid Operations Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Grid Operations</h1>
+          <p className={styles.heroSub}>Real-time grid monitoring &amp; control</p>
+        </div>
       </div>
 
       {/* Nav links */}

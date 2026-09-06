@@ -1,4 +1,4 @@
-﻿import styles from './SecurityPage.module.scss'
+import styles from './SecurityPage.module.scss'
 import securityHero from './assets/Security.png'
 import ibmImg from './assets/IBM.jpg'
 
@@ -79,14 +79,14 @@ export default function SecurityPage() {
   return (
     <div className={styles.page} id="top">
 
-      {/* Hero image */}
+      {/* Hero */}
       <div className={styles.hero}>
         <img src={securityHero} alt="Security" className={styles.heroImg} />
-      </div>
-
-      {/* Centered title */}
-      <div className={styles.titleBlock}>
-        <h1 className={styles.pageTitle}>Security Information</h1>
+        <div className={styles.heroContent}>
+          <div className={styles.heroBadge}>IBM · AEP</div>
+          <h1 className={styles.pageTitle}>Security</h1>
+          <p className={styles.heroSub}>Cybersecurity &amp; risk management</p>
+        </div>
       </div>
 
       {/* Nav links */}
