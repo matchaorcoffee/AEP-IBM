@@ -197,14 +197,6 @@
   &:hover { color: #c8102e; }
 }
 
-.portfolioDropdownDesc {
-  margin: 0 0 20px 0;
-  font-size: 0.875rem;
-  font-style: italic;
-  color: #555;
-  line-height: 1.6;
-}
-
 .portfolioDropdownSeeAll {
   display: inline-flex;
   align-items: center;
@@ -221,6 +213,27 @@
   text-decoration: none;
 
   &:hover { text-decoration: underline; }
+}
+
+.portfolioDropdownLeftDivider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 20px 0 16px 0;
+}
+
+.portfolioDropdownProjectsLink {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  text-align: left;
+  transition: color 120ms ease;
+
+  &:hover { color: #c8102e; }
 }
 
 .portfolioDropdownDivider {
@@ -339,6 +352,12 @@
   color: #c8102e;
   background: #fff0f1;
   font-weight: 700;
+}
+
+.drawerSubItem {
+  padding-left: 32px;
+  font-size: 13px;
+  color: #555;
 }
 
 // ── Responsive

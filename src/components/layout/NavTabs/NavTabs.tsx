@@ -7,7 +7,6 @@ import aepLogo from '../../../assets/AEP.png'
 const NAV_ITEMS = [
   { label: 'Home', path: '/home', hasDropdown: false },
   { label: 'Engagements', path: '/portfolios', hasDropdown: true },
-  { label: 'Projects', path: '/projects', hasDropdown: false },
   { label: 'IBM Holidays', path: '/ibm-holidays', hasDropdown: false },
   { label: 'Partnership', path: '/partnership', hasDropdown: false },
   { label: 'IBM FNCs', path: '/ibm-cics', hasDropdown: false },
@@ -165,14 +164,18 @@ export default function NavTabs() {
             >
               Engagements
             </button>
-            <p className={styles.portfolioDropdownDesc}>
-              IBM Vantage AEP portfolio areas and domains.
-            </p>
             <button
               className={styles.portfolioDropdownSeeAll}
               onClick={() => { setPortfolioDropdownOpen(false); navigate('/portfolios') }}
             >
               See All ›
+            </button>
+            <div className={styles.portfolioDropdownLeftDivider} aria-hidden="true" />
+            <button
+              className={styles.portfolioDropdownProjectsLink}
+              onClick={() => { setPortfolioDropdownOpen(false); navigate('/projects') }}
+            >
+              Projects
             </button>
           </div>
           <div className={styles.portfolioDropdownDivider} aria-hidden="true" />
@@ -223,6 +226,14 @@ export default function NavTabs() {
               >
                 {item.label}
               </Link>
+              {item.hasDropdown && (
+                <Link
+                  to="/projects"
+                  className={`${styles.drawerItem} ${styles.drawerSubItem} ${isActive('/projects') ? styles.drawerItemActive : ''}`}
+                >
+                  Projects
+                </Link>
+              )}
             </li>
           ))}
         </ul>
