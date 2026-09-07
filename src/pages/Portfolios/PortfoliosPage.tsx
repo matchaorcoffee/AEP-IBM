@@ -143,21 +143,6 @@ export default function PortfoliosPage() {
                 </span>
               </div>
             </div>
-
-            <div className={styles.projectsStats}>
-              <div className={styles.projectsStat}>
-                <span className={styles.projectsStatNumber}>9</span>
-                <span className={styles.projectsStatLabel}>Chart Views</span>
-              </div>
-              <div className={styles.projectsStat}>
-                <span className={styles.projectsStatNumber}>30–90</span>
-                <span className={styles.projectsStatLabel}>Day Forecast</span>
-              </div>
-              <div className={styles.projectsStat}>
-                <span className={styles.projectsStatNumber}>100+</span>
-                <span className={styles.projectsStatLabel}>Active Resources</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
