@@ -1,6 +1,11 @@
 import styles from './WAMPage.module.scss'
 import wamHero from './assets/WAM.png'
 import ibmImg from './assets/IBM.jpg'
+import geographicDistributionImg from './assets/GeographicDistribution.png'
+import coreFlexImg from './assets/CoreFlex.png'
+import onboardingImg from './assets/Onboarding.png'
+import offboardingImg from './assets/Offboarding.png'
+import demandManagementImg from './assets/DemandManagement.png'
 import ResourceChurnChart, { ResourceChurnTable } from '../../../components/shared/ResourceChurnChart/ResourceChurnChart'
 
 const videos = import.meta.glob('./assets/*.{mp4,webm,mov}', { eager: true, query: '?url', import: 'default' })
@@ -162,10 +167,21 @@ export default function WAMPage() {
                 <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
               </div>
               <div className={styles.chartSide}>
-                {s.id === 'resource-churn'
-                  ? <ResourceChurnChart />
-                  : <div className={styles.chartPlaceholder}>Chart</div>
-                }
+                {s.id === 'resource-churn' ? (
+                  <ResourceChurnChart />
+                ) : s.id === 'geographic-distribution' ? (
+                  <img src={geographicDistributionImg} alt="Geographic Distribution chart" className={styles.chartImg} />
+                ) : s.id === 'core-flex-distribution' ? (
+                  <img src={coreFlexImg} alt="Core-Flex Distribution chart" className={styles.chartImg} />
+                ) : s.id === 'monthly-onboarding' ? (
+                  <img src={onboardingImg} alt="Monthly Onboarding chart" className={styles.chartImg} />
+                ) : s.id === 'monthly-offboarding' ? (
+                  <img src={offboardingImg} alt="Monthly Offboarding chart" className={styles.chartImg} />
+                ) : s.id === 'demand-management' ? (
+                  <img src={demandManagementImg} alt="Demand Management chart" className={styles.chartImg} />
+                ) : (
+                  <div className={styles.chartPlaceholder}>Chart</div>
+                )}
               </div>
             </div>
           </section>
