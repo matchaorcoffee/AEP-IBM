@@ -6,7 +6,7 @@ import coreFlexImg from './assets/CoreFlex.png'
 import onboardingImg from './assets/Onboarding.png'
 import offboardingImg from './assets/Offboarding.png'
 import demandManagementImg from './assets/DemandManagement.png'
-import ResourceChurnChart, { ResourceChurnTable } from '../../../components/shared/ResourceChurnChart/ResourceChurnChart'
+import resourceChurnImg from './assets/ResourceChurn.png'
 
 const videos = import.meta.glob('./assets/*.{mp4,webm,mov}', { eager: true, query: '?url', import: 'default' })
 
@@ -162,13 +162,12 @@ export default function WAMPage() {
                 <h2 className={styles.sectionTitle}>{s.label}</h2>
                 {s.subLabel && <p className={styles.subLabel}>{s.subLabel}</p>}
                 <p className={styles.sectionDesc}>{s.description}</p>
-                {s.id === 'resource-churn' && <ResourceChurnTable />}
                 <p className={styles.lastUpdate}>{LAST_UPDATE}</p>
                 <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
               </div>
               <div className={styles.chartSide}>
                 {s.id === 'resource-churn' ? (
-                  <ResourceChurnChart />
+                  <img src={resourceChurnImg} alt="Resource Churn chart" className={styles.chartImg} />
                 ) : s.id === 'geographic-distribution' ? (
                   <img src={geographicDistributionImg} alt="Geographic Distribution chart" className={styles.chartImg} />
                 ) : s.id === 'core-flex-distribution' ? (
