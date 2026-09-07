@@ -2,6 +2,13 @@ import styles from './TopBar.module.scss'
 import aepLogo from '../../assets/AEP.png'
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import iconClose from '../../assets/icons/icon-close.svg'
+import iconSearch from '../../assets/icons/icon-search.svg'
+import iconHeart from '../../assets/icons/icon-heart.svg'
+import iconShare from '../../assets/icons/icon-share.svg'
+import iconChat from '../../assets/icons/icon-chat.svg'
+import iconCalendar from '../../assets/icons/icon-calendar-badge.svg'
+import iconNotification from '../../assets/icons/icon-notification.svg'
 
 export default function TopBar() {
   const [searchOpen, setSearchOpen] = useState(false)
@@ -75,33 +82,33 @@ export default function TopBar() {
               onClick={() => { setSearchOpen(false); setSearchValue('') }}
               aria-label="Close search"
             >
-              <img src="/src/assets/icons/icon-close.svg" alt="" width={20} height={20} />
+              <img src={iconClose} alt="" width={20} height={20} />
             </button>
           </div>
         )}
 
         {!searchOpen && (
           <button className={styles.iconBtn} onClick={() => setSearchOpen(true)} aria-label="Open search">
-            <img src="/src/assets/icons/icon-search.svg" alt="" width={20} height={20} />
+            <img src={iconSearch} alt="" width={20} height={20} />
           </button>
         )}
 
         <div className={styles.divider} />
 
         <button className={styles.iconBtn} aria-label="Favourites">
-          <img src="/src/assets/icons/icon-heart.svg" alt="" width={20} height={20} />
+          <img src={iconHeart} alt="" width={20} height={20} />
         </button>
         <button className={styles.iconBtn} aria-label="Share">
-          <img src="/src/assets/icons/icon-share.svg" alt="" width={20} height={20} />
+          <img src={iconShare} alt="" width={20} height={20} />
         </button>
         <button className={styles.iconBtn} aria-label="Messages">
-          <img src="/src/assets/icons/icon-chat.svg" alt="" width={20} height={20} />
+          <img src={iconChat} alt="" width={20} height={20} />
         </button>
         <button className={styles.iconBtn} aria-label="Calendar">
-          <img src="/src/assets/icons/icon-calendar-badge.svg" alt="" width={20} height={20} />
+          <img src={iconCalendar} alt="" width={20} height={20} />
         </button>
         <button className={styles.iconBtn} aria-label="Notifications">
-          <img src="/src/assets/icons/icon-notification.svg" alt="" width={20} height={20} />
+          <img src={iconNotification} alt="" width={20} height={20} />
         </button>
 
         {/* User avatar with dropdown */}

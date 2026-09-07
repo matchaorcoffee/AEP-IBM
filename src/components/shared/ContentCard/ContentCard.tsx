@@ -2,6 +2,9 @@ import styles from './ContentCard.module.scss'
 import TagChip from '../TagChip/TagChip'
 import type { ContentCard } from '../../../models/ContentCard'
 import { Link } from 'react-router-dom'
+import iconArrowRight from '../../../assets/icons/icon-arrow-right.svg'
+import iconBookmark from '../../../assets/icons/icon-bookmark.svg'
+import iconBookmarkFilled from '../../../assets/icons/icon-bookmark-filled.svg'
 
 interface ContentCardProps {
   card: ContentCard
@@ -42,7 +45,7 @@ export default function ContentCard({ card, onBookmarkToggle }: ContentCardProps
       <div className={styles.footer}>
         <Link to={card.link} className={styles.cta}>
           Read more
-          <img src="/src/assets/icons/icon-arrow-right.svg" alt="" width={14} height={14} />
+          <img src={iconArrowRight} alt="" width={14} height={14} />
         </Link>
         {onBookmarkToggle && (
           <button
@@ -52,9 +55,7 @@ export default function ContentCard({ card, onBookmarkToggle }: ContentCardProps
             aria-pressed={card.isBookmarked}
           >
             <img
-              src={card.isBookmarked
-                ? '/src/assets/icons/icon-bookmark-filled.svg'
-                : '/src/assets/icons/icon-bookmark.svg'}
+              src={card.isBookmarked ? iconBookmarkFilled : iconBookmark}
               alt=""
               width={16}
               height={16}

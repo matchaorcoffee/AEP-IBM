@@ -2,6 +2,7 @@ import styles from './EventsPreview.module.scss'
 import SectionHeader from '../../../../components/shared/SectionHeader/SectionHeader'
 import TagChip from '../../../../components/shared/TagChip/TagChip'
 import type { Event } from '../../../../models/Event'
+import iconArrowRight from '../../../../assets/icons/icon-arrow-right.svg'
 
 interface EventsPreviewProps {
   events: Event[]
@@ -35,7 +36,7 @@ export default function EventsPreview({ events }: EventsPreviewProps) {
                 </div>
                 <a href={event.link} className={styles.eventCta}>
                   Learn More
-                  <img src="/src/assets/icons/icon-arrow-right.svg" alt="" width={14} height={14} />
+                  <img src={iconArrowRight} alt="" width={14} height={14} />
                 </a>
               </div>
             </article>

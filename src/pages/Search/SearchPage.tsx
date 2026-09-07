@@ -3,6 +3,8 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import styles from './SearchPage.module.scss'
 import { useContent } from '../../context/ContentContext'
 import ContentCard from '../../components/shared/ContentCard/ContentCard'
+import iconSearch from '../../assets/icons/icon-search.svg'
+import iconClose from '../../assets/icons/icon-close.svg'
 
 const CONTENT_FILTERS = ['All', 'Document', 'Video', 'Tool', 'Guide', 'Article']
 
@@ -51,7 +53,7 @@ export default function SearchPage() {
           <h1 className={styles.searchTitle}>Search</h1>
           <p className={styles.searchSubtitle}>Find resources, portfolios, events, and more across the AEP &amp; IBM partnership.</p>
           <div className={styles.searchBar}>
-            <img src="/src/assets/icons/icon-search.svg" alt="" className={styles.searchIcon} width={20} height={20} />
+            <img src={iconSearch} alt="" className={styles.searchIcon} width={20} height={20} />
             <input
               type="text"
               className={styles.searchInput}
@@ -64,7 +66,7 @@ export default function SearchPage() {
             />
             {inputValue && (
               <button className={styles.clearBtn} onClick={handleClear} aria-label="Clear search">
-                <img src="/src/assets/icons/icon-close.svg" alt="" width={16} height={16} />
+                <img src={iconClose} alt="" width={16} height={16} />
               </button>
             )}
             <button className={styles.searchBtn} onClick={handleSearch}>Search</button>
@@ -97,7 +99,7 @@ export default function SearchPage() {
 
           {results.length === 0 ? (
             <div className={styles.empty}>
-              <img src="/src/assets/icons/icon-search.svg" alt="" className={styles.emptyIcon} width={48} height={48} />
+              <img src={iconSearch} alt="" className={styles.emptyIcon} width={48} height={48} />
               <h2 className={styles.emptyTitle}>No results found</h2>
               <p className={styles.emptyBody}>
                 {qParam

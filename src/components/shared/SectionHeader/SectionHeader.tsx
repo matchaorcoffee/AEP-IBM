@@ -1,5 +1,6 @@
 import styles from './SectionHeader.module.scss'
 import { Link } from 'react-router-dom'
+import iconArrowRight from '../../../assets/icons/icon-arrow-right.svg'
 
 interface SectionHeaderProps {
   title: string
@@ -14,7 +15,7 @@ export default function SectionHeader({ title, viewAllPath, viewAllLabel = 'View
       {viewAllPath && (
         <Link to={viewAllPath} className={styles.viewAll}>
           {viewAllLabel}
-          <img src="/src/assets/icons/icon-arrow-right.svg" alt="" width={16} height={16} />
+          <img src={iconArrowRight} alt="" width={16} height={16} />
         </Link>
       )}
     </div>
