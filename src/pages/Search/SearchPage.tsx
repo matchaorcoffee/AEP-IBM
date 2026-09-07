@@ -47,7 +47,9 @@ export default function SearchPage() {
       {/* Search bar section */}
       <section className={styles.searchSection} aria-label="Search">
         <div className={styles.searchInner}>
+          <div className={styles.searchLabel}>AEP &amp; IBM Resources</div>
           <h1 className={styles.searchTitle}>Search</h1>
+          <p className={styles.searchSubtitle}>Find resources, portfolios, events, and more across the AEP &amp; IBM partnership.</p>
           <div className={styles.searchBar}>
             <img src="/src/assets/icons/icon-search.svg" alt="" className={styles.searchIcon} width={20} height={20} />
             <input

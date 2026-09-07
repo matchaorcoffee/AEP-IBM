@@ -1,47 +1,81 @@
-.page { min-height: calc(100vh - var(--header-total-height)); }
+.page {
+  min-height: calc(100vh - var(--header-total-height));
+  background: var(--color-page-bg);
+}
 
+/* ── Search hero section ─────────────────────────────────────────────────── */
 .searchSection {
-  background: #fff;
-  padding: var(--spacing-08) 0;
+  background: var(--color-section-alt);
+  padding: var(--spacing-10) 0 var(--spacing-09);
   border-bottom: 1px solid var(--color-border);
 }
 
 .searchInner {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 var(--spacing-09);
+  padding: 0 var(--spacing-07);
+  text-align: center;
+}
+
+/* Label pill — matches WelcomeSection .label */
+.searchLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-05);
 }
 
 .searchTitle {
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-weight-light);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
-  margin-bottom: var(--spacing-06);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: var(--spacing-04);
 }
 
+.searchSubtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-07);
+}
+
+/* ── Search bar ──────────────────────────────────────────────────────────── */
 .searchBar {
   display: flex;
   align-items: center;
-  border: 1px solid var(--color-border);
-  border-bottom: 2px solid var(--color-brand-blue);
   background: #fff;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  padding: 0 0 0 var(--spacing-05);
   margin-bottom: var(--spacing-06);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 
   &:focus-within {
-    border-color: var(--color-brand-blue);
-    border-bottom-width: 2px;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
   }
 }
 
 .searchIcon {
-  margin: 0 var(--spacing-04);
-  opacity: 0.5;
   flex-shrink: 0;
+  opacity: 0.4;
+  margin-right: var(--spacing-03);
 }
 
 .searchInput {
   flex: 1;
-  height: 48px;
+  height: 50px;
   border: none;
   outline: none;
   font-size: var(--font-size-base);
@@ -53,63 +87,85 @@
 }
 
 .clearBtn {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: none;
   border: none;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.5;
+  border-radius: 50%;
+  transition: opacity var(--transition-fast), background var(--transition-fast);
   &:hover { opacity: 1; background: var(--color-hover); }
 }
 
 .searchBtn {
-  height: 48px;
+  height: 50px;
   padding: 0 var(--spacing-07);
-  background: var(--color-brand-blue);
+  background: var(--color-accent);
   color: #fff;
   border: none;
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
   font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   flex-shrink: 0;
-  &:hover { background: var(--color-brand-blue-dark); }
+  transition: background var(--transition-fast);
+  &:hover { background: var(--color-accent-dark); }
 }
 
+/* ── Filter chips ────────────────────────────────────────────────────────── */
 .filters {
   display: flex;
-  gap: var(--spacing-03);
+  gap: var(--spacing-02);
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .chip {
-  padding: var(--spacing-02) var(--spacing-05);
+  padding: 6px var(--spacing-05);
   font-size: var(--font-size-sm);
-  background: var(--color-tag-gray-bg);
+  font-weight: var(--font-weight-medium);
+  background: #fff;
   color: var(--color-text-secondary);
-  border: none;
-  border-radius: 100px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
 
-  &:hover { background: var(--color-hover); color: var(--color-text-primary); }
+  &:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-subtle);
+  }
 }
 
 .chipActive {
-  background: var(--color-active-tab);
+  background: var(--color-accent);
   color: #fff;
-  &:hover { background: var(--color-active-tab-dark); color: #fff; }
+  border-color: var(--color-accent);
+  &:hover { background: var(--color-accent-dark); border-color: var(--color-accent-dark); color: #fff; }
 }
 
-// Results area
-.results { background: var(--color-page-bg); padding: var(--spacing-07) 0; }
-.resultsInner { max-width: 1200px; margin: 0 auto; padding: 0 var(--spacing-09); }
+/* ── Results area ────────────────────────────────────────────────────────── */
+.results {
+  background: var(--color-page-bg);
+  padding: var(--spacing-08) 0 var(--spacing-12);
+}
+
+.resultsInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-07);
+}
 
 .resultCount {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-muted);
   margin-bottom: var(--spacing-06);
+  text-align: center;
 }
 
 .grid {
@@ -118,7 +174,7 @@
   gap: var(--spacing-05);
 }
 
-// Empty state
+/* ── Empty state ─────────────────────────────────────────────────────────── */
 .empty {
   padding: var(--spacing-12) 0;
   display: flex;
@@ -128,11 +184,11 @@
   text-align: center;
 }
 
-.emptyIcon { opacity: 0.25; }
+.emptyIcon { opacity: 0.2; }
 
 .emptyTitle {
   font-size: var(--font-size-h3);
-  font-weight: var(--font-weight-regular);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
 }
 
@@ -140,20 +196,32 @@
   font-size: var(--font-size-base);
   color: var(--color-text-secondary);
   max-width: 480px;
+  line-height: 1.6;
 }
 
 .clearAllBtn {
-  background: var(--color-brand-blue);
+  background: var(--color-accent);
   color: #fff;
   padding: var(--spacing-03) var(--spacing-07);
   border: none;
+  border-radius: var(--radius-full);
   cursor: pointer;
   font-size: var(--font-size-sm);
-  &:hover { background: var(--color-brand-blue-dark); }
+  font-weight: var(--font-weight-semibold);
+  transition: background var(--transition-fast);
+  &:hover { background: var(--color-accent-dark); }
 }
 
+/* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 1056px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+@media (max-width: 768px) {
+  .searchSection { padding: var(--spacing-09) 0 var(--spacing-08); }
+  .searchInner { padding: 0 var(--spacing-05); }
+  .searchTitle { font-size: var(--font-size-h2); }
+  .resultsInner { padding: 0 var(--spacing-05); }
+}
+
 @media (max-width: 672px) {
   .grid { grid-template-columns: 1fr; }
-  .searchInner, .resultsInner { padding-left: var(--spacing-06); padding-right: var(--spacing-06); }
 }
