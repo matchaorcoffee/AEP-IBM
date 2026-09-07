@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import styles from './PortfoliosPage.module.scss'
 import portfolioImg from './assets/Portfolio.png'
+import projectsImg from '../Projects/assets/Projects.png'
 
 const SUB_ITEMS = [
   {
@@ -81,7 +82,7 @@ export default function PortfoliosPage() {
         <div className={styles.heroOverlay} aria-hidden="true" />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
-          <h1 className={styles.heroHeading}>Portfolio Areas</h1>
+          <h1 className={styles.heroHeading}>Engagements</h1>
           <p className={styles.heroSub}>
             Explore the domains where IBM and AEP collaborate to drive innovation,
             efficiency, and impact across the enterprise.
@@ -112,6 +113,51 @@ export default function PortfoliosPage() {
                   </svg>
                 </Link>
               ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Projects section */}
+      <section className={styles.projectsSection} aria-labelledby="projects-heading">
+        <div className={styles.inner}>
+          <div className={styles.projectsSectionHeader}>
+            <h2 id="projects-heading" className={styles.sectionTitle}>Projects</h2>
+            <p className={styles.sectionSub}>
+              A centralized hub for project and resource insights — allocation, distribution,
+              workforce trends, and demand forecasts.
+            </p>
+            <Link to="/projects" className={styles.projectsCta}>
+              View All Projects →
+            </Link>
+          </div>
+
+          <div className={styles.projectsPreview}>
+            <div className={styles.projectsHeroThumb}>
+              <img src={projectsImg} alt="Projects" className={styles.projectsThumbImg} />
+              <div className={styles.projectsThumbOverlay} aria-hidden="true" />
+              <div className={styles.projectsThumbContent}>
+                <div className={styles.projectsThumbBadge}>IBM · AEP</div>
+                <span className={styles.projectsThumbTitle}>Projects</span>
+                <span className={styles.projectsThumbSub}>
+                  Resource intelligence &amp; project visibility
+                </span>
+              </div>
+            </div>
+
+            <div className={styles.projectsStats}>
+              <div className={styles.projectsStat}>
+                <span className={styles.projectsStatNumber}>9</span>
+                <span className={styles.projectsStatLabel}>Chart Views</span>
+              </div>
+              <div className={styles.projectsStat}>
+                <span className={styles.projectsStatNumber}>30–90</span>
+                <span className={styles.projectsStatLabel}>Day Forecast</span>
+              </div>
+              <div className={styles.projectsStat}>
+                <span className={styles.projectsStatNumber}>100+</span>
+                <span className={styles.projectsStatLabel}>Active Resources</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
