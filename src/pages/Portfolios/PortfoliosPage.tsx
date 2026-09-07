@@ -126,13 +126,10 @@ export default function PortfoliosPage() {
               A centralized hub for project and resource insights — allocation, distribution,
               workforce trends, and demand forecasts.
             </p>
-            <Link to="/projects" className={styles.projectsCta}>
-              View All Projects →
-            </Link>
           </div>
 
           <div className={styles.projectsPreview}>
-            <div className={styles.projectsHeroThumb}>
+            <Link to="/projects" className={styles.projectsHeroThumb}>
               <img src={projectsImg} alt="Projects" className={styles.projectsThumbImg} />
               <div className={styles.projectsThumbOverlay} aria-hidden="true" />
               <div className={styles.projectsThumbContent}>
@@ -142,7 +139,7 @@ export default function PortfoliosPage() {
                   Resource intelligence &amp; project visibility
                 </span>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
