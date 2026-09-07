@@ -26,10 +26,15 @@ const PORTFOLIO_ITEMS = [
   { label: 'Customer',                   path: '/portfolios/customer' },
 ]
 
+// 'portfolio' = show portfolio sub-items in right panel
+// 'projects'  = Projects selected (right panel hidden)
+type LeftSelection = 'portfolio' | 'projects'
+
 export default function NavTabs() {
   const location = useLocation()
   const navigate = useNavigate()
   const [portfolioDropdownOpen, setPortfolioDropdownOpen] = useState(false)
+  const [leftSelection, setLeftSelection] = useState<LeftSelection>('portfolio')
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const portfolioTabRef = useRef<HTMLLIElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -59,6 +64,7 @@ export default function NavTabs() {
   useEffect(() => {
     setMobileNavOpen(false)
     setPortfolioDropdownOpen(false)
+    setLeftSelection('portfolio')
   }, [location.pathname])
 
   function isActive(path: string) {
@@ -172,26 +178,36 @@ export default function NavTabs() {
             </button>
             <div className={styles.portfolioDropdownLeftDivider} aria-hidden="true" />
             <button
-              className={styles.portfolioDropdownProjectsLink}
+              className={`${styles.portfolioDropdownNavItem} ${leftSelection === 'portfolio' ? styles.portfolioDropdownNavItemActive : ''}`}
+              onClick={() => setLeftSelection('portfolio')}
+            >
+              Portfolio
+            </button>
+            <button
+              className={`${styles.portfolioDropdownNavItem} ${leftSelection === 'projects' ? styles.portfolioDropdownNavItemActive : ''}`}
               onClick={() => { setPortfolioDropdownOpen(false); navigate('/projects') }}
             >
               Projects
             </button>
           </div>
-          <div className={styles.portfolioDropdownDivider} aria-hidden="true" />
-          <ul className={styles.portfolioDropdownRight} role="none">
-            {PORTFOLIO_ITEMS.map(item => (
-              <li key={item.label} role="none">
-                <button
-                  role="menuitem"
-                  className={styles.portfolioDropdownItem}
-                  onClick={() => handlePortfolioItemClick(item.path)}
-                >
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
+          {leftSelection === 'portfolio' && (
+            <>
+              <div className={styles.portfolioDropdownDivider} aria-hidden="true" />
+              <ul className={styles.portfolioDropdownRight} role="none">
+                {PORTFOLIO_ITEMS.map(item => (
+                  <li key={item.label} role="none">
+                    <button
+                      role="menuitem"
+                      className={styles.portfolioDropdownItem}
+                      onClick={() => handlePortfolioItemClick(item.path)}
+                    >
+                      {item.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>,
         document.body
       )}

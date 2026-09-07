@@ -218,22 +218,33 @@
 .portfolioDropdownLeftDivider {
   height: 1px;
   background: #e5e7eb;
-  margin: 20px 0 16px 0;
+  margin: 20px 0 8px 0;
 }
 
-.portfolioDropdownProjectsLink {
+.portfolioDropdownNavItem {
   display: block;
+  width: 100%;
   background: none;
   border: none;
-  padding: 0;
+  padding: 9px 12px;
+  margin: 2px 0;
   font-size: 0.95rem;
   font-weight: 600;
   color: #333;
   cursor: pointer;
   text-align: left;
-  transition: color 120ms ease;
+  border-radius: 8px;
+  transition: color 120ms ease, background 120ms ease;
 
-  &:hover { color: #c8102e; }
+  &:hover {
+    color: #c8102e;
+    background: #fff0f1;
+  }
+}
+
+.portfolioDropdownNavItemActive {
+  color: #c8102e;
+  background: #fff0f1;
 }
 
 .portfolioDropdownDivider {
