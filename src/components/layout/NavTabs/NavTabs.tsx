@@ -6,7 +6,7 @@ import aepLogo from '../../../assets/AEP.png'
 
 const NAV_ITEMS = [
   { label: 'Home', path: '/home', hasDropdown: false },
-  { label: 'Portfolios', path: '/portfolios', hasDropdown: true },
+  { label: 'Engagements', path: '/portfolios', hasDropdown: true },
   { label: 'Projects', path: '/projects', hasDropdown: false },
   { label: 'IBM Holidays', path: '/ibm-holidays', hasDropdown: false },
   { label: 'Partnership', path: '/partnership', hasDropdown: false },
@@ -96,7 +96,7 @@ export default function NavTabs() {
                   <button
                     className={styles.dropdownToggle}
                     onClick={() => setPortfolioDropdownOpen(v => !v)}
-                    aria-label="Portfolios submenu"
+                    aria-label="Engagements submenu"
                     aria-expanded={portfolioDropdownOpen}
                     aria-haspopup="menu"
                   >
@@ -163,7 +163,7 @@ export default function NavTabs() {
               className={styles.portfolioDropdownTitle}
               onClick={() => { setPortfolioDropdownOpen(false); navigate('/portfolios') }}
             >
-              Portfolios
+              Engagements
             </button>
             <p className={styles.portfolioDropdownDesc}>
               IBM Vantage AEP portfolio areas and domains.
