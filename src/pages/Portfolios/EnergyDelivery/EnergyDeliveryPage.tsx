@@ -1,6 +1,7 @@
 import styles from './EnergyDeliveryPage.module.scss'
 import energyDeliveryHero from './assets/EnergyDelivery.png'
 import ibmImg from './assets/IBM.jpg'
+import ResourceChurnChart, { ResourceChurnTable } from '../../../components/shared/ResourceChurnChart/ResourceChurnChart'
 
 const videos = import.meta.glob('./assets/*.{mp4,webm,mov}', { eager: true, query: '?url', import: 'default' })
 
@@ -148,11 +149,15 @@ export default function EnergyDeliveryPage() {
                 <h2 className={styles.sectionTitle}>{s.label}</h2>
                 {s.subLabel && <p className={styles.subLabel}>{s.subLabel}</p>}
                 <p className={styles.sectionDesc}>{s.description}</p>
+                {s.id === 'resource-churn' && <ResourceChurnTable />}
                 <p className={styles.lastUpdate}>{LAST_UPDATE}</p>
                 <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
               </div>
               <div className={styles.chartSide}>
-                <div className={styles.chartPlaceholder}>Chart</div>
+                {s.id === 'resource-churn'
+                  ? <ResourceChurnChart />
+                  : <div className={styles.chartPlaceholder}>Chart</div>
+                }
               </div>
             </div>
           </section>
