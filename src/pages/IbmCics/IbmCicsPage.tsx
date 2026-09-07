@@ -153,7 +153,7 @@ export default function IbmCicsPage() {
           <h1 className={styles.heroHeading}>IBM FutureNow Centers</h1>
           <p className={styles.heroSub}>
             Global capability combining industry and process skills with solutioning expertise —
-            spanning 17 countries and 34 languages.
+            spanning 7 countries and 34 languages.
           </p>
         </div>
       </div>
@@ -170,7 +170,7 @@ export default function IbmCicsPage() {
           </p>
           <div className={styles.stats}>
             <div className={styles.stat}>
-              <span className={styles.statNumber}>17</span>
+              <span className={styles.statNumber}>7</span>
               <span className={styles.statLabel}>Countries</span>
             </div>
             <div className={styles.stat}>
