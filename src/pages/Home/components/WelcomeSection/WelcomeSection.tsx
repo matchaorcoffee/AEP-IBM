@@ -1,4 +1,5 @@
 import styles from './WelcomeSection.module.scss'
+import { Link } from 'react-router-dom'
 
 export default function WelcomeSection() {
   return (
@@ -12,6 +13,14 @@ export default function WelcomeSection() {
           Strategic partnership fostering innovation harnessing the vast expertise to propel
           impactful and groundbreaking advancements to benefit AEP customers.
         </p>
+        <div className={styles.actions}>
+          <Link to="/portfolios" className={styles.ctaPrimary}>
+            Explore Portfolios
+          </Link>
+          <Link to="/partnership" className={styles.ctaSecondary}>
+            Our Partnership
+          </Link>
+        </div>
         <div className={styles.stats}>
           <div className={styles.stat}>
             <span className={styles.statNumber}>11+</span>

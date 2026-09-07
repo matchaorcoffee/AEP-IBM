@@ -1,3 +1,4 @@
+import styles from './HomePage.module.scss'
 import Hero from './components/Hero/Hero'
 import WelcomeSection from './components/WelcomeSection/WelcomeSection'
 import TabPanel from './components/TabPanel/TabPanel'
@@ -7,7 +8,7 @@ import QuickLinks from './components/QuickLinks/QuickLinks'
 
 export default function HomePage() {
   return (
-    <div>
+    <div className={styles.page}>
       <Hero />
       <WelcomeSection />
       <TabPanel />

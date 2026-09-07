@@ -3,6 +3,7 @@
   min-height: calc(100vh - var(--header-total-height));
   background: #fff;
   scroll-behavior: smooth;
+  margin-top: calc(-1 * var(--header-total-height));
 }
 
 /* ── Hero ──────────────────────────────────────────────────────────────────
@@ -16,6 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: var(--header-total-height);
 
   &::after {
     content: '';

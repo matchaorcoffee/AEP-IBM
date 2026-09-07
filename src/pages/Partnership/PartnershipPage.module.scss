@@ -3,6 +3,7 @@
   min-height: calc(100vh - var(--header-total-height));
   background: #f4f6fb;
   font-family: var(--font-family);
+  margin-top: calc(-1 * var(--header-total-height));
 }
 
 // ── Hero — full-width image + overlay ────────────────────────────────────────
@@ -14,6 +15,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: var(--header-total-height);
 }
 
 .heroImg {

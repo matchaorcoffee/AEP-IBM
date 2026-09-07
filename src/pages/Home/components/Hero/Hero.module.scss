@@ -7,6 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: var(--header-total-height);
 }
 
 .video {
@@ -69,59 +70,8 @@
   font-weight: var(--font-weight-regular);
   color: rgba(255, 255, 255, 0.78);
   line-height: 1.6;
-  margin-bottom: var(--spacing-08);
   max-width: 560px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.heroActions {
-  display: flex;
-  gap: var(--spacing-04);
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.heroCta {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-02);
-  background: #ffffff;
-  color: var(--color-accent);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  transition: background var(--transition-fast), box-shadow var(--transition-fast);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-
-  &:hover {
-    background: #fff0f1;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-    text-decoration: none;
-  }
-}
-
-.heroCtaOutline {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-02);
-  background: transparent;
-  color: #ffffff;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
-  transition: background var(--transition-fast), border-color var(--transition-fast);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.9);
-    text-decoration: none;
-  }
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {

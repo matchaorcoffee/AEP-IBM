@@ -1,6 +1,5 @@
 import styles from './Hero.module.scss'
 import heroVideo from '../../assets/homepage.mp4'
-import { Link } from 'react-router-dom'
 
 export default function Hero() {
   return (
@@ -23,14 +22,6 @@ export default function Hero() {
           Harnessing the vast expertise of IBM to propel impactful and groundbreaking
           advancements that benefit AEP customers.
         </p>
-        <div className={styles.heroActions}>
-          <Link to="/portfolios" className={styles.heroCta}>
-            Explore Portfolios
-          </Link>
-          <Link to="/partnership" className={styles.heroCtaOutline}>
-            Our Partnership
-          </Link>
-        </div>
       </div>
     </div>
   )

@@ -2,6 +2,7 @@
 .page {
   min-height: calc(100vh - var(--header-total-height));
   background: var(--color-page-bg);
+  margin-top: calc(-1 * var(--header-total-height));
 }
 
 // ── Hero — identical to homepage Hero ─────────────────────────────────────────
@@ -13,6 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: var(--header-total-height);
 }
 
 .heroVideo {
@@ -81,7 +83,7 @@
 // ── Intro / Welcome section — matches WelcomeSection ──────────────────────────
 .intro {
   background: var(--color-section-alt);
-  padding: var(--spacing-12) 0 var(--spacing-11);
+  padding: var(--spacing-07) 0 var(--spacing-11);
 }
 
 .introInner {
