@@ -1,5 +1,6 @@
 import styles from './PartnershipPage.module.scss'
 import partnershipImg from './assets/Partnership.png'
+import aepIbmLogo from './assets/AEP_IBM_logo.png'
 
 const highlights = [
   {
@@ -84,6 +85,7 @@ export default function PartnershipPage() {
           <p className={styles.sectionSub}>
             Explore the leadership structure and team organisation across the AEP–IBM engagement.
           </p>
+          <img src={aepIbmLogo} alt="AEP – IBM" className={styles.chartLogo} />
         </div>
         <iframe
           src="AEP_Org_Chart_v2.html"
