@@ -1007,7 +1007,7 @@ const people = [
       { id:"p45",  name:"Rems Acero",  role:"Solutions",  portfolio:"PMO & Solutioning",  ibmEmail:"Remedios.Acero@ibm.com",  aepEmail:"racero@aep.com",  mobile:"+63-9985410714",  seq:"5.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"Philippines" },
       { id:"p46",  name:"Badeth Solis",  role:"Solutions",  portfolio:"PMO & Solutioning",  ibmEmail:"bernadeth.solis@ibm.com",  aepEmail:"bsolis@aep.com",  mobile:"+63-9761844334",  seq:"5.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"Philippines" },
       { id:"p56",  name:"Sanjay Basu",  role:"Solutions",  portfolio:"PMO & Solutioning",  ibmEmail:"sanjbasu@in.ibm.com",  aepEmail:"N/A",  mobile:"+91-033-4009-5685",  seq:"5.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p47",  name:"Anil Gopala",  role:"Strategy & Emerging Technologies",  portfolio:"Strategy & Emerging Tech",  ibmEmail:"Anil.Gopala@ibm.com",  aepEmail:"agopala@aep.com",  mobile:"+1-214-843-4340",  seq:"6",  type:"Leadership",  orgGroup:"Support & Delivery",  location:"USA" },
+      { id:"p47",  name:"Anil Gopala",  role:"Strategy & Emerging Technologies",  portfolio:"Strategy & Emerging Technologies",  ibmEmail:"Anil.Gopala@ibm.com",  aepEmail:"agopala@aep.com",  mobile:"+1-214-843-4340",  seq:"6",  type:"Leadership",  orgGroup:"Support & Delivery",  location:"USA" },
       { id:"p48",  name:"Chad Flores",  role:"Delivery Project Executive",  portfolio:"Delivery Project Executives",  ibmEmail:"florescc@ph.ibm.com",  aepEmail:"ceflores@aep.com",  mobile:"+63-9088178216",  seq:"dpe",  type:"DPE",  orgGroup:"Support & Delivery",  location:"Philippines" },
       { id:"p49",  name:"Parag Bhatt",  role:"Delivery Project Executive",  portfolio:"Delivery Project Executives",  ibmEmail:"parag.bhatt@in.ibm.com",  aepEmail:"pbhatt@aep.com",  mobile:"+91-9970-230088",  seq:"dpe",  type:"DPE",  orgGroup:"Support & Delivery",  location:"India" },
       { id:"p50",  name:"Raman Luthra",  role:"Delivery Project Executive",  portfolio:"Delivery Project Executives",  ibmEmail:"ramanluthra@in.ibm.com",  aepEmail:"rluthra@aep.com",  mobile:"+91-991-077-0401",  seq:"dpe",  type:"DPE",  orgGroup:"Support & Delivery",  location:"India" },
@@ -1183,7 +1183,7 @@ const DEPARTMENT_STYLES = {
   },
   // Strategy & Emerging Technologies: Teal / Cyan
   "strategy": {
-    label: "Strategy & Emerging Tech",
+    label: "Strategy & Emerging Technologies",
     shortLabel: "STRATEGY & ET",
     badgeClass: "badge-strategy",
     color: "#0f766e",
@@ -1390,8 +1390,9 @@ function renderDepartmentBadge(p, options = {}) {
   const extraClasses = options.extraClasses ? ` ${options.extraClasses}` : "";
   const activeClass = isFilterActive ? " badge-dept-active" : "";
   const customStyle = options.style ? ` style="${options.style}"` : "";
+  const labelText = options.useFullLabel ? org.displayLabel.toUpperCase() : org.shortLabel;
 
-  return `<span class="spoke-dept-badge ${org.badgeClass}${activeClass}${extraClasses}"${customStyle} title="${org.displayLabel}">${org.shortLabel}</span>`;
+  return `<span class="spoke-dept-badge ${org.badgeClass}${activeClass}${extraClasses}"${customStyle} title="${org.displayLabel}">${labelText}</span>`;
 }
 
 // Maps an employee to its filter-section key (only Portfolio/Programs become tabs)
@@ -2469,7 +2470,7 @@ function openPopup(p, sourceEl) {
 
   // Meta: location + direct report count + department badge
   const countBadge = reports.length ? `<span class="popup-count">&#128101; ${reports.length}</span>` : "";
-  popupMetaEl.innerHTML = `<span class="popup-loc">${flagHtml(p.loc)}</span>${countBadge}${renderDepartmentBadge(p)}`;
+  popupMetaEl.innerHTML = `<span class="popup-loc">${flagHtml(p.loc)}</span>${countBadge}${renderDepartmentBadge(p, { useFullLabel: true })}`;
 
   // Build scrollable body
   let html = "";
