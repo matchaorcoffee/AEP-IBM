@@ -132,6 +132,7 @@
 .section {
   padding: 3rem 0;
   border-bottom: 1px solid #e5e7eb;
+  scroll-margin-top: calc(var(--header-total-height) + 60px);
 
   &:last-child { border-bottom: none; }
 }
