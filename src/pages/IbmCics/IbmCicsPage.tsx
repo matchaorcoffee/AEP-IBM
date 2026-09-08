@@ -168,20 +168,6 @@ export default function IbmCicsPage() {
             Our FNC experts collaborate with clients to revolutionise their work processes,
             harnessing the power of intelligent automation and smart workflows.
           </p>
-          <div className={styles.stats}>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>7</span>
-              <span className={styles.statLabel}>Countries</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>34</span>
-              <span className={styles.statLabel}>Languages</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>7</span>
-              <span className={styles.statLabel}>AEP Locations</span>
-            </div>
-          </div>
         </div>
       </section>
 
