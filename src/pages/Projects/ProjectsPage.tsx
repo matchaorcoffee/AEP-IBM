@@ -1,5 +1,14 @@
 import styles from './ProjectsPage.module.scss'
 import projectsImg from './assets/Projects.png'
+import resourcesByProjectImg from './assets/ResourcesByProject.png'
+import onshoreAndOffshoreImg from './assets/OnshoreAndOffshore.png'
+import proactiveCountImg from './assets/ProactiveCount.png'
+import reasonChurnImg from './assets/ReasonChurn.png'
+import averageFulfillmentImg from './assets/AverageFulfillment.png'
+import monthlyOnboardingImg from './assets/MonthlyOnboarding.png'
+import monthlyOffboardingImg from './assets/MonthlyOffboarding.png'
+import monthlyResourceCountImg from './assets/MonthlyResourceCount.png'
+import demandManagementImg from './assets/DemandManagement.png'
 
 const sections = [
   {
@@ -246,9 +255,29 @@ export default function ProjectsPage() {
                   </button>
                 </div>
 
-                {/* Chart placeholder */}
+                {/* Chart image */}
                 <div className={styles.chartSide}>
-                  <div className={styles.chartPlaceholder}>Chart</div>
+                  {s.id === 'resources-by-project' ? (
+                    <img src={resourcesByProjectImg} alt="Resources by Project chart" className={styles.chartImg} />
+                  ) : s.id === 'onshore-offshore' ? (
+                    <img src={onshoreAndOffshoreImg} alt="Onshore and Offshore Distribution chart" className={styles.chartImg} />
+                  ) : s.id === 'proactive-count' ? (
+                    <img src={proactiveCountImg} alt="Proactive Count of Resource by Projects chart" className={styles.chartImg} />
+                  ) : s.id === 'resource-churn' ? (
+                    <img src={reasonChurnImg} alt="Resource Churn By Reason chart" className={styles.chartImg} />
+                  ) : s.id === 'avg-fulfillment' ? (
+                    <img src={averageFulfillmentImg} alt="Average Fulfillment Time chart" className={styles.chartImg} />
+                  ) : s.id === 'monthly-onboarding' ? (
+                    <img src={monthlyOnboardingImg} alt="Monthly Onboarding of Resources chart" className={styles.chartImg} />
+                  ) : s.id === 'monthly-offboarding' ? (
+                    <img src={monthlyOffboardingImg} alt="Monthly Offboarding of Resources chart" className={styles.chartImg} />
+                  ) : s.id === 'monthly-resource-count' ? (
+                    <img src={monthlyResourceCountImg} alt="Monthly Resource Count chart" className={styles.chartImg} />
+                  ) : s.id === 'demand-management' ? (
+                    <img src={demandManagementImg} alt="Demand Management 30-60-90 day Forecast chart" className={styles.chartImg} />
+                  ) : (
+                    <div className={styles.chartPlaceholder}>Chart</div>
+                  )}
                 </div>
 
               </div>
