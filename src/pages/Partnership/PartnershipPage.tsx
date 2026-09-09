@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './PartnershipPage.module.scss'
 import partnershipImg from './assets/Partnership.png'
 import aepIbmLogo from './assets/AEP_IBM_logo.png'
@@ -60,8 +62,62 @@ const highlights = [
 ]
 
 export default function PartnershipPage() {
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const [frameHeight, setFrameHeight] = useState<number>(600)
+  const [modalOpen, setModalOpen] = useState(false)
+  // Remember scroll position so we can restore it on close
+  const savedScrollY = useRef(0)
+
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      if (!e.data || typeof e.data !== 'object') return
+
+      if (e.data.type === 'orgChartHeight' && typeof e.data.height === 'number') {
+        // Add 40px bottom padding so next section has a clean gap
+        setFrameHeight(e.data.height + 40)
+      }
+
+      if (e.data.type === 'orgChartModalOpen') {
+        // Capture current scroll position before locking
+        savedScrollY.current = window.scrollY
+        // Lock page scroll without jumping: use position:fixed trick
+        document.body.style.top = `-${savedScrollY.current}px`
+        document.body.style.overflow = 'hidden'
+        document.body.style.width = '100%'
+        setModalOpen(true)
+      }
+
+      if (e.data.type === 'orgChartModalClose') {
+        // Restore page scroll
+        document.body.style.overflow = ''
+        document.body.style.top = ''
+        document.body.style.width = ''
+        window.scrollTo(0, savedScrollY.current)
+        setModalOpen(false)
+      }
+    }
+
+    window.addEventListener('message', onMessage)
+    return () => {
+      window.removeEventListener('message', onMessage)
+      // Safety cleanup: always restore scroll if component unmounts while modal open
+      document.body.style.overflow = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+    }
+  }, [])
+
   return (
     <div className={styles.page}>
+
+      {/* ── Full-viewport backdrop portal — rendered at document.body level ── */}
+      {modalOpen && createPortal(
+        <div
+          className={styles.modalBackdrop}
+          aria-hidden="true"
+        />,
+        document.body
+      )}
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <div className={styles.hero}>
@@ -88,8 +144,10 @@ export default function PartnershipPage() {
           <img src={aepIbmLogo} alt="AEP – IBM" className={styles.chartLogo} />
         </div>
         <iframe
+          ref={iframeRef}
           src="AEP_Org_Chart_v2.html"
           className={styles.orgChartFrame}
+          style={{ height: frameHeight + 'px' }}
           title="AEP Account Org Chart"
           sandbox="allow-scripts allow-same-origin"
         />

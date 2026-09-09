@@ -59,8 +59,14 @@ body {
   position: relative;
   z-index: 22;
 }
-/* When org-filter has no visible content (empty tabs), add no extra space */
-#org-filter:empty { margin: 0; }
+/* When org-filter has no visible content (empty tabs), add no extra space or margin */
+#org-filter:empty {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  display: none !important;
+}
 
 /* â”€â”€ Hub â€” absolute overlay for spokes + connectors only â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #hub {
@@ -84,10 +90,10 @@ body {
   overflow: visible;
 }
 
-/* â”€â”€ Center panel â€” normal document flow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* â"€â"€ Center panel â€" normal document flow â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 /* Sits in the viz-area as a flex column; the photo placeholder reserves
    space for #center-wrap which is absolute on top.
-   Only photo + name/role info â€” filters moved outside. */
+   Only photo + name/role info â€" filters moved outside. */
 #center-panel {
   position: relative;
   z-index: 20;
@@ -96,8 +102,16 @@ body {
   align-items: center;
   width: min(760px, calc(100vw - 48px));
   padding-bottom: 32px;
-  pointer-events: auto;
+  /* Disable pointer-events on the wide container — it spans across the
+     left/right spoke card columns and would block their hit areas.
+     Re-enabled only on actual interactive children below. */
+  pointer-events: none;
   /* top margin set by JS so panel photo aligns with hub cy */
+}
+/* Re-enable pointer events only for the info text (name/role/meta).
+   The photo itself is handled by #center-wrap which is positioned absolutely. */
+#center-info {
+  pointer-events: auto;
 }
 
 /* Ghost hit-target anchored at center photo for fly-animation */
@@ -222,23 +236,28 @@ body {
   animation: centerPop 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Spoke slot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Spoke slot â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 .spoke-slot {
   position: absolute;
   display: flex;
   align-items: center;
-  z-index: 10;
+  /* z-index must be above #center-panel (20) and #center-wrap (21) so the
+     inner card edges near the center column win the hit test */
+  z-index: 22;
   cursor: pointer;
 }
 .spoke-slot.animating {
   transition: opacity 0.28s ease, transform 0.28s ease;
 }
-/* pop-out: each spoke gets --spoke-base-transform and --delay set inline */
+/* pop-out: disable pointer-events so fading-out ghosts never block clicks */
 .spoke-slot.popping-out {
   animation: spokeFadeOut 0.22s ease forwards;
+  pointer-events: none;
 }
+/* pop-in: disable until animation completes to prevent premature click capture */
 .spoke-slot.popping-in {
   animation: spokePopOut 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  pointer-events: none;
 }
 .spoke-slot.right-side {
   flex-direction: row; /* photo left, card right */
@@ -293,6 +312,7 @@ body {
 .spoke-slot.org-dpe .spoke-card { border-color: #bbf7d0; }
 .spoke-slot.org-strategy .spoke-card { border-color: #99f6e4; }
 .spoke-slot.org-other .spoke-card { border-color: #e5e7eb; }
+.spoke-slot.is-multi-dept .spoke-card { border-color: #cbd5e1 !important; }
 .spoke-slot:hover .spoke-card {
   box-shadow: 0 4px 18px rgba(99,102,241,.15);
 }
@@ -393,11 +413,12 @@ body {
   opacity: .45;
 }
 
-/* accent stripe on card edge */
+/* accent stripe on card edge — decorative only, must not intercept pointer events */
 .spoke-card::before {
   content: ""; display: block;
   position: absolute; top: 10px; bottom: 10px;
   width: 3px; border-radius: 3px;
+  pointer-events: none;
 }
 .spoke-slot.left-side .spoke-card::before { right: -1px; }
 .spoke-slot.right-side .spoke-card::before { left: -1px; }
@@ -407,10 +428,12 @@ body {
 .stripe-dpe::before    { background: #059669; }
 .stripe-tower::before  { background: #4f46e5; }
 .stripe-dm::before     { background: #9ca3af; }
+.stripe-multi::before  { background: linear-gradient(180deg, #2563eb 0%, #7c3aed 50%, #dc2626 100%); }
 /* ── Section-based stripe override (Portfolio=blue, Program=red) ─── */
 /* Placed after role stripes so specificity wins for Portfolio/Program */
 .spoke-slot.section-portfolio .spoke-card::before { background: #2563eb; }
 .spoke-slot.section-program   .spoke-card::before { background: #dc2626; }
+.spoke-slot.is-multi-dept .spoke-card::before { background: linear-gradient(180deg, #2563eb 0%, #7c3aed 50%, #dc2626 100%) !important; }
 
 /* â”€â”€ Profile Popup â€” centered animated modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes popupIn {
@@ -425,16 +448,14 @@ body {
 @keyframes overlayOut { from { opacity: 1; } to { opacity: 0; } }
 
 #popup-overlay {
+  /* Overlay covers only the iframe viewport — full-site dimming is
+     handled by the parent page via postMessage */
   position: fixed; inset: 0;
-  background: rgba(17,24,39,.28);
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
+  background: transparent;
   z-index: 590;
   display: none;
-  animation: overlayIn .22s ease forwards;
 }
 #popup-overlay.open  { display: block; }
-#popup-overlay.closing { animation: overlayOut .2s ease forwards; }
 
 #popup {
   position: fixed;
@@ -890,8 +911,8 @@ body {
 
 <!-- Profile Popup (centered animated modal) -->
 <div id="popup-overlay"></div>
-<div id="popup">
-  <button id="popup-close" title="Close">&#x2715;</button>
+<div id="popup" role="dialog" aria-modal="true" aria-labelledby="popup-name">
+  <button id="popup-close" title="Close" aria-label="Close employee details">&#x2715;</button>
   <div id="popup-header">
     <div id="popup-portrait"></div>
     <div id="popup-name" class="popup-name"></div>
@@ -956,62 +977,826 @@ const photoMap = {
     };
 
 const people = [
-      { id:"p1",  name:"Venkata Kompella",  role:"Lead Client Partner",  portfolio:"Leadership",  ibmEmail:"vkompel@us.ibm.com",  aepEmail:"vkompella@aep.com",  mobile:"+1-704-307-9226",  seq:"0",  type:"Leadership",  orgGroup:"Leadership",  location:"USA" },
-      { id:"p2",  name:"Michael Dennis",  role:"Tower Leader",  portfolio:"Leadership",  ibmEmail:"MichaelD@ibm.com",  aepEmail:"mtdennis@aep.com",  mobile:"+1-8327678841",  seq:"1",  type:"Leadership",  orgGroup:"Leadership",  location:"USA" },
-      { id:"p3",  name:"Neeraj Mehta",  role:"Onshore Delivery Manager",  portfolio:"WAM",  ibmEmail:"neermeht@in.ibm.com",  aepEmail:"nmehta@aep.com",  mobile:"+91-9811641493",  seq:"1.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p4",  name:"Renjini Kanimandiram Nalinakshan",  role:"Offshore Delivery Manager",  portfolio:"WAM",  ibmEmail:"renjini.kn@in.ibm.com",  aepEmail:"rkanimandiramnalinakshan@aep.com",  mobile:"+91-9986-307360",  seq:"1.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"India" },
-      { id:"p5",  name:"Raymond Cascasan",  role:"Offshore Delivery Manager",  portfolio:"WAM",  ibmEmail:"cascarb@ph.ibm.com",  aepEmail:"rcascasan@aep.com",  mobile:"+63-9209680207",  seq:"1.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Philippines" },
-      { id:"p6",  name:"Mandar Chitnis",  role:"Onshore Delivery Manager",  portfolio:"Middleware Technology",  ibmEmail:"Mandar.Chitnis@in.ibm.com",  aepEmail:"mchitnis@aep.com",  mobile:"+1-2404748274",  seq:"1.2",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p7",  name:"Kedar Patwardhan",  role:"Offshore Delivery Manager",  portfolio:"Middleware Technology",  ibmEmail:"kepatwar@in.ibm.com",  aepEmail:"kpatwardhan@aep.com",  mobile:"+91-7798543388",  seq:"1.2",  type:"Portfolio",  orgGroup:"Portfolio",  location:"India" },
-      { id:"p8",  name:"Jitin Shrivastava",  role:"Offshore Delivery Manager",  portfolio:"Middleware Technology",  ibmEmail:"Jitin.shrivastava@ibm.com",  aepEmail:"jshrivastava@aep.com",  mobile:"+91-9167342313",  seq:"1.2",  type:"Portfolio",  orgGroup:"Portfolio",  location:"India" },
-      { id:"p9",  name:"Meghna Parekh",  role:"Onshore Delivery Manager",  portfolio:"ServiceCo",  ibmEmail:"mparekh@us.ibm.com",  aepEmail:"mparekh@aep.com",  mobile:"+1-630-965-8352",  seq:"1.3",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p10",  name:"Ahmad Adnan",  role:"Offshore Delivery Manager",  portfolio:"ServiceCo",  ibmEmail:"ahmad.adnan1@ibm.com",  aepEmail:"TBD",  mobile:"+91-9999015999",  seq:"1.3",  type:"Portfolio",  orgGroup:"Portfolio",  location:"India" },
-      { id:"p11",  name:"Anand Sancheti",  role:"Program Manager",  portfolio:"MAS Upgrade",  ibmEmail:"anand.sancheti1@ibm.com",  aepEmail:"asancheti@aep.com",  mobile:"+1-2146065299",  seq:"1.4",  type:"Program",  orgGroup:"Programs",  location:"USA" },
-      { id:"p12",  name:"Daniel Tacioli",  role:"Program Manager",  portfolio:"IGA",  ibmEmail:"danielt@br.ibm.com",  aepEmail:"dtacioli@aep.com",  mobile:"+55-119-6303-7424",  seq:"1.5",  type:"Program",  orgGroup:"Programs",  location:"Brazil" },
-      { id:"p13",  name:"Javier Carvajal",  role:"Onshore Delivery Manager",  portfolio:"Security Services",  ibmEmail:"jcarvaja@cr.ibm.com",  aepEmail:"jcarvajal@aep.com",  mobile:"+506-6461-8414",  seq:"1.6",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Costa Rica" },
-      { id:"p14",  name:"Wesley Griffin",  role:"Tower Leader",  portfolio:"Leadership",  ibmEmail:"wesley.griffin@ibm.com",  aepEmail:"TBD",  mobile:"TBD",  seq:"2",  type:"Leadership",  orgGroup:"Leadership",  location:"USA" },
-      { id:"p15",  name:"Wesley Griffin",  role:"Onshore Delivery Manager",  portfolio:"Data Platform Services",  ibmEmail:"wesley.griffin@ibm.com",  aepEmail:"TBD",  mobile:"TBD",  seq:"2.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p16",  name:"Raffy Ladios",  role:"Offshore Delivery Manager",  portfolio:"Data Platform Services",  ibmEmail:"rafael.ladios@ibm.com",  aepEmail:"rladios@aep.com",  mobile:"+63-9175159541",  seq:"2.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Philippines" },
-      { id:"p17",  name:"Rajiv Verma",  role:"Offshore Delivery Manager",  portfolio:"Data Platform Services",  ibmEmail:"rkverma2@in.ibm.com",  aepEmail:"rverma@aep.com",  mobile:"+91-99-1035-9994",  seq:"2.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"India" },
-      { id:"p18",  name:"Tatiana Machado de Oliveira",  role:"Onshore Delivery Manager",  portfolio:"Automation COE",  ibmEmail:"tmoliv@br.ibm.com",  aepEmail:"tmachadodeoliveiragranna@aep.com",  mobile:"+55-19988279206",  seq:"2.2",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Brazil" },
-      { id:"p19",  name:"Chad Thomas",  role:"Onshore Delivery Manager",  portfolio:"GenAI",  ibmEmail:"Chad.Thomas@ibm.com",  aepEmail:"TBD",  mobile:"TBD",  seq:"2.3",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p20",  name:"Michael Zhang",  role:"Program Manager",  portfolio:"EDW Replatform",  ibmEmail:"zhangmic@us.ibm.com",  aepEmail:"TBD",  mobile:"+1-4373400041",  seq:"2.4",  type:"Program",  orgGroup:"Programs",  location:"USA" },
-      { id:"p21",  name:"Alexia Harris",  role:"Tower Leader",  portfolio:"Leadership",  ibmEmail:"arichar@us.ibm.com",  aepEmail:"arichardson@aep.com",  mobile:"+1-404-276-6788",  seq:"3",  type:"Leadership",  orgGroup:"Leadership",  location:"USA" },
-      { id:"p22",  name:"Nitin Khare",  role:"Onshore Delivery Manager",  portfolio:"Transmission Technology",  ibmEmail:"nitin_khare@in.ibm.com",  aepEmail:"nkhare@aep.com",  mobile:"+1-2196714115",  seq:"3.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p23",  name:"Adriana Lopes Fernandes",  role:"Onshore Delivery Manager",  portfolio:"Transmission Technology",  ibmEmail:"adrilf@br.ibm.com",  aepEmail:"afernandes@aep.com",  mobile:"+5511-981067612",  seq:"3.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Brazil" },
-      { id:"p24",  name:"Snehal Chitnis",  role:"Offshore Delivery Manager",  portfolio:"Transmission Technology",  ibmEmail:"sladsava@in.ibm.com",  aepEmail:"schitnis@aep.com",  mobile:"+91-98-2393-5606",  seq:"3.1",  type:"Portfolio",  orgGroup:"Portfolio",  location:"India" },
-      { id:"p25",  name:"Nitin Khare",  role:"Onshore Delivery Manager",  portfolio:"Gen and Comm Ops",  ibmEmail:"nitin_khare@in.ibm.com",  aepEmail:"nkhare@aep.com",  mobile:"+1-2196714115",  seq:"3.2",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p26",  name:"Patrick Macaspac",  role:"Offshore Delivery Manager",  portfolio:"Gen and Comm Ops",  ibmEmail:"macasps@ph.ibm.com",  aepEmail:"pmacaspac@aep.com",  mobile:"+63-917 673 4729",  seq:"3.2",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Philippines" },
-      { id:"p27",  name:"Jayaprakash Padmanaban",  role:"Onshore Delivery Manager",  portfolio:"Grid Ops",  ibmEmail:"jayaprakash.padmanaban2@ibm.com",  aepEmail:"jpadmanaban@aep.com",  mobile:"+1-781-392-7535",  seq:"3.3",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p28",  name:"Snehal Chitnis",  role:"Offshore Delivery Manager",  portfolio:"Grid Ops",  ibmEmail:"sladsava@in.ibm.com",  aepEmail:"schitnis@aep.com",  mobile:"+91-98-2393-5606",  seq:"3.3",  type:"Portfolio",  orgGroup:"Portfolio",  location:"India" },
-      { id:"p29",  name:"Andrew Wilson",  role:"Onshore Delivery Manager",  portfolio:"Digital Emerging Technology",  ibmEmail:"Andrew.S.Wilson@ibm.com",  aepEmail:"ASWilson@aep.com",  mobile:"N/A",  seq:"3.4",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p30",  name:"Vivek Dixit",  role:"Program Manager",  portfolio:"Field Mobility",  ibmEmail:"vivekdixit@in.ibm.com",  aepEmail:"vdixit@aep.com",  mobile:"+1-6142706670",  seq:"3.5",  type:"Program",  orgGroup:"Programs",  location:"USA" },
-      { id:"p31",  name:"Will Grande",  role:"Program Manager",  portfolio:"ADMS",  ibmEmail:"wgrande@us.ibm.com",  aepEmail:"wgrande@aep.com",  mobile:"+1-470-585-6961",  seq:"3.6",  type:"Program",  orgGroup:"Programs",  location:"USA" },
-      { id:"p32",  name:"Indrajeet Powar",  role:"Offshore Delivery Manager",  portfolio:"ADMS",  ibmEmail:"indpowar@in.ibm.com",  aepEmail:"impowar@aep.com",  mobile:"+91-9423281955",  seq:"3.6",  type:"Program",  orgGroup:"Programs",  location:"India" },
-      { id:"p33",  name:"Naeem Ahmed",  role:"Onshore Delivery Manager",  portfolio:"Field Support",  ibmEmail:"naeema@us.ibm.com",  aepEmail:"nahmed@aep.com",  mobile:"+1-248-602-8558",  seq:"3.7",  type:"Portfolio",  orgGroup:"Portfolio",  location:"USA" },
-      { id:"p54",  name:"Ivy Smits",  role:"Onshore Delivery Manager",  portfolio:"Customer",  ibmEmail:"ivysmits@ibm.com",  aepEmail:"N/A",  mobile:"+55-19993652467",  seq:"3.8",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Brazil" },
-      { id:"p34",  name:"Thiago Henrique Da Silva",  role:"Onshore Delivery Manager",  portfolio:"Customer",  ibmEmail:"thsilva@br.ibm.com",  aepEmail:"THSilva@aep.com",  mobile:"+55-19-99129-1512",  seq:"3.8",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Brazil" },
-      { id:"p35",  name:"Arrian Ordo\u00f1ez",  role:"Offshore Delivery Manager",  portfolio:"Customer",  ibmEmail:"arrian.ordonez@ph.ibm.com",  aepEmail:"N/A",  mobile:"+63-9999917652",  seq:"3.8",  type:"Portfolio",  orgGroup:"Portfolio",  location:"Philippines" },
-      { id:"p36",  name:"Nitin Khare",  role:"Program Manager",  portfolio:"Copperleaf Project",  ibmEmail:"nitin_khare@in.ibm.com",  aepEmail:"nkhare@aep.com",  mobile:"+1-2196714115",  seq:"3.9",  type:"Program",  orgGroup:"Programs",  location:"USA" },
-      { id:"p37",  name:"Tyler Fini",  role:"Program Manager",  portfolio:"Bill Redesign",  ibmEmail:"trfini@us.ibm.com",  aepEmail:"tfini@aep.com",  mobile:"+1-347-491-2041",  seq:"3.10",  type:"Program",  orgGroup:"Programs",  location:"USA" },
-      { id:"p38",  name:"Suresh Sagadevan",  role:"PMO Leader",  portfolio:"PMO & Solutioning",  ibmEmail:"sksuresh@in.ibm.com",  aepEmail:"N/A",  mobile:"+91-9845422334",  seq:"4",  type:"Leadership",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p39",  name:"Joy Makalintal",  role:"PMO",  portfolio:"PMO & Solutioning",  ibmEmail:"joymakalintal@ph.ibm.com",  aepEmail:"N/A",  mobile:"+63-905-6641746",  seq:"4.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"Philippines" },
-      { id:"p40",  name:"Harshad Joshi",  role:"PMO",  portfolio:"PMO & Solutioning",  ibmEmail:"harshad.joshi@in.ibm.com",  aepEmail:"N/A",  mobile:"+91-9011050564",  seq:"4.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p41",  name:"Rems Acero",  role:"PMO",  portfolio:"PMO & Solutioning",  ibmEmail:"Remedios.Acero@ibm.com",  aepEmail:"racero@aep.com",  mobile:"+63-9985410714",  seq:"4.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"Philippines" },
-      { id:"p42",  name:"Badeth Solis",  role:"PMO",  portfolio:"PMO & Solutioning",  ibmEmail:"bernadeth.solis@ibm.com",  aepEmail:"bsolis@aep.com",  mobile:"+63-9761844334",  seq:"4.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"Philippines" },
-      { id:"p51",  name:"Neha Bagde",  role:"PMO",  portfolio:"PMO & Solutioning",  ibmEmail:"Neha.Bagde@ibm.com",  aepEmail:"nbagde@aep.com",  mobile:"+91-8823870704",  seq:"4.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p52",  name:"Raman Khaddar",  role:"PMO",  portfolio:"PMO & Solutioning",  ibmEmail:"Raman.Khaddar@ibm.com",  aepEmail:"rkhaddar@aep.com",  mobile:"+91-7898169333",  seq:"4.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p55",  name:"Rashmi Nagaraj",  role:"PMO",  portfolio:"PMO & Solutioning",  ibmEmail:"rashmnag@in.ibm.com",  aepEmail:"N/A",  mobile:"+91-944-817-1936",  seq:"4.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p43",  name:"Marelyne Tolentino",  role:"Solution Executive",  portfolio:"PMO & Solutioning",  ibmEmail:"marelyne@us.ibm.com",  aepEmail:"mtolentino@aep.com",  mobile:"+1-303-550-1008",  seq:"5",  type:"Leadership",  orgGroup:"Support & Delivery",  location:"USA" },
-      { id:"p44",  name:"Neha Priyadarshini M",  role:"Solutions",  portfolio:"PMO & Solutioning",  ibmEmail:"neha.sundaram@in.ibm.com",  aepEmail:"N/A",  mobile:"+1-6692828064",  seq:"5.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"USA" },
-      { id:"p45",  name:"Rems Acero",  role:"Solutions",  portfolio:"PMO & Solutioning",  ibmEmail:"Remedios.Acero@ibm.com",  aepEmail:"racero@aep.com",  mobile:"+63-9985410714",  seq:"5.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"Philippines" },
-      { id:"p46",  name:"Badeth Solis",  role:"Solutions",  portfolio:"PMO & Solutioning",  ibmEmail:"bernadeth.solis@ibm.com",  aepEmail:"bsolis@aep.com",  mobile:"+63-9761844334",  seq:"5.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"Philippines" },
-      { id:"p56",  name:"Sanjay Basu",  role:"Solutions",  portfolio:"PMO & Solutioning",  ibmEmail:"sanjbasu@in.ibm.com",  aepEmail:"N/A",  mobile:"+91-033-4009-5685",  seq:"5.1",  type:"PMO & Solutioning",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p47",  name:"Anil Gopala",  role:"Strategy & Emerging Technologies",  portfolio:"Strategy & Emerging Technologies",  ibmEmail:"Anil.Gopala@ibm.com",  aepEmail:"agopala@aep.com",  mobile:"+1-214-843-4340",  seq:"6",  type:"Leadership",  orgGroup:"Support & Delivery",  location:"USA" },
-      { id:"p48",  name:"Chad Flores",  role:"Delivery Project Executive",  portfolio:"Delivery Project Executives",  ibmEmail:"florescc@ph.ibm.com",  aepEmail:"ceflores@aep.com",  mobile:"+63-9088178216",  seq:"dpe",  type:"DPE",  orgGroup:"Support & Delivery",  location:"Philippines" },
-      { id:"p49",  name:"Parag Bhatt",  role:"Delivery Project Executive",  portfolio:"Delivery Project Executives",  ibmEmail:"parag.bhatt@in.ibm.com",  aepEmail:"pbhatt@aep.com",  mobile:"+91-9970-230088",  seq:"dpe",  type:"DPE",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p50",  name:"Raman Luthra",  role:"Delivery Project Executive",  portfolio:"Delivery Project Executives",  ibmEmail:"ramanluthra@in.ibm.com",  aepEmail:"rluthra@aep.com",  mobile:"+91-991-077-0401",  seq:"dpe",  type:"DPE",  orgGroup:"Support & Delivery",  location:"India" },
-      { id:"p53",  name:"Rene Neto",  role:"Delivery Project Executive",  portfolio:"Delivery Project Executives",  ibmEmail:"rrolivei@br.ibm.com",  aepEmail:"rneto@aep.com",  mobile:"+55-16-99795-8788",  seq:"dpe",  type:"DPE",  orgGroup:"Support & Delivery",  location:"Brazil" }
+      {
+        id: "p1",
+        name: "Venkata Kompella",
+        role: "Lead Client Partner",
+        portfolio: "Leadership",
+        ibmEmail: "vkompel@us.ibm.com",
+        aepEmail: "vkompella@aep.com",
+        mobile: "+1-704-307-9226",
+        seq: "0",
+        type: "Leadership",
+        orgGroup: "Leadership",
+        location: "USA",
+        departments: [
+          { group: "Leadership", department: "Leadership", role: "Lead Client Partner" }
+        ]
+      },
+      {
+        id: "p2",
+        name: "Michael Dennis",
+        role: "Tower Leader",
+        portfolio: "Leadership",
+        ibmEmail: "MichaelD@ibm.com",
+        aepEmail: "mtdennis@aep.com",
+        mobile: "+1-8327678841",
+        seq: "1",
+        type: "Leadership",
+        orgGroup: "Leadership",
+        location: "USA",
+        departments: [
+          { group: "Leadership", department: "Leadership", role: "Tower Leader" }
+        ]
+      },
+      {
+        id: "p3",
+        name: "Neeraj Mehta",
+        role: "Onshore Delivery Manager",
+        portfolio: "WAM",
+        ibmEmail: "neermeht@in.ibm.com",
+        aepEmail: "nmehta@aep.com",
+        mobile: "+91-9811641493",
+        seq: "1.1",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "USA",
+        departments: [
+          { group: "Portfolio", department: "WAM", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p4",
+        name: "Renjini Kanimandiram Nalinakshan",
+        role: "Offshore Delivery Manager",
+        portfolio: "WAM",
+        ibmEmail: "renjini.kn@in.ibm.com",
+        aepEmail: "rkanimandiramnalinakshan@aep.com",
+        mobile: "+91-9986-307360",
+        seq: "1.1",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "India",
+        departments: [
+          { group: "Portfolio", department: "WAM", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p5",
+        name: "Raymond Cascasan",
+        role: "Offshore Delivery Manager",
+        portfolio: "WAM",
+        ibmEmail: "cascarb@ph.ibm.com",
+        aepEmail: "rcascasan@aep.com",
+        mobile: "+63-9209680207",
+        seq: "1.1",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Philippines",
+        departments: [
+          { group: "Portfolio", department: "WAM", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p6",
+        name: "Mandar Chitnis",
+        role: "Onshore Delivery Manager",
+        portfolio: "Middleware Technology",
+        ibmEmail: "Mandar.Chitnis@in.ibm.com",
+        aepEmail: "mchitnis@aep.com",
+        mobile: "+1-2404748274",
+        seq: "1.2",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "USA",
+        departments: [
+          { group: "Portfolio", department: "Middleware Technology", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p7",
+        name: "Kedar Patwardhan",
+        role: "Offshore Delivery Manager",
+        portfolio: "Middleware Technology",
+        ibmEmail: "kepatwar@in.ibm.com",
+        aepEmail: "kpatwardhan@aep.com",
+        mobile: "+91-7798543388",
+        seq: "1.2",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "India",
+        departments: [
+          { group: "Portfolio", department: "Middleware Technology", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p8",
+        name: "Jitin Shrivastava",
+        role: "Offshore Delivery Manager",
+        portfolio: "Middleware Technology",
+        ibmEmail: "Jitin.shrivastava@ibm.com",
+        aepEmail: "jshrivastava@aep.com",
+        mobile: "+91-9167342313",
+        seq: "1.2",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "India",
+        departments: [
+          { group: "Portfolio", department: "Middleware Technology", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p9",
+        name: "Meghna Parekh",
+        role: "Onshore Delivery Manager",
+        portfolio: "ServiceCo",
+        ibmEmail: "mparekh@us.ibm.com",
+        aepEmail: "mparekh@aep.com",
+        mobile: "+1-630-965-8352",
+        seq: "1.3",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "USA",
+        departments: [
+          { group: "Portfolio", department: "ServiceCo", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p10",
+        name: "Ahmad Adnan",
+        role: "Offshore Delivery Manager",
+        portfolio: "ServiceCo",
+        ibmEmail: "ahmad.adnan1@ibm.com",
+        aepEmail: "TBD",
+        mobile: "+91-9999015999",
+        seq: "1.3",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "India",
+        departments: [
+          { group: "Portfolio", department: "ServiceCo", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p11",
+        name: "Anand Sancheti",
+        role: "Program Manager",
+        portfolio: "MAS Upgrade",
+        ibmEmail: "anand.sancheti1@ibm.com",
+        aepEmail: "asancheti@aep.com",
+        mobile: "+1-2146065299",
+        seq: "1.4",
+        type: "Program",
+        orgGroup: "Programs",
+        location: "USA",
+        departments: [
+          { group: "Programs", department: "MAS Upgrade", role: "Program Manager" }
+        ]
+      },
+      {
+        id: "p12",
+        name: "Daniel Tacioli",
+        role: "Program Manager",
+        portfolio: "IGA",
+        ibmEmail: "danielt@br.ibm.com",
+        aepEmail: "dtacioli@aep.com",
+        mobile: "+55-119-6303-7424",
+        seq: "1.5",
+        type: "Program",
+        orgGroup: "Programs",
+        location: "Brazil",
+        departments: [
+          { group: "Programs", department: "IGA", role: "Program Manager" }
+        ]
+      },
+      {
+        id: "p13",
+        name: "Javier Carvajal",
+        role: "Onshore Delivery Manager",
+        portfolio: "Security Services",
+        ibmEmail: "jcarvaja@cr.ibm.com",
+        aepEmail: "jcarvajal@aep.com",
+        mobile: "+506-6461-8414",
+        seq: "1.6",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Costa Rica",
+        departments: [
+          { group: "Portfolio", department: "Security Services", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p14",
+        name: "Wesley Griffin",
+        role: "Tower Leader",
+        portfolio: "Leadership",
+        ibmEmail: "wesley.griffin@ibm.com",
+        aepEmail: "TBD",
+        mobile: "TBD",
+        seq: "2",
+        type: "Leadership",
+        orgGroup: "Leadership",
+        location: "USA",
+        departments: [
+          { group: "Leadership", department: "Leadership", role: "Tower Leader" },
+          { group: "Portfolio", department: "Data Platform Services", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p16",
+        name: "Raffy Ladios",
+        role: "Offshore Delivery Manager",
+        portfolio: "Data Platform Services",
+        ibmEmail: "rafael.ladios@ibm.com",
+        aepEmail: "rladios@aep.com",
+        mobile: "+63-9175159541",
+        seq: "2.1",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Philippines",
+        departments: [
+          { group: "Portfolio", department: "Data Platform Services", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p17",
+        name: "Rajiv Verma",
+        role: "Offshore Delivery Manager",
+        portfolio: "Data Platform Services",
+        ibmEmail: "rkverma2@in.ibm.com",
+        aepEmail: "rverma@aep.com",
+        mobile: "+91-99-1035-9994",
+        seq: "2.1",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "India",
+        departments: [
+          { group: "Portfolio", department: "Data Platform Services", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p18",
+        name: "Tatiana Machado de Oliveira",
+        role: "Onshore Delivery Manager",
+        portfolio: "Automation COE",
+        ibmEmail: "tmoliv@br.ibm.com",
+        aepEmail: "tmachadodeoliveiragranna@aep.com",
+        mobile: "+55-19988279206",
+        seq: "2.2",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Brazil",
+        departments: [
+          { group: "Portfolio", department: "Automation COE", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p19",
+        name: "Chad Thomas",
+        role: "Onshore Delivery Manager",
+        portfolio: "GenAI",
+        ibmEmail: "Chad.Thomas@ibm.com",
+        aepEmail: "TBD",
+        mobile: "TBD",
+        seq: "2.3",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "USA",
+        departments: [
+          { group: "Portfolio", department: "GenAI", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p20",
+        name: "Michael Zhang",
+        role: "Program Manager",
+        portfolio: "EDW Replatform",
+        ibmEmail: "zhangmic@us.ibm.com",
+        aepEmail: "TBD",
+        mobile: "+1-4373400041",
+        seq: "2.4",
+        type: "Program",
+        orgGroup: "Programs",
+        location: "USA",
+        departments: [
+          { group: "Programs", department: "EDW Replatform", role: "Program Manager" }
+        ]
+      },
+      {
+        id: "p21",
+        name: "Alexia Harris",
+        role: "Tower Leader",
+        portfolio: "Leadership",
+        ibmEmail: "arichar@us.ibm.com",
+        aepEmail: "arichardson@aep.com",
+        mobile: "+1-404-276-6788",
+        seq: "3",
+        type: "Leadership",
+        orgGroup: "Leadership",
+        location: "USA",
+        departments: [
+          { group: "Leadership", department: "Leadership", role: "Tower Leader" }
+        ]
+      },
+      {
+        id: "p22",
+        name: "Nitin Khare",
+        role: "Onshore Delivery Manager",
+        portfolio: "Transmission Technology",
+        ibmEmail: "nitin_khare@in.ibm.com",
+        aepEmail: "nkhare@aep.com",
+        mobile: "+1-2196714115",
+        seq: "3.1",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "USA",
+        departments: [
+          { group: "Portfolio", department: "Transmission Technology", role: "Onshore Delivery Manager" },
+          { group: "Portfolio", department: "Gen and Comm Ops", role: "Onshore Delivery Manager" },
+          { group: "Programs", department: "Copperleaf Project", role: "Program Manager" }
+        ]
+      },
+      {
+        id: "p23",
+        name: "Adriana Lopes Fernandes",
+        role: "Onshore Delivery Manager",
+        portfolio: "Transmission Technology",
+        ibmEmail: "adrilf@br.ibm.com",
+        aepEmail: "afernandes@aep.com",
+        mobile: "+5511-981067612",
+        seq: "3.1",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Brazil",
+        departments: [
+          { group: "Portfolio", department: "Transmission Technology", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p24",
+        name: "Snehal Chitnis",
+        role: "Offshore Delivery Manager",
+        portfolio: "Transmission Technology",
+        ibmEmail: "sladsava@in.ibm.com",
+        aepEmail: "schitnis@aep.com",
+        mobile: "+91-98-2393-5606",
+        seq: "3.1",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "India",
+        departments: [
+          { group: "Portfolio", department: "Transmission Technology", role: "Offshore Delivery Manager" },
+          { group: "Portfolio", department: "Grid Ops", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p26",
+        name: "Patrick Macaspac",
+        role: "Offshore Delivery Manager",
+        portfolio: "Gen and Comm Ops",
+        ibmEmail: "macasps@ph.ibm.com",
+        aepEmail: "pmacaspac@aep.com",
+        mobile: "+63-917 673 4729",
+        seq: "3.2",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Philippines",
+        departments: [
+          { group: "Portfolio", department: "Gen and Comm Ops", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p27",
+        name: "Jayaprakash Padmanaban",
+        role: "Onshore Delivery Manager",
+        portfolio: "Grid Ops",
+        ibmEmail: "jayaprakash.padmanaban2@ibm.com",
+        aepEmail: "jpadmanaban@aep.com",
+        mobile: "+1-781-392-7535",
+        seq: "3.3",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "USA",
+        departments: [
+          { group: "Portfolio", department: "Grid Ops", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p29",
+        name: "Andrew Wilson",
+        role: "Onshore Delivery Manager",
+        portfolio: "Digital Emerging Technology",
+        ibmEmail: "Andrew.S.Wilson@ibm.com",
+        aepEmail: "ASWilson@aep.com",
+        mobile: "N/A",
+        seq: "3.4",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "USA",
+        departments: [
+          { group: "Portfolio", department: "Digital Emerging Technology", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p30",
+        name: "Vivek Dixit",
+        role: "Program Manager",
+        portfolio: "Field Mobility",
+        ibmEmail: "vivekdixit@in.ibm.com",
+        aepEmail: "vdixit@aep.com",
+        mobile: "+1-6142706670",
+        seq: "3.5",
+        parent: "p21",
+        type: "Program",
+        orgGroup: "Programs",
+        location: "USA",
+        departments: [
+          { group: "Programs", department: "Field Mobility", role: "Program Manager" }
+        ]
+      },
+      {
+        id: "p31",
+        name: "Will Grande",
+        role: "Program Manager",
+        portfolio: "ADMS",
+        ibmEmail: "wgrande@us.ibm.com",
+        aepEmail: "wgrande@aep.com",
+        mobile: "+1-470-585-6961",
+        seq: "3.6",
+        parent: "p21",
+        type: "Program",
+        orgGroup: "Programs",
+        location: "USA",
+        departments: [
+          { group: "Programs", department: "ADMS", role: "Program Manager" }
+        ]
+      },
+      {
+        id: "p32",
+        name: "Indrajeet Powar",
+        role: "Offshore Delivery Manager",
+        portfolio: "ADMS",
+        ibmEmail: "indpowar@in.ibm.com",
+        aepEmail: "impowar@aep.com",
+        mobile: "+91-9423281955",
+        seq: "3.6",
+        parent: "p21",
+        type: "Program",
+        orgGroup: "Programs",
+        location: "India",
+        departments: [
+          { group: "Programs", department: "ADMS", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p33",
+        name: "Naeem Ahmed",
+        role: "Onshore Delivery Manager",
+        portfolio: "Field Support",
+        ibmEmail: "naeema@us.ibm.com",
+        aepEmail: "nahmed@aep.com",
+        mobile: "+1-248-602-8558",
+        seq: "3.7",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "USA",
+        departments: [
+          { group: "Portfolio", department: "Field Support", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p54",
+        name: "Ivy Smits",
+        role: "Onshore Delivery Manager",
+        portfolio: "Customer",
+        ibmEmail: "ivysmits@ibm.com",
+        aepEmail: "N/A",
+        mobile: "+55-19993652467",
+        seq: "3.8",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Brazil",
+        departments: [
+          { group: "Portfolio", department: "Customer", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p34",
+        name: "Thiago Henrique Da Silva",
+        role: "Onshore Delivery Manager",
+        portfolio: "Customer",
+        ibmEmail: "thsilva@br.ibm.com",
+        aepEmail: "THSilva@aep.com",
+        mobile: "+55-19-99129-1512",
+        seq: "3.8",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Brazil",
+        departments: [
+          { group: "Portfolio", department: "Customer", role: "Onshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p35",
+        name: "Arrian Ordo\u00f1ez",
+        role: "Offshore Delivery Manager",
+        portfolio: "Customer",
+        ibmEmail: "arrian.ordonez@ph.ibm.com",
+        aepEmail: "N/A",
+        mobile: "+63-9999917652",
+        seq: "3.8",
+        parent: "p21",
+        type: "Portfolio",
+        orgGroup: "Portfolio",
+        location: "Philippines",
+        departments: [
+          { group: "Portfolio", department: "Customer", role: "Offshore Delivery Manager" }
+        ]
+      },
+      {
+        id: "p37",
+        name: "Tyler Fini",
+        role: "Program Manager",
+        portfolio: "Bill Redesign",
+        ibmEmail: "trfini@us.ibm.com",
+        aepEmail: "tfini@aep.com",
+        mobile: "+1-347-491-2041",
+        seq: "3.10",
+        parent: "p21",
+        type: "Program",
+        orgGroup: "Programs",
+        location: "USA",
+        departments: [
+          { group: "Programs", department: "Bill Redesign", role: "Program Manager" }
+        ]
+      },
+      {
+        id: "p38",
+        name: "Suresh Sagadevan",
+        role: "PMO Leader",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "sksuresh@in.ibm.com",
+        aepEmail: "N/A",
+        mobile: "+91-9845422334",
+        seq: "4",
+        type: "Leadership",
+        orgGroup: "Support & Delivery",
+        location: "India",
+        departments: [
+          { group: "Support & Delivery", department: "PMO", role: "PMO Leader" }
+        ]
+      },
+      {
+        id: "p39",
+        name: "Joy Makalintal",
+        role: "PMO",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "joymakalintal@ph.ibm.com",
+        aepEmail: "N/A",
+        mobile: "+63-905-6641746",
+        seq: "4.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "Philippines",
+        departments: [
+          { group: "Support & Delivery", department: "PMO", role: "PMO" }
+        ]
+      },
+      {
+        id: "p40",
+        name: "Harshad Joshi",
+        role: "PMO",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "harshad.joshi@in.ibm.com",
+        aepEmail: "N/A",
+        mobile: "+91-9011050564",
+        seq: "4.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "India",
+        departments: [
+          { group: "Support & Delivery", department: "PMO", role: "PMO" }
+        ]
+      },
+      {
+        id: "p41",
+        name: "Rems Acero",
+        role: "PMO",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "Remedios.Acero@ibm.com",
+        aepEmail: "racero@aep.com",
+        mobile: "+63-9985410714",
+        seq: "4.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "Philippines",
+        departments: [
+          { group: "Support & Delivery", department: "PMO", role: "PMO" },
+          { group: "Support & Delivery", department: "Solutions", role: "Solutions" }
+        ]
+      },
+      {
+        id: "p42",
+        name: "Badeth Solis",
+        role: "PMO",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "bernadeth.solis@ibm.com",
+        aepEmail: "bsolis@aep.com",
+        mobile: "+63-9761844334",
+        seq: "4.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "Philippines",
+        departments: [
+          { group: "Support & Delivery", department: "PMO", role: "PMO" },
+          { group: "Support & Delivery", department: "Solutions", role: "Solutions" }
+        ]
+      },
+      {
+        id: "p51",
+        name: "Neha Bagde",
+        role: "PMO",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "Neha.Bagde@ibm.com",
+        aepEmail: "nbagde@aep.com",
+        mobile: "+91-8823870704",
+        seq: "4.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "India",
+        departments: [
+          { group: "Support & Delivery", department: "PMO", role: "PMO" }
+        ]
+      },
+      {
+        id: "p52",
+        name: "Raman Khaddar",
+        role: "PMO",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "Raman.Khaddar@ibm.com",
+        aepEmail: "rkhaddar@aep.com",
+        mobile: "+91-7898169333",
+        seq: "4.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "India",
+        departments: [
+          { group: "Support & Delivery", department: "PMO", role: "PMO" }
+        ]
+      },
+      {
+        id: "p55",
+        name: "Rashmi Nagaraj",
+        role: "PMO",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "rashmnag@in.ibm.com",
+        aepEmail: "N/A",
+        mobile: "+91-944-817-1936",
+        seq: "4.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "India",
+        departments: [
+          { group: "Support & Delivery", department: "PMO", role: "PMO" }
+        ]
+      },
+      {
+        id: "p43",
+        name: "Marelyne Tolentino",
+        role: "Solution Executive",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "marelyne@us.ibm.com",
+        aepEmail: "mtolentino@aep.com",
+        mobile: "+1-303-550-1008",
+        seq: "5",
+        type: "Leadership",
+        orgGroup: "Support & Delivery",
+        location: "USA",
+        departments: [
+          { group: "Support & Delivery", department: "PMO & Solutioning", role: "Solution Executive" }
+        ]
+      },
+      {
+        id: "p44",
+        name: "Neha Priyadarshini M",
+        role: "Solutions",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "neha.sundaram@in.ibm.com",
+        aepEmail: "N/A",
+        mobile: "+1-6692828064",
+        seq: "5.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "USA",
+        departments: [
+          { group: "Support & Delivery", department: "Solutions", role: "Solutions" }
+        ]
+      },
+      {
+        id: "p56",
+        name: "Sanjay Basu",
+        role: "Solutions",
+        portfolio: "PMO & Solutioning",
+        ibmEmail: "sanjbasu@in.ibm.com",
+        aepEmail: "N/A",
+        mobile: "+91-033-4009-5685",
+        seq: "5.1",
+        type: "PMO & Solutioning",
+        orgGroup: "Support & Delivery",
+        location: "India",
+        departments: [
+          { group: "Support & Delivery", department: "Solutions", role: "Solutions" }
+        ]
+      },
+      {
+        id: "p47",
+        name: "Anil Gopala",
+        role: "Strategy & Emerging Technologies",
+        portfolio: "Strategy & Emerging Technologies",
+        ibmEmail: "Anil.Gopala@ibm.com",
+        aepEmail: "agopala@aep.com",
+        mobile: "+1-214-843-4340",
+        seq: "6",
+        type: "Leadership",
+        orgGroup: "Support & Delivery",
+        location: "USA",
+        departments: [
+          { group: "Support & Delivery", department: "Strategy & Emerging Technologies", role: "Strategy & Emerging Technologies" }
+        ]
+      },
+      {
+        id: "p48",
+        name: "Chad Flores",
+        role: "Delivery Project Executive",
+        portfolio: "Delivery Project Executives",
+        ibmEmail: "florescc@ph.ibm.com",
+        aepEmail: "ceflores@aep.com",
+        mobile: "+63-9088178216",
+        seq: "dpe",
+        type: "DPE",
+        orgGroup: "Support & Delivery",
+        location: "Philippines",
+        departments: [
+          { group: "Support & Delivery", department: "Delivery Project Executives", role: "Delivery Project Executive" }
+        ]
+      },
+      {
+        id: "p49",
+        name: "Parag Bhatt",
+        role: "Delivery Project Executive",
+        portfolio: "Delivery Project Executives",
+        ibmEmail: "parag.bhatt@in.ibm.com",
+        aepEmail: "pbhatt@aep.com",
+        mobile: "+91-9970-230088",
+        seq: "dpe",
+        type: "DPE",
+        orgGroup: "Support & Delivery",
+        location: "India",
+        departments: [
+          { group: "Support & Delivery", department: "Delivery Project Executives", role: "Delivery Project Executive" }
+        ]
+      },
+      {
+        id: "p50",
+        name: "Raman Luthra",
+        role: "Delivery Project Executive",
+        portfolio: "Delivery Project Executives",
+        ibmEmail: "ramanluthra@in.ibm.com",
+        aepEmail: "rluthra@aep.com",
+        mobile: "+91-991-077-0401",
+        seq: "dpe",
+        type: "DPE",
+        orgGroup: "Support & Delivery",
+        location: "India",
+        departments: [
+          { group: "Support & Delivery", department: "Delivery Project Executives", role: "Delivery Project Executive" }
+        ]
+      },
+      {
+        id: "p53",
+        name: "Rene Neto",
+        role: "Delivery Project Executive",
+        portfolio: "Delivery Project Executives",
+        ibmEmail: "rrolivei@br.ibm.com",
+        aepEmail: "rneto@aep.com",
+        mobile: "+55-16-99795-8788",
+        seq: "dpe",
+        type: "DPE",
+        orgGroup: "Support & Delivery",
+        location: "Brazil",
+        departments: [
+          { group: "Support & Delivery", department: "Delivery Project Executives", role: "Delivery Project Executive" }
+        ]
+      }
     ];
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1061,6 +1846,8 @@ function directReports(id) { return people.filter(p => p.parent === id); }
 function parentOf(p) { return p.parent ? byId[p.parent] : null; }
 
 function stripeClass(p) {
+  // For multi-department employees, use neutral / multi-accent stripe
+  if (isMultiDept(p))           return "stripe-multi";
   // Use org-based classification (never infer from role text)
   if (isTowerLeader(p))         return "stripe-tower";  // indigo — Tower Leaders
   if (isPmoSubgroup(p))         return "stripe-pmo";    // amber  — Suresh's PMO group
@@ -1323,12 +2110,12 @@ function isSolutioningSubgroup(p) {
 }
 
 /**
- * getEmployeeOrg(p) — single source of truth for org classification.
- * Returns: { group, department, displayLabel, shortLabel, category, badgeClass, style }
+ * getDepartmentOrg(deptObj, fallbackPerson) — returns org classification for a single department entry.
+ * deptObj: { group, department, role }
  */
-function getEmployeeOrg(p) {
-  const group = p.orgGroup || "Leadership";
-  const dept  = (p.portfolio && p.portfolio !== group) ? p.portfolio : null;
+function getDepartmentOrg(deptObj, fallbackPerson = {}) {
+  const group = (deptObj && deptObj.group) || fallbackPerson.orgGroup || "Leadership";
+  const dept  = (deptObj && deptObj.department && deptObj.department !== group) ? deptObj.department : ((fallbackPerson.portfolio && fallbackPerson.portfolio !== group) ? fallbackPerson.portfolio : null);
   const raw   = dept || group;
 
   // Department name normalization
@@ -1339,24 +2126,22 @@ function getEmployeeOrg(p) {
     normalizedDisplay = "Strategy & Emerging Technologies";
   }
 
-  // Determine category & display labels based on organizational membership
   let catKey = DEPT_CATEGORY_MAP[raw] || DEPT_CATEGORY_MAP[normalizedDisplay] || DEPT_CATEGORY_MAP[group];
-
   let shortLabel = DEPT_SHORT_LABELS[raw] || DEPT_SHORT_LABELS[normalizedDisplay];
 
-  // Subgroup overrides — checked in priority order
-  if (isTowerLeader(p)) {
-    catKey = "towerLeader";
-    normalizedDisplay = "Tower Leader";
-    shortLabel = "TOWER LEADER";
-  } else if (isPmoSubgroup(p)) {
+  // Specific subgroup overrides
+  if (dept === "PMO" || raw === "PMO") {
     catKey = "pmo";
     normalizedDisplay = "PMO";
     shortLabel = "PMO";
-  } else if (isSolutioningSubgroup(p)) {
+  } else if (dept === "Solutions" || dept === "Solutioning" || dept === "PMO & Solutioning" || raw === "Solutions") {
     catKey = "pmoSolutioning";
-    normalizedDisplay = "PMO & Solutioning";
-    shortLabel = p.seq === "5" ? "PMO & SOLUTIONING" : "SOLUTIONING";
+    normalizedDisplay = dept === "PMO & Solutioning" ? "PMO & Solutioning" : "Solutions";
+    shortLabel = dept === "PMO & Solutioning" ? "PMO & SOLUTIONING" : "SOLUTIONING";
+  } else if (fallbackPerson && isTowerLeader(fallbackPerson) && group === "Leadership") {
+    catKey = "towerLeader";
+    normalizedDisplay = "Tower Leader";
+    shortLabel = "TOWER LEADER";
   }
 
   if (!catKey) {
@@ -1381,48 +2166,118 @@ function getEmployeeOrg(p) {
 }
 
 /**
- * renderDepartmentBadge(p, options) — unified reusable department badge component.
- * Renders consistent rounded pill badge across spoke cards, DPE cards, center info, modal, etc.
+ * getEmployeeDepts(p) — returns an array of department entries for the employee.
+ * Every employee is guaranteed to have at least one department entry.
  */
-function renderDepartmentBadge(p, options = {}) {
-  const org = getEmployeeOrg(p);
-  const isFilterActive = options.isActiveFilter || false;
-  const extraClasses = options.extraClasses ? ` ${options.extraClasses}` : "";
-  const activeClass = isFilterActive ? " badge-dept-active" : "";
-  const customStyle = options.style ? ` style="${options.style}"` : "";
-  const labelText = options.useFullLabel ? org.displayLabel.toUpperCase() : org.shortLabel;
-
-  return `<span class="spoke-dept-badge ${org.badgeClass}${activeClass}${extraClasses}"${customStyle} title="${org.displayLabel}">${labelText}</span>`;
+function getEmployeeDepts(p) {
+  if (p.departments && Array.isArray(p.departments) && p.departments.length > 0) {
+    return p.departments;
+  }
+  return [
+    {
+      group: p.orgGroup || (p.type === "Program" ? "Programs" : (p.type === "Portfolio" ? "Portfolio" : "Leadership")),
+      department: p.portfolio || p.orgGroup || "Leadership",
+      role: p.role || ""
+    }
+  ];
 }
 
-// Maps an employee to its filter-section key (only Portfolio/Programs become tabs)
-function sectionKey(p) {
-  const g = p.orgGroup || "Leadership";
-  if (g === "Portfolio") return "Portfolio";
-  if (g === "Programs")  return "Programs";
-  return g;
+/**
+ * getEmployeeOrg(p) — returns primary org classification for backwards compatibility.
+ */
+function getEmployeeOrg(p) {
+  const depts = getEmployeeDepts(p);
+  return getDepartmentOrg(depts[0], p);
+}
+
+/**
+ * isMultiDept(p) — returns true if employee belongs to more than one department
+ */
+function isMultiDept(p) {
+  return getEmployeeDepts(p).length > 1;
+}
+
+/**
+ * renderDepartmentBadges(p, options) — renders all department badges for an employee.
+ * Follows department color palette per badge, wraps naturally within the same tile, and highlights matching active filter.
+ */
+function renderDepartmentBadges(p, options = {}) {
+  const depts = getEmployeeDepts(p);
+  const isSearchOrPopup = options.useFullLabel || false;
+  
+  return depts.map(d => {
+    const org = getDepartmentOrg(d, p);
+    const matchesPortfolio = activePortfolio && (d.department === activePortfolio || org.displayLabel === activePortfolio || org.shortLabel === activePortfolio);
+    const matchesSection = activeSection && !activePortfolio && (d.group === activeSection);
+    const isFilterActive = options.isActiveFilter || matchesPortfolio || matchesSection;
+    
+    const extraClasses = options.extraClasses ? ` ${options.extraClasses}` : "";
+    const activeClass = isFilterActive ? " badge-dept-active" : "";
+    const customStyle = options.style ? ` style="${options.style}"` : "";
+    const labelText = isSearchOrPopup ? org.displayLabel.toUpperCase() : org.shortLabel;
+
+    return `<span class="spoke-dept-badge ${org.badgeClass}${activeClass}${extraClasses}"${customStyle} title="${org.displayLabel}">${labelText}</span>`;
+  }).join("");
+}
+
+/**
+ * renderDepartmentBadge(p, options) — alias/wrapper for renderDepartmentBadges.
+ */
+function renderDepartmentBadge(p, options = {}) {
+  return renderDepartmentBadges(p, options);
+}
+
+/**
+ * employeeMatchesFilter(p, section, portfolio) — checks if employee belongs to the given section/portfolio
+ */
+function employeeMatchesFilter(p, section, portfolio) {
+  const depts = getEmployeeDepts(p);
+  return depts.some(d => {
+    const matchesSec = !section || d.group === section;
+    const matchesPort = !portfolio || d.department === portfolio || (d.department && d.department.toLowerCase() === portfolio.toLowerCase());
+    return matchesSec && matchesPort;
+  });
 }
 
 // Get all direct reports grouped by section then portfolio
 function getSections(centerId) {
   const reports = directReports(centerId);
   const sections = {};
+  
   for (const r of reports) {
-    const sec  = sectionKey(r);
-    const port = r.portfolio || "Other";
-    if (!sections[sec]) sections[sec] = {};
-    if (!sections[sec][port]) sections[sec][port] = [];
-    sections[sec][port].push(r);
+    const depts = getEmployeeDepts(r);
+    depts.forEach(d => {
+      const sec = d.group || "Leadership";
+      const port = d.department || "Other";
+      if (!sections[sec]) sections[sec] = {};
+      if (!sections[sec][port]) sections[sec][port] = [];
+      // Store reference to person under this section & portfolio if not already present in this bucket
+      if (!sections[sec][port].some(x => x.id === r.id)) {
+        sections[sec][port].push(r);
+      }
+    });
   }
   return sections;
 }
 
-// Get visible spokes based on current section + portfolio filter
+// Get visible spokes based on current section + portfolio filter, deduplicated by employee ID
 function getVisibleSpokes(centerId) {
-  let reports = directReports(centerId);
-  if (activeSection)   reports = reports.filter(r => sectionKey(r) === activeSection);
-  if (activePortfolio) reports = reports.filter(r => r.portfolio === activePortfolio);
-  return { spokes: reports, hasMore: false, total: reports.length };
+  const allReports = directReports(centerId);
+  
+  // Filter employees: an employee is visible if ANY of their department memberships match the active filter
+  let visible = allReports.filter(p => employeeMatchesFilter(p, activeSection, activePortfolio));
+
+  // Safeguard: Ensure visible employee IDs are strictly unique
+  const seen = new Set();
+  const dedupedSpokes = [];
+  for (const p of visible) {
+    if (!seen.has(p.id)) {
+      seen.add(p.id);
+      dedupedSpokes.push(p);
+    }
+  }
+
+  return { spokes: dedupedSpokes, hasMore: false, total: dedupedSpokes.length };
 }
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1501,6 +2356,16 @@ function renderCenter(p, dims) {
 // RENDER TWO-LEVEL FILTER (inside #center-panel, normal flow)
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderFilterPanel(centerId) {
+  // On the root view (navigation depth == 0), do not render the standalone filter panel
+  if (history.length === 0) {
+    sectionFilterEl.innerHTML = "";
+    deptFilterAreaEl.innerHTML = "";
+    filterTrailEl.innerHTML = "";
+    orgFilterEl.style.display = "none";
+    return;
+  }
+  orgFilterEl.style.display = "flex";
+
   const allReports = directReports(centerId).filter(k => !isDpe(k));
   const sections   = getSections(centerId);
 
@@ -1630,8 +2495,9 @@ function renderSpokes(spokes, dims, animate, cy) {
     const photoY = rowY;
 
     const org = getEmployeeOrg(p);
+    const multi = isMultiDept(p);
     const spokeEl = document.createElement('div');
-    spokeEl.className = `spoke-slot org-${org.category} ${isLeft ? "left-side" : "right-side"} ${stripeClass(p)}`;
+    spokeEl.className = `spoke-slot org-${multi ? "other" : org.category} ${multi ? "is-multi-dept" : ""} ${isLeft ? "left-side" : "right-side"} ${stripeClass(p)}`;
     spokeEl.dataset.id = p.id;
     if (animate) spokeEl.classList.add('animating');
 
@@ -1645,12 +2511,13 @@ function renderSpokes(spokes, dims, animate, cy) {
     const nameTrunc = p.name.length > 22 ? p.name.slice(0,20)+'&#8230;' : p.name;
     const roleTrunc = p.role.length > 28 ? p.role.slice(0,26)+'&#8230;' : p.role;
 
-    // ── Dept/org badge — driven by getEmployeeOrg() (single source of truth)
-    if (org.group === "Portfolio")  spokeEl.classList.add("section-portfolio");
-    else if (org.group === "Programs") spokeEl.classList.add("section-program");
+    // ── Dept/org badge — driven by getEmployeeOrg() and multi-department list
+    if (!multi) {
+      if (org.group === "Portfolio")  spokeEl.classList.add("section-portfolio");
+      else if (org.group === "Programs") spokeEl.classList.add("section-program");
+    }
 
-    const deptActive  = !!activePortfolio && activePortfolio === p.portfolio;
-    const badgeHtml   = renderDepartmentBadge(p, { isActiveFilter: deptActive });
+    const badgeHtml = renderDepartmentBadges(p);
 
     spokeEl.innerHTML = `
       <div class="spoke-photo-wrap">
@@ -1907,14 +2774,21 @@ function render(animate) {
     centerWrap.style.left = "50%";
     centerWrap.style.top  = cy + "px";
 
-    // â”€â”€ 10. Render spokes + connectors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // â"€â"€ 10. Render spokes + connectors â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
     renderSpokes(spokes, dims, animate, cy);
     renderFilterPanel(currentId);
-
 
     updateBreadcrumb();
     updateBackLink();
     pagerEl.classList.remove("visible");
+
+    // Notify parent iframe of actual content height so it can resize
+    requestAnimationFrame(() => {
+      const h = document.body.scrollHeight;
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: "orgChartHeight", height: h }, "*");
+      }
+    });
   });
 }
 
@@ -1950,6 +2824,7 @@ function _captureLayout() {
 // clickedEl: the .spoke-slot DOM element that was clicked.
 function navigateTo(id, page, clickedEl) {
   if (isNavigating) return;
+  isNavigating = true;
   page = page || 0;
 
   if (!clickedEl) {
@@ -1960,6 +2835,7 @@ function navigateTo(id, page, clickedEl) {
     activeSection   = null;
     activePortfolio = null;
     render(false);
+    isNavigating = false;
     return;
   }
 
@@ -2044,6 +2920,7 @@ function navigateTo(id, page, clickedEl) {
 
     updateBreadcrumb();
     updateBackLink();
+    isNavigating = false;
   }, FLY_MS);
 }
 
@@ -2365,10 +3242,13 @@ const searchDrop = document.getElementById("search-dropdown");
 searchBox.addEventListener("input", () => {
   const q = searchBox.value.trim().toLowerCase();
   if (!q) { searchDrop.classList.remove("visible"); return; }
-  const hits = people.filter(p =>
-    p.name.toLowerCase().includes(q) || p.role.toLowerCase().includes(q) ||
-    (p.portfolio && p.portfolio.toLowerCase().includes(q))
-  ).slice(0, 10);
+  const hits = people.filter(p => {
+    const depts = getEmployeeDepts(p);
+    return p.name.toLowerCase().includes(q) ||
+      p.role.toLowerCase().includes(q) ||
+      (p.portfolio && p.portfolio.toLowerCase().includes(q)) ||
+      depts.some(d => (d.department && d.department.toLowerCase().includes(q)) || (d.role && d.role.toLowerCase().includes(q)));
+  }).slice(0, 10);
   if (!hits.length) { searchDrop.classList.remove("visible"); return; }
   searchDrop.innerHTML = hits.map(p => {
     const src = photo(p.name);
@@ -2383,7 +3263,7 @@ searchBox.addEventListener("input", () => {
           <div class="sd-role">${p.role}</div>
         </div>
       </div>
-      <div>${renderDepartmentBadge(p)}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;">${renderDepartmentBadges(p)}</div>
     </div>`;
   }).join("");
   searchDrop.classList.add("visible");
@@ -2486,13 +3366,28 @@ function openPopup(p, sourceEl) {
   if (contactRows.length)
     html += `<div class="db-sec"><div class="db-sec-title">Contact</div>${contactRows.join("")}</div>`;
 
-  // Organization — uses getEmployeeOrg() so it matches the card badge exactly
-  const pOrg = getEmployeeOrg(p);
+  // Organization / Memberships — lists all department assignments grouped by section
+  const pDepts = getEmployeeDepts(p);
   const orgRows = [];
-  orgRows.push(`<div class="db-row"><span class="db-tag" style="background:#4f46e5;min-width:48px">ORG</span><span class="db-val">${pOrg.group}</span></div>`);
-  if (pOrg.department)
-    orgRows.push(`<div class="db-row"><span class="db-tag" style="background:#7c3aed;min-width:48px">DEPT</span><span class="db-val">${pOrg.displayLabel}</span></div>`);
-  html += `<div class="db-sec"><div class="db-sec-title">Organization</div>${orgRows.join("")}</div>`;
+  if (pDepts.length === 1) {
+    const pOrg = getDepartmentOrg(pDepts[0], p);
+    orgRows.push(`<div class="db-row"><span class="db-tag" style="background:#4f46e5;min-width:48px">ORG</span><span class="db-val">${pOrg.group}</span></div>`);
+    if (pOrg.department)
+      orgRows.push(`<div class="db-row"><span class="db-tag" style="background:#7c3aed;min-width:48px">DEPT</span><span class="db-val">${pOrg.displayLabel}</span></div>`);
+  } else {
+    // Group departments by organizational section
+    const grouped = {};
+    pDepts.forEach(d => {
+      const g = d.group || "Leadership";
+      if (!grouped[g]) grouped[g] = [];
+      grouped[g].push(d);
+    });
+    for (const [secName, deptList] of Object.entries(grouped)) {
+      const secTagColor = secName === "Programs" ? "#dc2626" : (secName === "Portfolio" ? "#2563eb" : "#4f46e5");
+      orgRows.push(`<div class="db-row" style="margin-top:4px;"><span class="db-tag" style="background:${secTagColor};min-width:70px">${secName.toUpperCase()}</span><span class="db-val" style="font-weight:600;">${deptList.map(d => `${d.department}${d.role && d.role !== p.role ? ` <span style="font-weight:400;color:#6b7280;font-size:11px">(${d.role})</span>` : ""}`).join(" &bull; ")}</span></div>`);
+    }
+  }
+  html += `<div class="db-sec"><div class="db-sec-title">Organizational Memberships</div>${orgRows.join("")}</div>`;
 
   // Reports To
   if (mgr) {
@@ -2545,6 +3440,17 @@ function openPopup(p, sourceEl) {
   popupEl.style.animation = "";
   void popupEl.offsetWidth; // reflow
   popupEl.style.animation = "";
+
+  // Tell parent page to show full-viewport backdrop + lock scroll
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: "orgChartModalOpen" }, "*");
+  }
+
+  // Focus first focusable element inside the modal for accessibility
+  requestAnimationFrame(() => {
+    const focusable = popupEl.querySelector("button, [href], input, [tabindex]");
+    if (focusable) focusable.focus();
+  });
 }
 
 function closePopup() {
@@ -2553,6 +3459,11 @@ function closePopup() {
     _popupSourceEl.classList.remove("popup-source");
     _popupSourceEl.classList.remove("dpe-popup-source");
     _popupSourceEl = null;
+  }
+
+  // Tell parent page to hide backdrop + restore scroll BEFORE animation
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: "orgChartModalClose" }, "*");
   }
 
   // Animate out
