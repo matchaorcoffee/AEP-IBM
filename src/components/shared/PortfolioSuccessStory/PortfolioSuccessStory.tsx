@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './PortfolioSuccessStory.module.scss'
-import type { SuccessStory } from '../../../models/SuccessStory'
+import type { PortfolioShowcaseContent } from '../../../data/portfolio-showcase'
 
 interface PortfolioSuccessStoryProps {
-  successStory: SuccessStory
+  successStory: PortfolioShowcaseContent
 }
 
 const STAGES = [

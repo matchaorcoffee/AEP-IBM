@@ -1,22 +1,306 @@
-// ── Full-viewport modal backdrop (portalled to document.body) ─────────────────
-// Covers the entire application including header, nav, footer.
-// z-index must exceed all sticky/fixed site elements (header, nav tabs, etc.)
+// ── Global modal system (portalled to document.body) ──────────────────────────
+//
+// Architecture:
+//   .modalBackdrop   — position: fixed; inset: 0; z-index: 10000
+//                      Covers EVERYTHING: header, nav, org chart iframe, footer.
+//                      The iframe stays at its normal stacking order, so this
+//                      backdrop sits visually above it.
+//   .modalLayer      — position: fixed; inset: 0; z-index: 10001
+//                      Flex container that centres the modal box.
+//   .modalBox        — the sharp white card that floats above the backdrop.
+
+// Backdrop: dims and blurs the full viewport — iframe included.
 .modalBackdrop {
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(17, 24, 39, 0.35);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  z-index: 10000; // above portfolio dropdown (9999) and all other site chrome
-  animation: backdropIn 0.2s ease forwards;
-  pointer-events: none; // let clicks fall through to the iframe's own overlay handler
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 10000;
+  animation: backdropIn 0.22s ease forwards;
+  cursor: pointer; // clicking backdrop closes the modal
 }
 
 @keyframes backdropIn {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+// Modal positioning layer — sits above the backdrop.
+// Flexbox centres the modal box relative to the full fixed viewport.
+.modalLayer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10001;
+  pointer-events: none; // only the box itself is interactive
+}
+
+// The white card — no top/left/transform positioning; flexbox parent handles centering.
+.modalBox {
+  pointer-events: auto;
+  position: relative;
+  width: min(660px, calc(100vw - 48px));
+  max-height: calc(100vh - 48px);
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.20), 0 4px 20px rgba(99, 102, 241, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalIn 0.22s ease forwards;
+  // No transform here — flexbox on .modalLayer is the sole centering mechanism.
+}
+
+// Close button
+.modalClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #f3f4f6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #6b7280;
+  z-index: 10;
+  transition: background 0.12s, color 0.12s;
+
+  &:hover {
+    background: #e5e7eb;
+    color: #111827;
+  }
+}
+
+// Header band
+.modalHeader {
+  padding: 36px 32px 24px;
+  background: linear-gradient(160deg, #f8f7ff 0%, #fff 60%);
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+// Portrait ring
+.modalPortraitRingOuter {
+  border-radius: 50%;
+  padding: 5px;
+  background: conic-gradient(from 0deg, #6366f1 0%, #818cf8 25%, #6366f1 50%, #818cf8 75%, #6366f1 100%);
+  margin-bottom: 16px;
+  box-shadow: 0 0 0 4px #fff, 0 6px 24px rgba(99, 102, 241, 0.26);
+}
+
+.modalPortraitRingInner {
+  border-radius: 50%;
+  padding: 4px;
+  background: #fff;
+}
+
+.modalName {
+  font-size: 19px;
+  font-weight: 700;
+  color: #111827;
+  text-align: center;
+  line-height: 1.25;
+  margin-bottom: 5px;
+}
+
+.modalRole {
+  font-size: 13.5px;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.modalMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+// Scrollable body — preserves org chart popup body styles
+.modalBody {
+  padding: 22px 32px 28px;
+  overflow-y: auto;
+  flex: 1;
+  overscroll-behavior: contain;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  // ── Replicate popup body CSS from AEP_Org_Chart_v2.html ──────────────
+  :global(.db-sec) { margin-bottom: 20px; }
+
+  :global(.db-sec-title) {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #9ca3af;
+    letter-spacing: 0.09em;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 5px;
+    margin-bottom: 12px;
+  }
+
+  :global(.db-row) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #374151;
+    min-height: 34px;
+    margin-bottom: 6px;
+  }
+
+  :global(.db-tag) {
+    display: inline-block;
+    min-width: 34px;
+    text-align: center;
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #fff;
+    border-radius: 4px;
+    padding: 3px 4px;
+    flex-shrink: 0;
+    line-height: 1.5;
+
+    &.ibm { background: #1d4ed8; }
+    &.aep { background: #b91c1c; }
+    &.tel { background: #059669; }
+  }
+
+  :global(.db-val) {
+    word-break: break-all;
+    flex: 1;
+    font-size: 12.5px;
+  }
+
+  :global(.db-copy) {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #9ca3af;
+    flex-shrink: 0;
+    padding: 4px 7px;
+    border-radius: 5px;
+    min-width: 30px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.12s, background 0.12s;
+
+    &:hover { color: #6366f1; background: #eef2ff; }
+  }
+
+  :global(.db-person-row) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.12s;
+
+    &:hover { background: #f3f4f6; }
+  }
+
+  :global(.db-person-av) {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+  }
+
+  :global(.db-person-name) {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  :global(.db-person-role) {
+    font-size: 11.5px;
+    color: #6b7280;
+    margin-top: 1px;
+  }
+
+  :global(.db-nav-btn) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px 0;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: opacity 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.30);
+
+    &:hover { opacity: 0.92; box-shadow: 0 4px 18px rgba(99, 102, 241, 0.42); }
+  }
+}
+
+// Responsive modal sizing
+@media (max-width: 720px) {
+  .modalBox {
+    width: min(92vw, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    border-radius: 16px;
+  }
+  .modalHeader { padding: 28px 24px 20px; }
+  .modalBody   { padding: 18px 24px 22px; }
+}
+
+@media (max-width: 480px) {
+  .modalBox {
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 32px);
+    border-radius: 14px;
+  }
+  .modalHeader { padding: 24px 20px 18px; }
+  .modalBody   { padding: 16px 20px 20px; }
 }
 
 // ── Page shell ────────────────────────────────────────────────────────────────

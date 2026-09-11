@@ -3430,27 +3430,46 @@ function openPopup(p, sourceEl) {
     });
   });
 
-  // Show overlay + popup
-  popupOverlay.classList.remove("closing");
-  popupEl.classList.remove("closing");
-  popupOverlay.classList.add("open");
-  popupEl.classList.add("open");
-
-  // Remove closing class after animation ends (for re-open)
-  popupEl.style.animation = "";
-  void popupEl.offsetWidth; // reflow
-  popupEl.style.animation = "";
-
-  // Tell parent page to show full-viewport backdrop + lock scroll
+  // If running inside a parent frame, send the full rendered modal to the parent
+  // so it can be displayed above the global backdrop (which covers the iframe too).
   if (window.parent && window.parent !== window) {
-    window.parent.postMessage({ type: "orgChartModalOpen" }, "*");
-  }
+    // Build portrait HTML
+    const portraitHtml = src
+      ? `<img class="popup-photo" src="${src}" alt="${p.name}" style="width:108px;height:108px;border-radius:50%;object-fit:cover;display:block;">`
+      : `<div class="popup-initials" style="background:${bgc(p.name)};width:108px;height:108px;font-size:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff">${ini(p.name)}</div>`;
 
-  // Focus first focusable element inside the modal for accessibility
-  requestAnimationFrame(() => {
-    const focusable = popupEl.querySelector("button, [href], input, [tabindex]");
-    if (focusable) focusable.focus();
-  });
+    const countBadgeHtml = reports.length
+      ? `<span class="popup-count" style="font-size:12.5px;color:#4f46e5;background:#eef2ff;padding:2px 10px;border-radius:20px;">&#128101; ${reports.length}</span>` : "";
+    const metaHtml = `<span class="popup-loc" style="font-size:13px;color:#6b7280;display:inline-flex;align-items:center;gap:4px;">${flagHtml(p.loc)}</span>${countBadgeHtml}${renderDepartmentBadge(p, { useFullLabel: true })}`;
+
+    window.parent.postMessage({
+      type: "orgChartModalOpen",
+      modalData: {
+        portraitHtml,
+        name: p.name,
+        role: p.role,
+        metaHtml,
+        bodyHtml: html,
+        personId: p.id,
+        hasReports: reports.length > 0,
+        managerNavId: mgr ? mgr.id : null,
+        reportNavIds: reports.map(r => r.id),
+      }
+    }, "*");
+  } else {
+    // Standalone (not in iframe): show internal popup as before
+    popupOverlay.classList.remove("closing");
+    popupEl.classList.remove("closing");
+    popupOverlay.classList.add("open");
+    popupEl.classList.add("open");
+    popupEl.style.animation = "";
+    void popupEl.offsetWidth;
+    popupEl.style.animation = "";
+    requestAnimationFrame(() => {
+      const focusable = popupEl.querySelector("button, [href], input, [tabindex]");
+      if (focusable) focusable.focus();
+    });
+  }
 }
 
 function closePopup() {
@@ -3461,21 +3480,20 @@ function closePopup() {
     _popupSourceEl = null;
   }
 
-  // Tell parent page to hide backdrop + restore scroll BEFORE animation
   if (window.parent && window.parent !== window) {
+    // In iframe mode the parent handles closing — just notify it
     window.parent.postMessage({ type: "orgChartModalClose" }, "*");
+  } else {
+    // Standalone mode: animate out internally
+    popupOverlay.classList.add("closing");
+    popupEl.classList.add("closing");
+    const onEnd = () => {
+      popupOverlay.classList.remove("open", "closing");
+      popupEl.classList.remove("open", "closing");
+      popupEl.removeEventListener("animationend", onEnd);
+    };
+    popupEl.addEventListener("animationend", onEnd);
   }
-
-  // Animate out
-  popupOverlay.classList.add("closing");
-  popupEl.classList.add("closing");
-
-  const onEnd = () => {
-    popupOverlay.classList.remove("open", "closing");
-    popupEl.classList.remove("open", "closing");
-    popupEl.removeEventListener("animationend", onEnd);
-  };
-  popupEl.addEventListener("animationend", onEnd);
 }
 
 popupCloseBtn.addEventListener("click", closePopup);
@@ -3483,6 +3501,30 @@ popupOverlay.addEventListener("click", closePopup);
 
 document.addEventListener("keydown", e => {
   if (e.key === "Escape" && popupEl.classList.contains("open")) closePopup();
+});
+
+// Listen for messages from the parent page
+window.addEventListener("message", e => {
+  if (!e.data || typeof e.data !== "object") return;
+  // Parent requests nav to a person (from modal nav click)
+  if (e.data.type === "orgChartNavTo") {
+    const navId = e.data.id;
+    const np = byId[navId];
+    if (!np) return;
+    if (directReports(navId).length > 0) {
+      navigateTo(navId);
+    } else {
+      openPopup(np, null);
+    }
+  }
+  // Parent closed the modal — remove source highlight silently
+  if (e.data.type === "orgChartParentClosed") {
+    if (_popupSourceEl) {
+      _popupSourceEl.classList.remove("popup-source");
+      _popupSourceEl.classList.remove("dpe-popup-source");
+      _popupSourceEl = null;
+    }
+  }
 });
 
 function doCopy(btn, text) {

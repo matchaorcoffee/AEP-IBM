@@ -343,6 +343,17 @@
   &:last-child { border-bottom: none; }
 }
 
+/* ── Analytics container border ────────────────────────────────────────── */
+.analyticsBorder {
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Explicit last-section override */
+.sectionLast {
+  border-bottom: none;
+}
+
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .hero { height: 270px; }

@@ -8,45 +8,18 @@ import offboardingImg from './assets/Offboarding.png'
 import demandManagementImg from './assets/DemandManagement.png'
 import { ResourceChurnTable } from '../../../components/shared/ResourceChurnChart/ResourceChurnChart'
 import resourceChurnImg from './assets/ResourceChurn.png'
+import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
 import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
 import PortfolioAnalyticsTabs from '../../../components/shared/PortfolioAnalyticsTabs/PortfolioAnalyticsTabs'
 import type { AnalyticsTab } from '../../../components/shared/PortfolioAnalyticsTabs/PortfolioAnalyticsTabs'
-import type { SuccessStory } from '../../../models/SuccessStory'
+import { PORTFOLIO_SHOWCASE } from '../../../data/portfolio-showcase'
 
 const videos = import.meta.glob('./assets/*.{mp4,webm,mov}', { eager: true, query: '?url', import: 'default' })
 
+const PORTFOLIO_NAME = 'WAM'
+const SHOWCASE = PORTFOLIO_SHOWCASE['wam']
+
 const LAST_UPDATE = 'Last update 03/20/2026'
-
-// ─────────────────────────────────────────────────────────────────────────────
-// WAM SHOWCASE DATA
-//
-// Descriptive fields below are TEMPORARY PLACEHOLDERS.
-// Replace with verified WAM source content when available.
-//
-// DO NOT EXPAND:
-//   fullName      — WAM acronym expansion is not verified; field intentionally omitted.
-//   capabilities  — "What WAM Enables" is hidden until verified capabilities exist.
-//
-// TO UPDATE: replace the Lorem Ipsum strings with approved WAM copy.
-// ─────────────────────────────────────────────────────────────────────────────
-const WAM_SUCCESS_STORY: SuccessStory = {
-  // fullName and capabilities intentionally omitted — unverified.
-  // The intro block and "What WAM Enables" section will not render.
-
-  description:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-
-  summary: 'A closer look at the challenges, collaboration, and outcomes behind the WAM portfolio.',
-
-  challenge:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-
-  solution:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-
-  impact:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-}
 
 /* ── Analytics tabs — one entry per existing chart section ─────────────────
    Order, labels, descriptions, and images are exactly as they were in
@@ -151,7 +124,7 @@ const NICHE_SKILLS = [
 
 /* ── Nav links point to the two remaining landmark sections ──────────────── */
 const NAV_LINKS = [
-  { id: 'analytics',  label: 'WAM by the Numbers' },
+  { id: 'analytics',  label: `${PORTFOLIO_NAME} by the Numbers` },
   { id: 'highlights', label: 'Highlights' },
 ]
 
@@ -166,12 +139,12 @@ export default function WAMPage() {
         <img src={wamHero} alt="WAM" className={styles.heroImg} />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
-          <h1 className={styles.pageTitle}>WAM</h1>
+          <h1 className={styles.pageTitle}>{PORTFOLIO_NAME}</h1>
           <p className={styles.heroSub}>Work &amp; Asset Management solutions</p>
         </div>
       </div>
 
-      {/* Sticky nav — now links to the two landmark sections */}
+      {/* Sticky nav */}
       <nav className={styles.navBar} aria-label="Page sections">
         {NAV_LINKS.map(link => (
           <button
@@ -184,39 +157,16 @@ export default function WAMPage() {
         ))}
       </nav>
 
-      {/* ── Portfolio Intro — About WAM ── */}
-      <div className={styles.portfolioIntro}>
-        <div className={styles.introInner}>
-          <div className={styles.introMeta}>
-            <h2 className={styles.introHeading}>About WAM</h2>
-            {WAM_SUCCESS_STORY.fullName && (
-              <p className={styles.introFullName}>{WAM_SUCCESS_STORY.fullName}</p>
-            )}
-            {WAM_SUCCESS_STORY.description && (
-              <p className={styles.introDescription}>{WAM_SUCCESS_STORY.description}</p>
-            )}
-          </div>
-
-          {WAM_SUCCESS_STORY.capabilities && WAM_SUCCESS_STORY.capabilities.length > 0 && (
-            <div className={styles.capabilities}>
-              <p className={styles.capabilitiesLabel}>What WAM Enables</p>
-              <ul className={styles.capabilityList}>
-                {WAM_SUCCESS_STORY.capabilities.map((cap) => (
-                  <li key={cap} className={styles.capabilityItem}>{cap}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
+      {/* ── About [Portfolio] ── */}
+      <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
 
       {/* ── From Challenge to Impact ── */}
-      <PortfolioSuccessStory successStory={WAM_SUCCESS_STORY} />
+      <PortfolioSuccessStory successStory={SHOWCASE} />
 
-      {/* ── WAM by the Numbers — tabbed analytics ── */}
+      {/* ── [Portfolio] by the Numbers — tabbed analytics ── */}
       <div className={styles.analyticsBorder}>
         <PortfolioAnalyticsTabs
-          heading="WAM by the Numbers"
+          heading={`${PORTFOLIO_NAME} by the Numbers`}
           tabs={WAM_ANALYTICS_TABS}
         />
       </div>
