@@ -1,0 +1,157 @@
+/* ── Section shell ─────────────────────────────────────────────────────────── */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 2rem 2.5rem;
+  border-bottom: 1px solid var(--color-border);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.sectionVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Heading ─────────────────────────────────────────────────────────────────  */
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.heading {
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Stages row ──────────────────────────────────────────────────────────────  */
+.stages {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+/* ── Wrapper holds card + connector ─────────────────────────────────────────  */
+.stageWrapper {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Stage card ──────────────────────────────────────────────────────────────  */
+.stageCard {
+  flex: 1;
+  min-width: 0;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.375rem 1.25rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.stageCardVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Impact card — slightly stronger emphasis */
+.stageCardImpact {
+  border-color: var(--color-accent);
+  border-width: 1.5px;
+  background: var(--color-accent-subtle);
+}
+
+/* ── Stage internals ─────────────────────────────────────────────────────────  */
+.stageNumber {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.375rem;
+  line-height: 1;
+}
+
+.stageCardImpact .stageNumber {
+  color: var(--color-accent);
+}
+
+.stageLabel {
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-primary);
+  margin: 0 0 0.625rem;
+  line-height: 1.3;
+}
+
+.stageCardImpact .stageLabel {
+  color: var(--color-accent-dark);
+}
+
+.stageContent {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-body);
+  margin: 0;
+}
+
+/* ── Connector arrow ─────────────────────────────────────────────────────────  */
+.connector {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  padding-top: 1.5rem; /* align with card content area */
+  color: var(--color-border-strong);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────────  */
+@media (max-width: 768px) {
+  .section {
+    padding: 1.75rem 1.25rem 2rem;
+  }
+
+  .stages {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .stageWrapper {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .stageCard {
+    width: 100%;
+  }
+
+  /* Rotate the connector arrow 90° to point downward on mobile */
+  .connector {
+    width: 100%;
+    padding: 0.375rem 0;
+    transform: rotate(90deg);
+    color: var(--color-border-strong);
+  }
+}

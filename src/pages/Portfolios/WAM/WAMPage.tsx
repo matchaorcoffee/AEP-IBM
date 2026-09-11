@@ -8,60 +8,134 @@ import offboardingImg from './assets/Offboarding.png'
 import demandManagementImg from './assets/DemandManagement.png'
 import { ResourceChurnTable } from '../../../components/shared/ResourceChurnChart/ResourceChurnChart'
 import resourceChurnImg from './assets/ResourceChurn.png'
+import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
+import PortfolioAnalyticsTabs from '../../../components/shared/PortfolioAnalyticsTabs/PortfolioAnalyticsTabs'
+import type { AnalyticsTab } from '../../../components/shared/PortfolioAnalyticsTabs/PortfolioAnalyticsTabs'
+import type { SuccessStory } from '../../../models/SuccessStory'
 
 const videos = import.meta.glob('./assets/*.{mp4,webm,mov}', { eager: true, query: '?url', import: 'default' })
 
 const LAST_UPDATE = 'Last update 03/20/2026'
 
-const sections = [
+// ─────────────────────────────────────────────────────────────────────────────
+// WAM SHOWCASE DATA
+//
+// Descriptive fields below are TEMPORARY PLACEHOLDERS.
+// Replace with verified WAM source content when available.
+//
+// DO NOT EXPAND:
+//   fullName      — WAM acronym expansion is not verified; field intentionally omitted.
+//   capabilities  — "What WAM Enables" is hidden until verified capabilities exist.
+//
+// TO UPDATE: replace the Lorem Ipsum strings with approved WAM copy.
+// ─────────────────────────────────────────────────────────────────────────────
+const WAM_SUCCESS_STORY: SuccessStory = {
+  // fullName and capabilities intentionally omitted — unverified.
+  // The intro block and "What WAM Enables" section will not render.
+
+  description:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+
+  summary: 'A closer look at the challenges, collaboration, and outcomes behind the WAM portfolio.',
+
+  challenge:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+
+  solution:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+
+  impact:
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+}
+
+/* ── Analytics tabs — one entry per existing chart section ─────────────────
+   Order, labels, descriptions, and images are exactly as they were in
+   the previous vertical layout. Nothing has been added or removed.        */
+const WAM_ANALYTICS_TABS: AnalyticsTab[] = [
   {
     id: 'geographic-distribution',
     label: 'Geographic Distribution',
-    description: 'This chart shows visualization on how many people we have assigned by country. This helps leadership to get insights and make some projection of what is coming next in terms of resources.',
-    subLabel: null,
-    chartSide: 'right',
+    description:
+      'This chart shows visualization on how many people we have assigned by country. This helps leadership to get insights and make some projection of what is coming next in terms of resources.',
+    lastUpdate: LAST_UPDATE,
+    chart: (
+      <img
+        src={geographicDistributionImg}
+        alt="Geographic Distribution chart"
+        className={styles.chartImg}
+      />
+    ),
   },
   {
     id: 'core-flex-distribution',
     label: 'Core-Flex Distribution',
-    description: 'This chart shows visualization on how people are distributed between Core and Flex. This helps leadership to get insights and make some projections of what is coming next in terms of core and flex resources.',
-    subLabel: null,
-    chartSide: 'left',
+    description:
+      'This chart shows visualization on how people are distributed between Core and Flex. This helps leadership to get insights and make some projections of what is coming next in terms of core and flex resources.',
+    lastUpdate: LAST_UPDATE,
+    chart: (
+      <img
+        src={coreFlexImg}
+        alt="Core-Flex Distribution chart"
+        className={styles.chartImg}
+      />
+    ),
   },
   {
     id: 'resource-churn',
     label: 'Resource Churn (last 3 months)',
-    description: 'This chart shows visualization on the progress for people churn in the past 3 months. This helps leadership to get insights of what portfolios we have more churn and make some projection of what is coming next.',
-    subLabel: 'by Reason',
-    chartSide: 'right',
+    description:
+      'This chart shows visualization on the progress for people churn in the past 3 months. This helps leadership to get insights of what portfolios we have more churn and make some projection of what is coming next.',
+    supplement: <ResourceChurnTable />,
+    lastUpdate: LAST_UPDATE,
+    chart: (
+      <img
+        src={resourceChurnImg}
+        alt="Resource Churn chart"
+        className={styles.chartImg}
+      />
+    ),
   },
   {
     id: 'monthly-onboarding',
     label: 'Monthly Onboarding of Resources (last 3 months)',
-    description: 'This chart shows visualization on how resource is increasing month by month. This helps leadership to get insights and make some projections of what is coming next in terms of resource count.',
-    subLabel: null,
-    chartSide: 'left',
+    description:
+      'This chart shows visualization on how resource is increasing month by month. This helps leadership to get insights and make some projections of what is coming next in terms of resource count.',
+    lastUpdate: LAST_UPDATE,
+    chart: (
+      <img
+        src={onboardingImg}
+        alt="Monthly Onboarding chart"
+        className={styles.chartImg}
+      />
+    ),
   },
   {
     id: 'monthly-offboarding',
     label: 'Monthly Offboarding of Resources (last 3 months)',
-    description: 'This chart shows the resource offboarding activities happened for the past three months. Data will help leadership to know and plan accordingly based on the reduction of resource count per month.',
-    subLabel: null,
-    chartSide: 'right',
+    description:
+      'This chart shows the resource offboarding activities happened for the past three months. Data will help leadership to know and plan accordingly based on the reduction of resource count per month.',
+    lastUpdate: LAST_UPDATE,
+    chart: (
+      <img
+        src={offboardingImg}
+        alt="Monthly Offboarding chart"
+        className={styles.chartImg}
+      />
+    ),
   },
   {
     id: 'demand-management',
     label: 'Demand Management',
-    description: 'This chart shows visualization on how demand is distributed between 30-60-90 day forecast. This helps leadership to get insights and make some projections of what is coming next in terms of demand.',
-    subLabel: null,
-    chartSide: 'left',
-  },
-  {
-    id: 'highlights',
-    label: 'Highlights',
-    description: null,
-    subLabel: null,
-    chartSide: null,
+    description:
+      'This chart shows visualization on how demand is distributed between 30-60-90 day forecast. This helps leadership to get insights and make some projections of what is coming next in terms of demand.',
+    lastUpdate: LAST_UPDATE,
+    chart: (
+      <img
+        src={demandManagementImg}
+        alt="Demand Management chart"
+        className={styles.chartImg}
+      />
+    ),
   },
 ]
 
@@ -73,6 +147,12 @@ const NICHE_SKILLS = [
   'Eggplant Test Automation',
   'Dynatrace',
   'Splunk',
+]
+
+/* ── Nav links point to the two remaining landmark sections ──────────────── */
+const NAV_LINKS = [
+  { id: 'analytics',  label: 'WAM by the Numbers' },
+  { id: 'highlights', label: 'Highlights' },
 ]
 
 export default function WAMPage() {
@@ -91,103 +171,113 @@ export default function WAMPage() {
         </div>
       </div>
 
-      {/* Nav links */}
-      <nav className={styles.navBar}>
-        {sections.map(s => (
-          <button key={s.id} className={styles.navLink} onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' })}>{s.label}</button>
+      {/* Sticky nav — now links to the two landmark sections */}
+      <nav className={styles.navBar} aria-label="Page sections">
+        {NAV_LINKS.map(link => (
+          <button
+            key={link.id}
+            className={styles.navLink}
+            onClick={() => document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            {link.label}
+          </button>
         ))}
       </nav>
 
-      {/* Sections */}
+      {/* ── Portfolio Intro — About WAM ── */}
+      <div className={styles.portfolioIntro}>
+        <div className={styles.introInner}>
+          <div className={styles.introMeta}>
+            <h2 className={styles.introHeading}>About WAM</h2>
+            {WAM_SUCCESS_STORY.fullName && (
+              <p className={styles.introFullName}>{WAM_SUCCESS_STORY.fullName}</p>
+            )}
+            {WAM_SUCCESS_STORY.description && (
+              <p className={styles.introDescription}>{WAM_SUCCESS_STORY.description}</p>
+            )}
+          </div>
+
+          {WAM_SUCCESS_STORY.capabilities && WAM_SUCCESS_STORY.capabilities.length > 0 && (
+            <div className={styles.capabilities}>
+              <p className={styles.capabilitiesLabel}>What WAM Enables</p>
+              <ul className={styles.capabilityList}>
+                {WAM_SUCCESS_STORY.capabilities.map((cap) => (
+                  <li key={cap} className={styles.capabilityItem}>{cap}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── From Challenge to Impact ── */}
+      <PortfolioSuccessStory successStory={WAM_SUCCESS_STORY} />
+
+      {/* ── WAM by the Numbers — tabbed analytics ── */}
+      <div className={styles.analyticsBorder}>
+        <PortfolioAnalyticsTabs
+          heading="WAM by the Numbers"
+          tabs={WAM_ANALYTICS_TABS}
+        />
+      </div>
+
+      {/* ── Highlights ── */}
       <div className={styles.sections}>
-        {sections.map(s => s.id === 'highlights' ? (
+        <section id="highlights" className={`${styles.section} ${styles.sectionLast}`}>
+          <div className={styles.highlightsHeader}>
+            <h2 className={styles.highlightsTitle}>Highlights</h2>
+            <button
+              className={styles.backToTop}
+              onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Back to top
+            </button>
+          </div>
 
-          /* ── Highlights section ── */
-          <section key={s.id} id={s.id} className={styles.section}>
-            <div className={styles.highlightsHeader}>
-              <h2 className={styles.highlightsTitle}>Highlights</h2>
-              <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
+          <div className={styles.highlightsGrid}>
+
+            {/* Left — dark red: Main challenges + IBM image */}
+            <div className={styles.hlCardRed}>
+              <div className={styles.hlCardContent}>
+                <h3 className={styles.hlCardTitle}>Main challenges</h3>
+                <p className={styles.hlCardText}>
+                  In preparation for MAS, the team has undergone necessary training; however, hands-on experience remains limited.
+                  The admin team is encountering challenges during the initial installation on the Sandbox environment.
+                  Additionally, the team is facing difficulties in identifying the technical changes introduced by the latest iFix,
+                  based on the release notes provided by IBM Product team.
+                </p>
+              </div>
+              <img src={ibmImg} alt="IBM" className={styles.hlCardImg} />
             </div>
 
-            <div className={styles.highlightsGrid}>
-
-              {/* Left — dark red: Main challenges + IBM image */}
-              <div className={styles.hlCardRed}>
-                <div className={styles.hlCardContent}>
-                  <h3 className={styles.hlCardTitle}>Main challenges</h3>
-                  <p className={styles.hlCardText}>
-                    In preparation for MAS, the team has undergone necessary training; however, hands-on experience remains limited.
-                    The admin team is encountering challenges during the initial installation on the Sandbox environment.
-                    Additionally, the team is facing difficulties in identifying the technical changes introduced by the latest iFix,
-                    based on the release notes provided by IBM Product team.
-                  </p>
-                </div>
-                <img src={ibmImg} alt="IBM" className={styles.hlCardImg} />
-              </div>
-
-              {/* Center — light grey: Niche Skills */}
-              <div className={styles.hlCardGrey}>
-                <h3 className={styles.hlCardTitleDark}>Niche Skills</h3>
-                <ul className={styles.nicheList}>
-                  {NICHE_SKILLS.map((skill, i) => (
-                    <li key={i} className={styles.nicheItem}>{skill}</li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Right — dark red: Mitigation */}
-              <div className={styles.hlCardRed}>
-                <div className={styles.hlCardContent}>
-                  <h3 className={styles.hlCardTitle}>Mitigation</h3>
-                  <p className={styles.hlCardText}>
-                    For the first time MAS installation, the team is receiving support from IBM Maximo Service Line.
-                    To enhance skills, the team is also undergoing MAS-specific training.
-                  </p>
-                  <hr className={styles.hlDivider} />
-                  <p className={styles.hlCardText}>
-                    Regarding iFix, the team is collaborating with IBM Product team to identify any gaps and is planning
-                    to address them in future releases.
-                  </p>
-                </div>
-              </div>
-
+            {/* Center — light grey: Niche Skills */}
+            <div className={styles.hlCardGrey}>
+              <h3 className={styles.hlCardTitleDark}>Niche Skills</h3>
+              <ul className={styles.nicheList}>
+                {NICHE_SKILLS.map((skill, i) => (
+                  <li key={i} className={styles.nicheItem}>{skill}</li>
+                ))}
+              </ul>
             </div>
-          </section>
 
-        ) : (
-
-          /* ── Regular chart section ── */
-          <section key={s.id} id={s.id} className={styles.section}>
-            <div className={`${styles.row} ${s.chartSide === 'left' ? styles.rowReverse : ''}`}>
-              <div className={styles.textSide}>
-                <h2 className={styles.sectionTitle}>{s.label}</h2>
-                {s.subLabel && <p className={styles.subLabel}>{s.subLabel}</p>}
-                <p className={styles.sectionDesc}>{s.description}</p>
-                {s.id === 'resource-churn' && <ResourceChurnTable />}
-                <p className={styles.lastUpdate}>{LAST_UPDATE}</p>
-                <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top</button>
-              </div>
-              <div className={styles.chartSide}>
-                {s.id === 'resource-churn' ? (
-                  <img src={resourceChurnImg} alt="Resource Churn chart" className={styles.chartImg} />
-                ) : s.id === 'geographic-distribution' ? (
-                  <img src={geographicDistributionImg} alt="Geographic Distribution chart" className={styles.chartImg} />
-                ) : s.id === 'core-flex-distribution' ? (
-                  <img src={coreFlexImg} alt="Core-Flex Distribution chart" className={styles.chartImg} />
-                ) : s.id === 'monthly-onboarding' ? (
-                  <img src={onboardingImg} alt="Monthly Onboarding chart" className={styles.chartImg} />
-                ) : s.id === 'monthly-offboarding' ? (
-                  <img src={offboardingImg} alt="Monthly Offboarding chart" className={styles.chartImg} />
-                ) : s.id === 'demand-management' ? (
-                  <img src={demandManagementImg} alt="Demand Management chart" className={styles.chartImg} />
-                ) : (
-                  <div className={styles.chartPlaceholder}>Chart</div>
-                )}
+            {/* Right — dark red: Mitigation */}
+            <div className={styles.hlCardRed}>
+              <div className={styles.hlCardContent}>
+                <h3 className={styles.hlCardTitle}>Mitigation</h3>
+                <p className={styles.hlCardText}>
+                  For the first time MAS installation, the team is receiving support from IBM Maximo Service Line.
+                  To enhance skills, the team is also undergoing MAS-specific training.
+                </p>
+                <hr className={styles.hlDivider} />
+                <p className={styles.hlCardText}>
+                  Regarding iFix, the team is collaborating with IBM Product team to identify any gaps and is planning
+                  to address them in future releases.
+                </p>
               </div>
             </div>
-          </section>
 
-        ))}
+          </div>
+        </section>
       </div>
 
       {/* Remaining video assets */}
