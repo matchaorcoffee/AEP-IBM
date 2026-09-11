@@ -122,7 +122,13 @@
   }
 }
 
-/* ── Sections wrapper ──────────────────────────────────────────────────── */
+/* ── Analytics container — border separates it from the story section ──── */
+.analyticsBorder {
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ── Sections wrapper (Highlights only) ────────────────────────────────── */
 .sections {
   max-width: 1200px;
   margin: 0 auto;
@@ -135,6 +141,11 @@
   scroll-margin-top: calc(var(--header-total-height) + 60px);
 
   &:last-child { border-bottom: none; }
+}
+
+/* Explicit last-section override so Highlights never shows a bottom border */
+.sectionLast {
+  border-bottom: none;
 }
 
 /* ── Two-column chart row ──────────────────────────────────────────────── */

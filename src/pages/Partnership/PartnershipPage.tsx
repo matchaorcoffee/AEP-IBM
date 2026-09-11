@@ -61,12 +61,46 @@ const highlights = [
   },
 ]
 
+// Type for data sent by the iframe when a modal should open
+interface OrgChartModalData {
+  portraitHtml: string
+  name: string
+  role: string
+  metaHtml: string
+  bodyHtml: string
+  personId: string
+  hasReports: boolean
+  managerNavId: string | null
+  reportNavIds: string[]
+}
+
 export default function PartnershipPage() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [frameHeight, setFrameHeight] = useState<number>(600)
   const [modalOpen, setModalOpen] = useState(false)
+  const [modalData, setModalData] = useState<OrgChartModalData | null>(null)
   // Remember scroll position so we can restore it on close
   const savedScrollY = useRef(0)
+
+  const closeModal = () => {
+    // Restore page scroll
+    document.body.style.overflow = ''
+    document.body.style.top = ''
+    document.body.style.width = ''
+    window.scrollTo(0, savedScrollY.current)
+    setModalOpen(false)
+    setModalData(null)
+    // Tell iframe to clean up source highlight
+    iframeRef.current?.contentWindow?.postMessage({ type: 'orgChartParentClosed' }, '*')
+  }
+
+  const navToInIframe = (id: string) => {
+    // Close modal visually first, then tell iframe to navigate
+    closeModal()
+    setTimeout(() => {
+      iframeRef.current?.contentWindow?.postMessage({ type: 'orgChartNavTo', id }, '*')
+    }, 20)
+  }
 
   useEffect(() => {
     function onMessage(e: MessageEvent) {
@@ -77,23 +111,19 @@ export default function PartnershipPage() {
         setFrameHeight(e.data.height + 40)
       }
 
-      if (e.data.type === 'orgChartModalOpen') {
+      if (e.data.type === 'orgChartModalOpen' && e.data.modalData) {
         // Capture current scroll position before locking
         savedScrollY.current = window.scrollY
         // Lock page scroll without jumping: use position:fixed trick
         document.body.style.top = `-${savedScrollY.current}px`
         document.body.style.overflow = 'hidden'
         document.body.style.width = '100%'
+        setModalData(e.data.modalData as OrgChartModalData)
         setModalOpen(true)
       }
 
       if (e.data.type === 'orgChartModalClose') {
-        // Restore page scroll
-        document.body.style.overflow = ''
-        document.body.style.top = ''
-        document.body.style.width = ''
-        window.scrollTo(0, savedScrollY.current)
-        setModalOpen(false)
+        closeModal()
       }
     }
 
@@ -105,17 +135,82 @@ export default function PartnershipPage() {
       document.body.style.top = ''
       document.body.style.width = ''
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <div className={styles.page}>
 
-      {/* ── Full-viewport backdrop portal — rendered at document.body level ── */}
-      {modalOpen && createPortal(
-        <div
-          className={styles.modalBackdrop}
-          aria-hidden="true"
-        />,
+      {/* ── Global modal portal — rendered at document.body level ──────── */}
+      {modalOpen && modalData && createPortal(
+        <>
+          {/* Backdrop — covers 100vw × 100vh, above ALL page content */}
+          <div
+            className={styles.modalBackdrop}
+            aria-hidden="true"
+            onClick={closeModal}
+          />
+          {/* Modal layer — centred above backdrop */}
+          <div className={styles.modalLayer} role="dialog" aria-modal="true" aria-label={modalData.name}>
+            <div className={styles.modalBox}>
+              {/* Close button */}
+              <button
+                className={styles.modalClose}
+                aria-label="Close employee details"
+                onClick={closeModal}
+              >
+                &#x2715;
+              </button>
+
+              {/* Header */}
+              <div className={styles.modalHeader}>
+                <div className={styles.modalPortraitRingOuter}>
+                  <div className={styles.modalPortraitRingInner}>
+                    {/* eslint-disable-next-line react/no-danger */}
+                    <div dangerouslySetInnerHTML={{ __html: modalData.portraitHtml }} />
+                  </div>
+                </div>
+                <div className={styles.modalName}>{modalData.name}</div>
+                <div className={styles.modalRole}>{modalData.role}</div>
+                {/* eslint-disable-next-line react/no-danger */}
+                <div className={styles.modalMeta} dangerouslySetInnerHTML={{ __html: modalData.metaHtml }} />
+              </div>
+
+              {/* Scrollable body */}
+              <div
+                className={styles.modalBody}
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={{ __html: modalData.bodyHtml }}
+                onClick={(e) => {
+                  const clicked = e.target as HTMLElement
+
+                  // Handle copy button clicks (.db-copy)
+                  const copyBtn = clicked.closest('.db-copy') as HTMLElement | null
+                  if (copyBtn) {
+                    // Find the .db-val sibling text
+                    const row = copyBtn.closest('.db-row')
+                    const val = row?.querySelector('.db-val')?.textContent ?? ''
+                    try { navigator.clipboard.writeText(val) } catch (_) { /* ignore */ }
+                    const orig = copyBtn.textContent ?? ''
+                    copyBtn.textContent = '✓'
+                    ;(copyBtn as HTMLElement).style.color = '#10b981'
+                    setTimeout(() => {
+                      copyBtn.textContent = orig
+                      ;(copyBtn as HTMLElement).style.color = ''
+                    }, 1400)
+                    return
+                  }
+
+                  // Handle nav clicks inside the body (Reports To / Direct Reports rows)
+                  const target = clicked.closest('[data-nav]') as HTMLElement | null
+                  if (target?.dataset?.nav) {
+                    navToInIframe(target.dataset.nav)
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </>,
         document.body
       )}
 
@@ -143,6 +238,7 @@ export default function PartnershipPage() {
           </p>
           <img src={aepIbmLogo} alt="AEP – IBM" className={styles.chartLogo} />
         </div>
+        {/* iframe stays at normal z-index — the parent-level backdrop covers it */}
         <iframe
           ref={iframeRef}
           src="AEP_Org_Chart_v2.html"
