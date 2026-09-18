@@ -39,6 +39,7 @@ import {
 import { usePortfolioAnalytics } from '../../../hooks/usePortfolioAnalytics'
 import type { ChartDefinition, ChartDataPoint } from '../../../services/portfolioAnalyticsService'
 import styles from './PortfolioDashboard.module.scss'
+import GeographicMap from './GeographicMap'
 
 // ─── AEP × IBM brand palette ─────────────────────────────────────────────────
 const CHART_COLORS = [
@@ -441,10 +442,16 @@ export default function PortfolioDashboard({
               aria-labelledby={`dash-tab-${charts[activeChartIdx].id}`}
               className={styles.panel}
             >
-              <p className={styles.chartDescription}>
-                {CHART_DESCRIPTIONS[charts[activeChartIdx].id] ?? ''}
-              </p>
-              <ChartRenderer chartDef={charts[activeChartIdx]} />
+              {charts[activeChartIdx].id === 'geographic-distribution' ? (
+                <GeographicMap data={charts[activeChartIdx].data} />
+              ) : (
+                <>
+                  <p className={styles.chartDescription}>
+                    {CHART_DESCRIPTIONS[charts[activeChartIdx].id] ?? ''}
+                  </p>
+                  <ChartRenderer chartDef={charts[activeChartIdx]} />
+                </>
+              )}
             </div>
           )}
         </div>
