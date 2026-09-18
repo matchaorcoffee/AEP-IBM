@@ -40,6 +40,8 @@ import { usePortfolioAnalytics } from '../../../hooks/usePortfolioAnalytics'
 import type { ChartDefinition, ChartDataPoint } from '../../../services/portfolioAnalyticsService'
 import styles from './PortfolioDashboard.module.scss'
 import GeographicMap from './GeographicMap'
+import CoreFlexDashboard from './CoreFlexDashboard'
+import DeliveryModelDashboard from './DeliveryModelDashboard'
 
 // ─── AEP × IBM brand palette ─────────────────────────────────────────────────
 const CHART_COLORS = [
@@ -444,6 +446,13 @@ export default function PortfolioDashboard({
             >
               {charts[activeChartIdx].id === 'geographic-distribution' ? (
                 <GeographicMap data={charts[activeChartIdx].data} />
+              ) : charts[activeChartIdx].id === 'core-flex' ? (
+                <CoreFlexDashboard data={charts[activeChartIdx].data} />
+              ) : charts[activeChartIdx].id === 'onshore-nearshore-offshore' ? (
+                <DeliveryModelDashboard
+                  data={charts[activeChartIdx].data}
+                  geoData={charts.find(c => c.id === 'geographic-distribution')?.data ?? []}
+                />
               ) : (
                 <>
                   <p className={styles.chartDescription}>

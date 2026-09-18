@@ -603,3 +603,862 @@
   .summaryResourceCount { color: #8e8e93; }
   .summaryContainer { border-top-color: #3a3a3c; }
 }
+
+/* ── CoreFlex Dashboard ────────────────────────────────────────────────────── */
+.cfDashboard {
+  width: 100%;
+}
+
+.cfHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.cfHeaderLeft {
+  flex-grow: 1;
+}
+
+.cfHeading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827; // dark navy/black headings
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.cfDescription {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 640px;
+}
+
+.cfHeaderRight {
+  flex-shrink: 0;
+}
+
+/* Compact upper-right KPI badge */
+.cfHeaderKpi {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.cfHeaderKpiIcon {
+  color: #4b5563;
+  width: 16px;
+  height: 16px;
+}
+
+.cfHeaderKpiNumber {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.cfHeaderKpiText {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+/* Main Grid Area */
+.cfMainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 3.5rem;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Left Side Donut Wrapper */
+.cfDonutSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.cfDonutChartWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  height: 280px;
+}
+
+.cfDonutCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.cfCenterNumber {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.cfCenterText {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+  line-height: 1.1;
+}
+
+/* Right Side Bar Chart */
+.cfBarSection {
+  width: 100%;
+}
+
+.cfBarTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1.5rem;
+}
+
+.cfBarChartWrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 2rem; // space for scale ticks
+}
+
+/* Grid lines behind bars */
+.cfBarGridLines {
+  position: absolute;
+  top: 0;
+  left: 90px; // aligned with label width
+  right: 70px; // aligned with percentage badge width
+  bottom: 2rem; // above ticks
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cfBarGridLine {
+  width: 1px;
+  background-color: #f3f4f6;
+  height: 100%;
+}
+
+/* Bar Rows */
+.cfBarRows {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.cfBarRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 150ms ease;
+
+  &:hover {
+    transform: translateX(4px);
+  }
+}
+
+.cfBarLabel {
+  width: 90px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #4b5563;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.cfBarTrack {
+  position: relative;
+  flex-grow: 1;
+  height: 24px;
+  background-color: #f3f4f6;
+  border-radius: 12px;
+  overflow: visible; // allows text label at the end
+}
+
+.cfBarFill {
+  height: 100%;
+  border-radius: 12px;
+  width: 0%; // animated by style attribute
+  transition: width 1000ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease;
+}
+
+.cfBarValue {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  pointer-events: none;
+  transition: left 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cfBarPercentBadge {
+  width: 70px;
+  height: 24px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Bottom Scale Ticks */
+.cfBarTicksRow {
+  position: absolute;
+  left: 90px;
+  right: 70px;
+  bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.cfBarTick {
+  width: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+/* Bottom Summary Grid */
+.cfSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.cfSummaryCard {
+  position: relative;
+  border-radius: 10px;
+  padding: 1.125rem 1.25rem;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.cfSummaryCardSelected {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.cfCardTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.cfCardDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cfCardName {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.cfCardContent {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+}
+
+.cfCardCount {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.cfCardBadge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.cfCardIcon {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+}
+
+/* Tooltips */
+.cfTooltip {
+  background-color: #1d1d1f;
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cfTooltipCategory {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.cfTooltipValue {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cfTooltipPct {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ── Responsive CoreFlex Rules ── */
+@media (max-width: 1024px) {
+  .cfMainGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .cfSummaryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .cfHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .cfHeaderKpi {
+    align-self: flex-start;
+  }
+  .cfSummaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .cfSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+  .cfBarLabel {
+    width: 70px;
+    font-size: 0.75rem;
+  }
+  .cfBarGridLines {
+    left: 70px;
+  }
+  .cfBarTicksRow {
+    left: 70px;
+  }
+}
+
+/* ── Dark Mode Overrides for CoreFlex ── */
+@media (prefers-color-scheme: dark) {
+  .cfHeading { color: #f5f5f7; }
+  .cfDescription { color: #aeaeb2; }
+  .cfHeaderKpi {
+    background-color: #2c2c2e;
+    border-color: #3a3a3c;
+  }
+  .cfHeaderKpiIcon { color: #aeaeb2; }
+  .cfHeaderKpiNumber { color: #f5f5f7; }
+  .cfHeaderKpiText { color: #aeaeb2; }
+  
+  .cfCenterNumber { color: #f5f5f7; }
+  .cfCenterText { color: #8e8e93; }
+  
+  .cfBarTitle { color: #f5f5f7; }
+  .cfBarGridLine { background-color: #3a3a3c; }
+  .cfBarTrack { background-color: #2c2c2e; }
+  .cfBarLabel { color: #aeaeb2; }
+  .cfBarValue { color: #f5f5f7; }
+  
+  .cfCardName { color: #f5f5f7; }
+  .cfCardCount { color: #f5f5f7; }
+}
+
+/* ── Delivery Model Dashboard ──────────────────────────────────────────────── */
+.dmDashboard {
+  width: 100%;
+}
+
+.dmHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dmHeaderLeft {
+  flex-grow: 1;
+}
+
+.dmHeading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827; // dark navy headings
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.dmDescription {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 680px;
+}
+
+.dmHeaderRight {
+  flex-shrink: 0;
+}
+
+/* Compact upper-right KPI badge */
+.dmHeaderKpi {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dmHeaderKpiIcon {
+  color: #4b5563;
+  width: 16px;
+  height: 16px;
+}
+
+.dmHeaderKpiNumber {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.dmHeaderKpiText {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+/* 3-Column Grid Area */
+.dmMainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr;
+  gap: 2.25rem;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+/* Column 1: Donut Section */
+.dmDonutSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.dmDonutChartWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  height: 260px;
+}
+
+.dmDonutCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.dmCenterNumber {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.dmCenterText {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+  line-height: 1.1;
+}
+
+/* Column 2: Bar Section */
+.dmBarSection {
+  width: 100%;
+}
+
+.dmBarTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1.25rem;
+}
+
+.dmBarChartWrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 1.5rem; // ticks space
+}
+
+/* Grid lines behind bars */
+.dmBarGridLines {
+  position: absolute;
+  top: 0;
+  left: 80px; // aligned with label width
+  right: 50px; // aligned with percentage badge width
+  bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dmBarGridLine {
+  width: 1px;
+  background-color: #f3f4f6;
+  height: 100%;
+}
+
+/* Bar Rows */
+.dmBarRows {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.dmBarRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: transform 150ms ease;
+
+  &:hover {
+    transform: translateX(4px);
+  }
+}
+
+.dmBarLabel {
+  width: 80px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #4b5563;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.dmBarTrack {
+  position: relative;
+  flex-grow: 1;
+  height: 20px;
+  background-color: #f3f4f6;
+  border-radius: 10px;
+  overflow: visible;
+}
+
+.dmBarFill {
+  height: 100%;
+  border-radius: 10px;
+  width: 0%;
+  transition: width 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dmBarValue {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 700;
+  pointer-events: none;
+  transition: left 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dmBarPercentBadge {
+  width: 50px;
+  height: 20px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Bottom Ticks */
+.dmBarTicksRow {
+  position: absolute;
+  left: 80px;
+  right: 50px;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.dmBarTick {
+  width: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+/* Column 3: Map Section */
+.dmMapSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.dmMapWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.dmMiniMapLegend {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 8px;
+}
+
+.dmMiniMapLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.dmMiniMapLegendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Bottom Summary Grid */
+.dmSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.dmSummaryCard {
+  position: relative;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+}
+
+.dmSummaryCardSelected {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.dmCardTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.dmCardDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dmCardName {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.dmCardContent {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+}
+
+.dmCardCount {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.dmCardBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.dmCardIcon {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+}
+
+/* Responsive Map and Columns Rules */
+@media (max-width: 1100px) {
+  .dmMainGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .dmMapSection {
+    grid-column: span 2;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .dmHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .dmHeaderKpi {
+    align-self: flex-start;
+  }
+  .dmMainGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .dmMapSection {
+    grid-column: span 1;
+    max-width: 100%;
+  }
+  .dmSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Dark Mode Overrides for DeliveryModel ── */
+@media (prefers-color-scheme: dark) {
+  .dmHeading { color: #f5f5f7; }
+  .dmDescription { color: #aeaeb2; }
+  .dmHeaderKpi {
+    background-color: #2c2c2e;
+    border-color: #3a3a3c;
+  }
+  .dmHeaderKpiIcon { color: #aeaeb2; }
+  .dmHeaderKpiNumber { color: #f5f5f7; }
+  .dmHeaderKpiText { color: #aeaeb2; }
+  
+  .dmCenterNumber { color: #f5f5f7; }
+  .dmCenterText { color: #8e8e93; }
+  
+  .dmBarTitle { color: #f5f5f7; }
+  .dmBarGridLine { background-color: #3a3a3c; }
+  .dmBarTrack { background-color: #2c2c2e; }
+  .dmBarLabel { color: #aeaeb2; }
+  .dmBarValue { color: #f5f5f7; }
+  
+  .dmMapWrapper { background-color: #2c2c2e; }
+  .dmMiniMapLegendItem { color: #aeaeb2; }
+  .dmMainGrid { border-bottom-color: #3a3a3c; }
+  
+  .dmCardName { color: #f5f5f7; }
+  .dmCardCount { color: #f5f5f7; }
+}
