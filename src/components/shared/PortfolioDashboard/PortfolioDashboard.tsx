@@ -42,6 +42,8 @@ import styles from './PortfolioDashboard.module.scss'
 import GeographicMap from './GeographicMap'
 import CoreFlexDashboard from './CoreFlexDashboard'
 import DeliveryModelDashboard from './DeliveryModelDashboard'
+import ResourceByManagerDashboard from './ResourceByManagerDashboard'
+import BillableNonBillableDashboard from './BillableNonBillableDashboard'
 
 // ─── AEP × IBM brand palette ─────────────────────────────────────────────────
 const CHART_COLORS = [
@@ -453,6 +455,10 @@ export default function PortfolioDashboard({
                   data={charts[activeChartIdx].data}
                   geoData={charts.find(c => c.id === 'geographic-distribution')?.data ?? []}
                 />
+              ) : charts[activeChartIdx].id === 'resource-by-manager' ? (
+                <ResourceByManagerDashboard data={charts[activeChartIdx].data} />
+              ) : charts[activeChartIdx].id === 'billable-non-billable' ? (
+                <BillableNonBillableDashboard data={charts[activeChartIdx].data} />
               ) : (
                 <>
                   <p className={styles.chartDescription}>
