@@ -283,6 +283,7 @@ function AnalyticsSkeleton() {
           <div key={i} className={styles.skeletonTab} />
         ))}
       </div>
+      <p className={styles.skeletonMessage}>Fetching live data from monday.com…</p>
       <div className={styles.skeletonChart} />
     </div>
   )
