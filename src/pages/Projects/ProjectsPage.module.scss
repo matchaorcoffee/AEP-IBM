@@ -304,6 +304,21 @@
   max-width: 520px;
 }
 
+/* ── Analytics subsection heading ─────────────────────────────────────────── */
+.analyticsSubheadingRow {
+  margin-top: 3.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.analyticsSubsectionHeading {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 600;
+  color: #1d1d1f;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
 /* ── Chart subnav ─────────────────────────────────────────────────────────── */
 .chartNav {
   display: flex;

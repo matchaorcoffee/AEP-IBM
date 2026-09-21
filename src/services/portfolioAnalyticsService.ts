@@ -88,3 +88,45 @@ export function getCachedFetchedAt(portfolioSlug: string): Date | null {
   const entry = cache.get(portfolioSlug)
   return entry ? new Date(entry.fetchedAt) : null
 }
+
+const PROJECT_CACHE_KEY = 'projects'
+
+export async function getProjectAnalytics(forceRefresh = false): Promise<PortfolioAnalytics> {
+  const now = Date.now()
+  const cached = cache.get(PROJECT_CACHE_KEY)
+
+  if (!forceRefresh && cached && now - cached.fetchedAt < CACHE_TTL_MS) {
+    return cached.data
+  }
+
+  const inflight = inflightRequests.get(PROJECT_CACHE_KEY)
+  if (inflight && !forceRefresh) return inflight
+
+  const url = `${BACKEND_URL}/api/projects/analytics${forceRefresh ? '?refresh=true' : ''}`
+
+  const promise = fetch(url)
+    .then(async res => {
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error ?? `Server error ${res.status}`)
+      }
+      return res.json() as Promise<PortfolioAnalytics>
+    })
+    .then(data => {
+      cache.set(PROJECT_CACHE_KEY, { data, fetchedAt: Date.now() })
+      inflightRequests.delete(PROJECT_CACHE_KEY)
+      return data
+    })
+    .catch(err => {
+      inflightRequests.delete(PROJECT_CACHE_KEY)
+      throw err
+    })
+
+  inflightRequests.set(PROJECT_CACHE_KEY, promise)
+  return promise
+}
+
+export function getCachedProjectFetchedAt(): Date | null {
+  const entry = cache.get(PROJECT_CACHE_KEY)
+  return entry ? new Date(entry.fetchedAt) : null
+}

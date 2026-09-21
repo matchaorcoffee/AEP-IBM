@@ -1,15 +1,9 @@
 import { useState } from 'react'
 import styles from './ProjectsPage.module.scss'
 import projectsImg from './assets/Projects.png'
-import resourcesByProjectImg from './assets/ResourcesByProject.png'
-import onshoreAndOffshoreImg from './assets/OnshoreAndOffshore.png'
-import proactiveCountImg from './assets/ProactiveCount.png'
-import reasonChurnImg from './assets/ReasonChurn.png'
 import averageFulfillmentImg from './assets/AverageFulfillment.png'
-import monthlyOnboardingImg from './assets/MonthlyOnboarding.png'
-import monthlyOffboardingImg from './assets/MonthlyOffboarding.png'
-import monthlyResourceCountImg from './assets/MonthlyResourceCount.png'
 import demandManagementImg from './assets/DemandManagement.png'
+import ProjectsDashboard from '../../components/shared/ProjectsDashboard/ProjectsDashboard'
 
 /* ── Chart card data ─────────────────────────────────────────────────────── */
 interface ChartCard {
@@ -27,42 +21,6 @@ const LAST_UPDATE = 'Last update 01/20/2026'
 
 const CHART_CARDS: ChartCard[] = [
   {
-    id: 'resources-by-project',
-    label: 'Resources by Project',
-    description: 'Visualization of how many people are assigned by project. Helps leadership get insights and make projections on what is coming next in terms of resources.',
-    lastUpdate: LAST_UPDATE,
-    img: resourcesByProjectImg,
-    imgAlt: 'Resources by Project chart',
-    category: 'Allocation',
-  },
-  {
-    id: 'onshore-offshore',
-    label: 'Onshore and Offshore Distribution',
-    description: 'How people are distributed between onshore and offshore locations. Helps leadership get insights to better manage resource distribution and financials.',
-    lastUpdate: LAST_UPDATE,
-    img: onshoreAndOffshoreImg,
-    imgAlt: 'Onshore and Offshore Distribution chart',
-    category: 'Distribution',
-  },
-  {
-    id: 'proactive-count',
-    label: 'Proactive Count of Resource by Projects',
-    description: 'Number of people being onboarded within different projects, with a focus on proactive resource allocation for anticipated future demands.',
-    lastUpdate: LAST_UPDATE,
-    img: proactiveCountImg,
-    imgAlt: 'Proactive Count of Resource by Projects chart',
-    category: 'Onboarding',
-  },
-  {
-    id: 'resource-churn',
-    label: 'Resource Churn By Reason (last 3 months)',
-    description: 'Resource churn within different projects, categorized by specific reasons for resource departure — a tool for leadership to understand causes and patterns.',
-    lastUpdate: LAST_UPDATE,
-    img: reasonChurnImg,
-    imgAlt: 'Resource Churn By Reason chart',
-    category: 'Churn',
-  },
-  {
     id: 'avg-fulfillment',
     label: 'Average Fulfillment Time (last 6 months)',
     description: 'Comprehensive view of fulfillment times and lead times by project, empowering leadership to make informed decisions regarding project management.',
@@ -71,33 +29,6 @@ const CHART_CARDS: ChartCard[] = [
     img: averageFulfillmentImg,
     imgAlt: 'Average Fulfillment Time chart',
     category: 'Performance',
-  },
-  {
-    id: 'monthly-onboarding',
-    label: 'Monthly Onboarding of Resources (last 3 months)',
-    description: 'How resource count is increasing month by month. Helps leadership get insights and make projections of what is coming next in terms of resource count.',
-    lastUpdate: LAST_UPDATE,
-    img: monthlyOnboardingImg,
-    imgAlt: 'Monthly Onboarding of Resources chart',
-    category: 'Movements',
-  },
-  {
-    id: 'monthly-offboarding',
-    label: 'Monthly Offboarding of Resources (last 3 months)',
-    description: 'Resource offboarding activities over the past months across different projects. Helps leadership plan based on reduction of resource count in each project.',
-    lastUpdate: LAST_UPDATE,
-    img: monthlyOffboardingImg,
-    imgAlt: 'Monthly Offboarding of Resources chart',
-    category: 'Movements',
-  },
-  {
-    id: 'monthly-resource-count',
-    label: 'Monthly Resource Count (last 3 months)',
-    description: 'How resource count is changing month by month. Helps leadership get insights and make projections of what is coming next in terms of resource count.',
-    lastUpdate: LAST_UPDATE,
-    img: monthlyResourceCountImg,
-    imgAlt: 'Monthly Resource Count chart',
-    category: 'Trends',
   },
   {
     id: 'demand-management',
@@ -262,8 +193,8 @@ export default function ProjectsPage() {
           </p>
           <div className={styles.stats}>
             <div className={styles.stat}>
-              <span className={styles.statNumber}>9</span>
-              <span className={styles.statLabel}>Chart Views</span>
+              <span className={styles.statNumber}>7</span>
+              <span className={styles.statLabel}>Live Dashboards</span>
             </div>
             <div className={styles.stat}>
               <span className={styles.statNumber}>30–90</span>
@@ -313,20 +244,13 @@ export default function ProjectsPage() {
             </p>
           </div>
 
-          {/* Chart subnav */}
-          <nav className={styles.chartNav} aria-label="Jump to chart">
-            {CHART_CARDS.map(card => (
-              <button
-                key={card.id}
-                className={styles.chartNavItem}
-                onClick={() => document.getElementById(card.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-              >
-                {card.label}
-              </button>
-            ))}
-          </nav>
+          {/* Live charts dashboard */}
+          <ProjectsDashboard />
 
-          {/* 2-column card grid */}
+          {/* Additional Analytics — static image cards */}
+          <div className={styles.analyticsSubheadingRow}>
+            <h3 className={styles.analyticsSubsectionHeading}>Additional Analytics</h3>
+          </div>
           <div className={styles.cardGrid}>
             {CHART_CARDS.map(card => (
               <ChartCardPanel key={card.id} card={card} />
