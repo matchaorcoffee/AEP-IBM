@@ -137,6 +137,9 @@ const REQUIRED_COLUMN_IDS = [
   'onsite___offshore__1', // Onshore / Nearshore / Offshore
   'aep_manager__1',      // Resource by Manager
   'billable__1',         // Billable x Non-Billable
+  'offboarding_reason__1', // Resource Churn By Reason
+  'start_date_in_aep__1',  // Monthly Onboarding + Monthly Resource Count
+  'offboarding_date__1',   // Monthly Offboarding
 ]
 
 async function fetchItemPage(

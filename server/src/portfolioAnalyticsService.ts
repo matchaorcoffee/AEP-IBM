@@ -344,3 +344,186 @@ export function buildPortfolioAnalytics(
     ],
   }
 }
+
+// ─── Project Analytics ────────────────────────────────────────────────────────
+
+/**
+ * Confirmed project-level status__1 values on board 18431218352.
+ * Used to scope all project analytics aggregations.
+ */
+export const PROJECT_STATUS_VALUES = [
+  'MAS Upgrade',
+  'ESRI Upgrade',
+  'FIS Aligne ETRM Upgrade',
+  'IGA',
+  'Field Mobility Services',
+  'Gen AI',
+  'ADMS',
+] as const
+
+const PROJECT_STATUS_LOWER = PROJECT_STATUS_VALUES.map(v => v.toLowerCase())
+
+/**
+ * Filter all board records to only those whose status__1 matches a known
+ * project value, excluding any resources that have been rolled off.
+ */
+export function filterByProjects(records: NormalizedRecord[]): NormalizedRecord[] {
+  return records.filter(
+    r => PROJECT_STATUS_LOWER.includes(r.portfolio.toLowerCase()) && isNotRolledOff(r)
+  )
+}
+
+/**
+ * Group active project records by project name (status__1 / portfolio field).
+ */
+export function aggregateByProject(records: NormalizedRecord[]): ChartDataPoint[] {
+  return aggregateByField(records, r => r.portfolio)
+}
+
+/**
+ * Count resources per project where on-boarding status is "AEP In-Progress".
+ */
+export function aggregateProactiveByProject(records: NormalizedRecord[]): ChartDataPoint[] {
+  const proactive = records.filter(r => r.onboardingStatus.toLowerCase() === 'aep in-progress')
+  return aggregateByField(proactive, r => r.portfolio)
+}
+
+/**
+ * Group rolled-off project resources (within the last 3 calendar months) by
+ * offboarding reason.
+ *
+ * @param allProjectRecords - All project records BEFORE the rolled-off exclusion.
+ */
+export function aggregateChurnByReason(allProjectRecords: NormalizedRecord[]): ChartDataPoint[] {
+  const now = new Date()
+  // First day of (currentMonth − 2)
+  const cutoff = new Date(now.getFullYear(), now.getMonth() - 2, 1)
+  // First day of next month (exclusive upper bound)
+  const ceiling = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+
+  const churned = allProjectRecords.filter(r => {
+    if (r.onboardingStatus.toLowerCase() !== 'rolled-off') return false
+    if (!r.offboardingDate) return false
+    const d = new Date(r.offboardingDate)
+    if (isNaN(d.getTime())) return false
+    return d >= cutoff && d < ceiling
+  })
+
+  return aggregateByField(churned, r => r.offboardingReason, 'Unspecified')
+}
+
+/**
+ * Bucket records into the last 3 calendar months by a date field.
+ * Always emits all 3 month labels (count defaults to 0 when empty).
+ * Items with unparseable or empty dates are excluded.
+ *
+ * @param records  - The records to bucket.
+ * @param getDate  - Returns the ISO date string for each record.
+ */
+export function aggregateByMonth(
+  records: NormalizedRecord[],
+  getDate: (r: NormalizedRecord) => string
+): ChartDataPoint[] {
+  const now = new Date()
+
+  // Build the 3 month buckets (oldest → newest)
+  const months = [-2, -1, 0].map(offset => {
+    const d = new Date(now.getFullYear(), now.getMonth() + offset, 1)
+    return {
+      year: d.getFullYear(),
+      month: d.getMonth(),
+      label: d.toLocaleString('en-US', { month: 'short', year: 'numeric' }),
+      value: 0,
+    }
+  })
+
+  for (const r of records) {
+    const raw = getDate(r)
+    if (!raw) continue
+    const d = new Date(raw)
+    if (isNaN(d.getTime())) continue
+
+    for (const bucket of months) {
+      if (d.getFullYear() === bucket.year && d.getMonth() === bucket.month) {
+        bucket.value++
+        break
+      }
+    }
+  }
+
+  return months.map(({ label, value }) => ({ label, value }))
+}
+
+/**
+ * Build the full PortfolioAnalytics object for the Projects view.
+ * Aggregates all records whose status__1 matches a PROJECT_STATUS_VALUES entry.
+ */
+export function buildProjectAnalytics(allRecords: NormalizedRecord[]): PortfolioAnalytics {
+  // Filter: project status__1 values only, exclude rolled-off (active records)
+  const active = filterByProjects(allRecords)
+  // All project records including rolled-off (for churn chart)
+  const allProject = allRecords.filter(r =>
+    PROJECT_STATUS_LOWER.includes(r.portfolio.toLowerCase())
+  )
+
+  return {
+    portfolioId: 'projects',
+    portfolioSlug: 'projects',
+    updatedAt: new Date().toISOString(),
+    totalRecords: active.length,
+    charts: [
+      {
+        id: 'resources-by-project',
+        title: 'Resources by Project',
+        type: 'bar',
+        data: aggregateByProject(active),
+      },
+      {
+        id: 'onshore-nearshore-offshore',
+        title: 'Onshore / Nearshore / Offshore',
+        type: 'pie',
+        data: aggregateByShoreModel(active),
+      },
+      {
+        id: 'proactive-count',
+        title: 'Proactive Count by Project',
+        type: 'bar',
+        data: aggregateProactiveByProject(allProject),
+      },
+      {
+        id: 'churn-by-reason',
+        title: 'Resource Churn By Reason',
+        type: 'bar',
+        data: aggregateChurnByReason(allProject),
+      },
+      {
+        id: 'monthly-onboarding',
+        title: 'Monthly Onboarding',
+        type: 'bar',
+        data: aggregateByMonth(
+          allProject.filter(
+            r =>
+              r.onboardingStatus.toLowerCase() === 'completed' ||
+              r.onboardingStatus.toLowerCase() === 'aep in-progress'
+          ),
+          r => r.startDate
+        ),
+      },
+      {
+        id: 'monthly-offboarding',
+        title: 'Monthly Offboarding',
+        type: 'bar',
+        data: aggregateByMonth(
+          allProject.filter(r => r.onboardingStatus.toLowerCase() === 'rolled-off'),
+          r => r.offboardingDate
+        ),
+      },
+      {
+        id: 'monthly-resource-count',
+        title: 'Monthly Resource Count',
+        type: 'bar',
+        data: aggregateByMonth(active, r => r.startDate),
+      },
+    ],
+  }
+}

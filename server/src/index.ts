@@ -18,7 +18,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import path from 'path'
 import { discoverBoard } from './mondayService'
-import { buildPortfolioAnalytics, PORTFOLIO_FILTER_MAP } from './portfolioAnalyticsService'
+import { buildPortfolioAnalytics, buildProjectAnalytics, PORTFOLIO_FILTER_MAP } from './portfolioAnalyticsService'
 import { getCachedRecords, getCacheMetadata } from './cache'
 import type { BoardDiscovery, TestConnectionResult } from './types'
 
@@ -140,6 +140,27 @@ app.get('/api/portfolios/:portfolioSlug/analytics', async (req, res) => {
     console.error('[portfolio analytics] Error:', message)
     res.status(503).json({
       error: 'Portfolio analytics are temporarily unavailable.',
+      hint: message.includes('not configured') ? 'MONDAY_API_TOKEN is not configured' : undefined,
+    })
+  }
+})
+
+/**
+ * Projects analytics — aggregates all project-tagged resources.
+ * GET /api/projects/analytics
+ * Query params: ?refresh=true
+ */
+app.get('/api/projects/analytics', async (req, res) => {
+  const forceRefresh = req.query.refresh === 'true'
+  try {
+    const records = await getCachedRecords(forceRefresh)
+    const analytics = buildProjectAnalytics(records)
+    res.json(analytics)
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    console.error('[project analytics] Error:', message)
+    res.status(503).json({
+      error: 'Project analytics are temporarily unavailable.',
       hint: message.includes('not configured') ? 'MONDAY_API_TOKEN is not configured' : undefined,
     })
   }

@@ -1,23 +1,18 @@
 /**
- * PortfolioDashboard
+ * ProjectsDashboard
  *
- * Renders four live data dashboards sourced from monday.com board 18431218352.
- *
- * Dashboards:
- *   1. Geographic Distribution  — geography__1
- *   2. CoreFlex                 — core_flex__1
- *   3. Onshore / Nearshore / Offshore — onsite___offshore__1 (pie chart)
- *   4. Resource by Manager      — aep_manager__1 (horizontal bar chart)
+ * Renders 7 live data charts sourced from monday.com board 18431218352,
+ * filtered to project-level status__1 values.
  *
  * Usage:
- *   <PortfolioDashboard portfolioSlug="wam" portfolioName="WAM" />
+ *   <ProjectsDashboard />
  *
  * Architecture:
- *   PortfolioDashboard
- *     → usePortfolioAnalytics(portfolioSlug)          [hook]
- *       → getPortfolioAnalytics(slug)                 [service]
- *         → GET /api/portfolios/{slug}/analytics       [backend]
- *           → monday.com board items filtered by group (server-side only)
+ *   ProjectsDashboard
+ *     → useProjectAnalytics()                      [hook]
+ *       → getProjectAnalytics()                    [service]
+ *         → GET /api/projects/analytics             [backend]
+ *           → monday.com board items filtered by project status__1 values
  *
  * The token NEVER appears in this file or any file it imports.
  */
@@ -36,14 +31,9 @@ import {
   Pie,
   Legend,
 } from 'recharts'
-import { usePortfolioAnalytics } from '../../../hooks/usePortfolioAnalytics'
+import { useProjectAnalytics } from '../../../hooks/useProjectAnalytics'
 import type { ChartDefinition, ChartDataPoint } from '../../../services/portfolioAnalyticsService'
-import styles from './PortfolioDashboard.module.scss'
-import GeographicMap from './GeographicMap'
-import CoreFlexDashboard from './CoreFlexDashboard'
-import DeliveryModelDashboard from './DeliveryModelDashboard'
-import ResourceByManagerDashboard from './ResourceByManagerDashboard'
-import BillableNonBillableDashboard from './BillableNonBillableDashboard'
+import styles from './ProjectsDashboard.module.scss'
 
 // ─── AEP × IBM brand palette ─────────────────────────────────────────────────
 const CHART_COLORS = [
@@ -56,7 +46,7 @@ function getColor(index: number): string {
   return CHART_COLORS[index % CHART_COLORS.length]
 }
 
-// ─── Custom tooltip ───────────────────────────────────────────────────────────
+// ─── Custom tooltips ──────────────────────────────────────────────────────────
 
 function BarTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null
@@ -158,8 +148,8 @@ function MondayBarChart({ data }: { data: ChartDataPoint[] }) {
 
 const RADIAN = Math.PI / 180
 
-function PieLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: any) {
-  if (percent < 0.04) return null // skip labels for tiny slices
+function PieLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) {
+  if (percent < 0.04) return null
   const radius = innerRadius + (outerRadius - innerRadius) * 0.55
   const x = cx + radius * Math.cos(-midAngle * RADIAN)
   const y = cy + radius * Math.sin(-midAngle * RADIAN)
@@ -175,7 +165,6 @@ function MondayPieChart({ data }: { data: ChartDataPoint[] }) {
     return <div className={styles.chartEmpty}>No data available for this chart.</div>
   }
 
-  // Map to recharts Pie format
   const pieData = data.map(d => ({ name: d.label, value: d.value }))
 
   return (
@@ -208,67 +197,11 @@ function MondayPieChart({ data }: { data: ChartDataPoint[] }) {
   )
 }
 
-// ─── Donut chart ──────────────────────────────────────────────────────────────
-// Reuses the same chartWrapper + ResponsiveContainer pattern as MondayPieChart
-// so layout, centering, and legend styling are identical.
-
-const DONUT_COLORS: Record<string, string> = {
-  yes: '#00c875',
-  no: '#e2445c',
-}
-
-function getDonutColor(label: string, index: number): string {
-  return DONUT_COLORS[label.toLowerCase()] ?? getColor(index)
-}
-
-function MondayDonutChart({ data }: { data: ChartDataPoint[] }) {
-  if (!data.length) {
-    return <div className={styles.chartEmpty}>No data available for this chart.</div>
-  }
-
-  const pieData = data.map(d => ({ name: d.label, value: d.value }))
-
-  return (
-    <div className={styles.chartWrapper}>
-      <ResponsiveContainer width="100%" height={280}>
-        <PieChart>
-          <Pie
-            data={pieData}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            innerRadius={68}
-            outerRadius={110}
-            labelLine={false}
-            label={PieLabel}
-            paddingAngle={2}
-            strokeWidth={0}
-          >
-            {pieData.map((entry, index) => (
-              <Cell key={index} fill={getDonutColor(entry.name, index)} />
-            ))}
-          </Pie>
-          <Tooltip content={<PieTooltip />} />
-          <Legend
-            formatter={(value) => (
-              <span style={{ fontSize: 12, color: '#3a3a3c' }}>{value}</span>
-            )}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
-  )
-}
-
 // ─── Chart dispatcher ─────────────────────────────────────────────────────────
 
 function ChartRenderer({ chartDef }: { chartDef: ChartDefinition }) {
   if (chartDef.type === 'pie') {
     return <MondayPieChart data={chartDef.data} />
-  }
-  if (chartDef.type === 'donut') {
-    return <MondayDonutChart data={chartDef.data} />
   }
   return <MondayBarChart data={chartDef.data} />
 }
@@ -294,7 +227,7 @@ function AnalyticsSkeleton() {
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
   const safeMessage =
     message.includes('token') || message.includes('auth') || message.includes('401') || message.includes('403')
-      ? 'Portfolio analytics are temporarily unavailable.'
+      ? 'Project analytics are temporarily unavailable.'
       : message
 
   return (
@@ -310,7 +243,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 function EmptyState() {
   return (
     <div className={styles.emptyState}>
-      <p className={styles.emptyText}>No analytics data is currently available for this portfolio.</p>
+      <p className={styles.emptyText}>No analytics data is currently available for projects.</p>
     </div>
   )
 }
@@ -318,31 +251,20 @@ function EmptyState() {
 // ─── Chart descriptions ───────────────────────────────────────────────────────
 
 const CHART_DESCRIPTIONS: Record<string, string> = {
-  'geographic-distribution':
-    'Distribution of resources by country/geography. Counts all active resources in this portfolio group by their Geography field.',
-  'core-flex':
-    'Distribution of resources by Core/Flex designation. Shows how many resources are classified as Core, Flex, Project, or N/A.',
-  'onshore-nearshore-offshore':
-    'Distribution of resources across delivery models — Onshore (US), Nearshore (Americas), and Offshore (India, Philippines, etc.).',
-  'resource-by-manager':
-    'Number of active resources associated with each AEP manager. Sorted by headcount — managers with the most resources appear first.',
-  'billable-non-billable':
-    'Breakdown of resources by billability — Yes (billable to the client) vs No (non-billable).',
+  'resources-by-project': 'Number of active resources assigned to each project. Excludes rolled-off resources.',
+  'onshore-nearshore-offshore': 'Distribution of project resources across Onshore, Nearshore, and Offshore delivery models.',
+  'proactive-count': 'Resources currently in the AEP In-Progress onboarding state, grouped by project.',
+  'churn-by-reason': 'Rolled-off resources over the last 3 months, grouped by offboarding reason.',
+  'monthly-onboarding': 'Resources onboarded (status: Completed or AEP In-Progress) per month over the last 3 months.',
+  'monthly-offboarding': 'Resources offboarded (rolled-off) per month over the last 3 months.',
+  'monthly-resource-count': 'Active resources with a recorded start date, bucketed by start month over the last 3 months.',
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-interface PortfolioDashboardProps {
-  portfolioSlug: string
-  portfolioName: string
-}
-
-export default function PortfolioDashboard({
-  portfolioSlug,
-  portfolioName,
-}: PortfolioDashboardProps) {
+export default function ProjectsDashboard() {
   const { analytics, status, error, lastUpdated, refresh, isRefreshing } =
-    usePortfolioAnalytics(portfolioSlug)
+    useProjectAnalytics()
 
   const [activeChartIdx, setActiveChartIdx] = useState(0)
 
@@ -361,16 +283,16 @@ export default function PortfolioDashboard({
 
   return (
     <section
-      id="analytics"
+      id="projects-analytics"
       className={styles.section}
-      aria-labelledby="analytics-heading"
+      aria-labelledby="projects-analytics-heading"
     >
       {/* Section heading row */}
       <div className={styles.headingRow}>
         <div className={styles.headingLeft}>
           <span className={styles.eyebrow}>Analytics</span>
-          <h2 id="analytics-heading" className={styles.heading}>
-            {portfolioName} by the Numbers
+          <h2 id="projects-analytics-heading" className={styles.heading}>
+            Projects by the Numbers
           </h2>
           {analytics && (
             <p className={styles.totalCount}>
@@ -410,16 +332,16 @@ export default function PortfolioDashboard({
           {/* Tab bar */}
           <div
             role="tablist"
-            aria-label={`${portfolioName} analytics charts`}
+            aria-label="Projects analytics charts"
             className={styles.tabList}
           >
             {charts.map((chart, idx) => (
               <button
                 key={chart.id}
-                id={`dash-tab-${chart.id}`}
+                id={`proj-tab-${chart.id}`}
                 role="tab"
                 aria-selected={idx === activeChartIdx}
-                aria-controls={`dash-panel-${chart.id}`}
+                aria-controls={`proj-panel-${chart.id}`}
                 tabIndex={idx === activeChartIdx ? 0 : -1}
                 className={`${styles.tab} ${idx === activeChartIdx ? styles.tabActive : ''}`}
                 onClick={() => setActiveChartIdx(idx)}
@@ -442,32 +364,15 @@ export default function PortfolioDashboard({
           {/* Active chart panel */}
           {charts[activeChartIdx] && (
             <div
-              id={`dash-panel-${charts[activeChartIdx].id}`}
+              id={`proj-panel-${charts[activeChartIdx].id}`}
               role="tabpanel"
-              aria-labelledby={`dash-tab-${charts[activeChartIdx].id}`}
+              aria-labelledby={`proj-tab-${charts[activeChartIdx].id}`}
               className={styles.panel}
             >
-              {charts[activeChartIdx].id === 'geographic-distribution' ? (
-                <GeographicMap data={charts[activeChartIdx].data} />
-              ) : charts[activeChartIdx].id === 'core-flex' ? (
-                <CoreFlexDashboard data={charts[activeChartIdx].data} />
-              ) : charts[activeChartIdx].id === 'onshore-nearshore-offshore' ? (
-                <DeliveryModelDashboard
-                  data={charts[activeChartIdx].data}
-                  geoData={charts.find(c => c.id === 'geographic-distribution')?.data ?? []}
-                />
-              ) : charts[activeChartIdx].id === 'resource-by-manager' ? (
-                <ResourceByManagerDashboard data={charts[activeChartIdx].data} />
-              ) : charts[activeChartIdx].id === 'billable-non-billable' ? (
-                <BillableNonBillableDashboard data={charts[activeChartIdx].data} />
-              ) : (
-                <>
-                  <p className={styles.chartDescription}>
-                    {CHART_DESCRIPTIONS[charts[activeChartIdx].id] ?? ''}
-                  </p>
-                  <ChartRenderer chartDef={charts[activeChartIdx]} />
-                </>
-              )}
+              <p className={styles.chartDescription}>
+                {CHART_DESCRIPTIONS[charts[activeChartIdx].id] ?? ''}
+              </p>
+              <ChartRenderer chartDef={charts[activeChartIdx]} />
             </div>
           )}
         </div>
