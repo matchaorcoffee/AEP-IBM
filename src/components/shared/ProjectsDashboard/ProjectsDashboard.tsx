@@ -210,14 +210,14 @@ function ChartRenderer({ chartDef }: { chartDef: ChartDefinition }) {
 
 function AnalyticsSkeleton() {
   return (
-    <div className={styles.skeleton} aria-busy="true" aria-label="Loading analytics">
-      <div className={styles.skeletonTabBar}>
-        {[1, 2, 3, 4, 5, 6, 7].map(i => (
-          <div key={i} className={styles.skeletonTab} />
-        ))}
-      </div>
+    <div className={styles.skeletonLoader} aria-busy="true" aria-label="Loading analytics">
+      <svg className={styles.skeletonBars} viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect className={styles.bar1} x="2"  width="10" rx="3" />
+        <rect className={styles.bar2} x="18" width="10" rx="3" />
+        <rect className={styles.bar3} x="34" width="10" rx="3" />
+        <rect className={styles.bar4} x="50" width="10" rx="3" />
+      </svg>
       <p className={styles.skeletonMessage}>Fetching live data from monday.com…</p>
-      <div className={styles.skeletonChart} />
     </div>
   )
 }

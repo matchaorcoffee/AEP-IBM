@@ -251,10 +251,39 @@
   animation: shimmer 1.4s ease-in-out infinite;
 }
 
+/* ── Animated loader ─────────────────────────────────────────────────────── */
+.skeletonLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem;
+  min-height: 320px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+.skeletonBars {
+  width: 56px;
+  height: 40px;
+  overflow: visible;
+}
+
+@keyframes barPulse {
+  0%, 100% { height: 8px;  y: 32px; opacity: 0.35; }
+  50%       { height: 36px; y: 4px;  opacity: 1;    }
+}
+
+.bar1 { fill: #c8102e; animation: barPulse 1.2s ease-in-out infinite; animation-delay: 0s;    }
+.bar2 { fill: #1d3557; animation: barPulse 1.2s ease-in-out infinite; animation-delay: 0.2s;  }
+.bar3 { fill: #457b9d; animation: barPulse 1.2s ease-in-out infinite; animation-delay: 0.4s;  }
+.bar4 { fill: #c8102e; animation: barPulse 1.2s ease-in-out infinite; animation-delay: 0.6s;  }
+
 .skeletonMessage {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: #aeaeb2;
-  margin: 0 0 1.25rem;
+  margin: 0;
   text-align: center;
   letter-spacing: 0.01em;
 }
