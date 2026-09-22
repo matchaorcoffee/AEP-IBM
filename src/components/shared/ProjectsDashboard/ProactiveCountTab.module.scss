@@ -1,0 +1,640 @@
+/* ── ProactiveCountTab ──────────────────────────────────────────────────────── */
+
+/* ── Outer card (single large white rounded card) ────────────────────────── */
+.card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 6px 20px rgba(0, 0, 0, 0.07);
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* ── Header row ──────────────────────────────────────────────────────────── */
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.headerTitle {
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.025em;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.headerDesc {
+  font-size: 0.875rem;
+  color: #6e6e73;
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* KPI box — top-right */
+.kpiBox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f0f4fa;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  flex-shrink: 0;
+}
+
+.kpiIcon { flex-shrink: 0; }
+
+.kpiNumbers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.kpiTotal {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1d3557;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.kpiLabel {
+  font-size: 0.75rem;
+  color: #6e6e73;
+  white-space: nowrap;
+  margin-top: 0.1rem;
+  max-width: 110px;
+  line-height: 1.3;
+}
+
+/* ── Two-column chart row ────────────────────────────────────────────────── */
+.chartsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── Shared section titles ───────────────────────────────────────────────── */
+.sectionTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
+}
+
+/* ── Horizontal bar chart ────────────────────────────────────────────────── */
+.barSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.barList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: 140px 1fr 32px;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 2px 4px;
+  transition: background 120ms ease;
+  outline: none;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.03);
+  }
+  &:focus-visible {
+    outline: 2px solid #1d3557;
+    outline-offset: 1px;
+  }
+}
+
+.barRowDim {
+  opacity: 0.32;
+}
+
+.barLabel {
+  font-size: 0.8rem;
+  color: #3a3a3c;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barTrack {
+  height: 22px;
+  background: #f0f0f5;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease;
+  min-width: 4px;
+}
+
+.barCount {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* X-axis */
+.xAxisRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0 0 144px; /* align with track start */
+  margin-top: 0.4rem;
+}
+
+.xTick {
+  font-size: 0.68rem;
+  color: #aeaeb2;
+}
+
+.xAxisLabel {
+  font-size: 0.72rem;
+  color: #aeaeb2;
+  text-align: center;
+  margin: 0.35rem 0 0;
+}
+
+/* ── Donut chart ─────────────────────────────────────────────────────────── */
+.donutSection {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Row that holds the Recharts SVG + right-side legend */
+.donutWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0rem;
+  position: relative;
+}
+
+.donutCenter {
+  position: absolute;
+  /* Centre relative to the 70%-width Recharts container */
+  left: calc(70% / 2);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.donutTotal {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.donutCenterLine {
+  font-size: 0.7rem;
+  color: #6e6e73;
+  line-height: 1.4;
+}
+
+/* Legend stacked vertically on the right */
+.donutLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  padding-left: 0.5rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  padding: 3px 6px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 100ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  &:focus-visible {
+    outline: 2px solid #1d3557;
+    outline-offset: 1px;
+  }
+}
+
+.legendItemDim {
+  opacity: 0.35;
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendText {
+  font-size: 0.8rem;
+  color: #1d1d1f;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── Project breakdown table ─────────────────────────────────────────────── */
+.tableSection {
+  border-top: 1px solid #f0f0f5;
+  padding-top: 1.25rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #aeaeb2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0 10px 10px;
+  border-bottom: 1px solid #f0f0f5;
+  white-space: nowrap;
+}
+
+.thHash    { width: 36px; padding-left: 2px !important; }
+.thProject { }
+.thCount   { text-align: right !important; }
+.thPct     { text-align: right !important; width: 80px; }
+
+.tableRow {
+  transition: background 100ms ease;
+  cursor: pointer;
+
+  td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #f7f8fa;
+    color: #1d1d1f;
+  }
+  &:last-child td { border-bottom: none; }
+  &:hover { background: #f7f8fa; }
+}
+
+.tableRowDim td {
+  opacity: 0.32;
+}
+
+.tableRowActive {
+  background: #f7f8fa;
+}
+
+.tdRank { padding-left: 2px !important; }
+
+.tdProject {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.tdCount {
+  text-align: right;
+  font-weight: 600;
+}
+
+.tdPct {
+  text-align: right;
+  color: #6e6e73;
+}
+
+.rankBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ── Summary cards ───────────────────────────────────────────────────────── */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  border-top: 1px solid #f0f0f5;
+  padding-top: 1.25rem;
+}
+
+.summaryCard {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1rem 1.1rem 0.9rem;
+  cursor: pointer;
+  transition: box-shadow 150ms ease, transform 150ms ease, opacity 200ms ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  outline: none;
+  overflow: hidden;
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+  &:focus-visible {
+    outline: 2px solid #1d3557;
+    outline-offset: 1px;
+  }
+}
+
+.cardDim { opacity: 0.35; }
+.cardActive {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  flex-shrink: 0;
+}
+
+.cardName {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.3;
+}
+
+.cardBody {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.cardCount {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-bottom: 2px;
+}
+
+.cardPct {
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+.cardGhostCircle {
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+.tooltip {
+  background: #1d1d1f;
+  border-radius: 10px;
+  padding: 9px 13px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 220px;
+}
+
+.tooltipDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.tooltipName {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 2px;
+  line-height: 1.3;
+}
+
+.tooltipValue {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.82);
+  margin: 0 0 1px;
+}
+
+.tooltipPct {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.52);
+  margin: 0;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.emptyIcon { opacity: 0.45; }
+
+.emptyTitle {
+  font-size: 0.9375rem;
+  color: #6e6e73;
+  margin: 0;
+  max-width: 420px;
+  line-height: 1.5;
+}
+
+.emptySubtitle {
+  font-size: 0.8125rem;
+  color: #aeaeb2;
+  margin: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .chartsRow {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .donutWrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .donutCenter {
+    left: calc(70% / 2);
+  }
+
+  .donutLegend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 0;
+    gap: 0.3rem 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.25rem 1.25rem;
+    gap: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .kpiBox {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .barRow {
+    grid-template-columns: 110px 1fr 28px;
+    gap: 0.5rem;
+  }
+
+  .xAxisRow { padding-left: 114px; }
+
+  .cardsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardCount { font-size: 1.75rem; }
+  .kpiTotal  { font-size: 1.75rem; }
+  .headerTitle { font-size: 1.375rem; }
+}
+
+/* ── Dark mode ───────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .card {
+    background: #2c2c2e;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .headerTitle,
+  .sectionTitle,
+  .barCount,
+  .tdProject,
+  .tdCount,
+  .cardCount,
+  .donutTotal,
+  .legendText {
+    color: #f5f5f7;
+  }
+
+  .headerDesc,
+  .barLabel,
+  .kpiLabel,
+  .donutCenterLine,
+  .tdPct,
+  .xAxisLabel,
+  .xTick {
+    color: #aeaeb2;
+  }
+
+  .barTrack { background: #3a3a3c; }
+  .kpiBox   { background: #1a1a1a; }
+
+  .table th {
+    border-bottom-color: #3a3a3c;
+    color: #6e6e73;
+  }
+
+  .tableSection { border-top-color: #3a3a3c; }
+  .cardsGrid    { border-top-color: #3a3a3c; }
+
+  .tableRow {
+    td { border-bottom-color: #1a1a1a; color: #f5f5f7; }
+    &:hover { background: #1a1a1a; }
+  }
+  .tableRowActive { background: #1a1a1a; }
+
+  .summaryCard {
+    background: #2c2c2e;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .kpiTotal { color: #7bb3e8; }
+}

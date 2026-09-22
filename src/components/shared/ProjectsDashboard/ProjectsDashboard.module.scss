@@ -173,6 +173,14 @@
   padding: 1.5rem 1.75rem;
 }
 
+/* Resources by Project tab — no outer card; component renders its own cards */
+.panelResourcesByProject {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
 .chartDescription {
   font-size: 0.875rem;
   color: #6e6e73;
