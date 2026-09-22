@@ -1,15 +1,16 @@
 /**
  * ResourcesByProjectTab
  *
- * Redesigned "Resources by Project" dashboard tab.
+ * "Proactive Resources by Project" dashboard tab.
+ * Visual design matches DeliveryModelTab (Project Resources by Delivery Model page).
  *
- * Receives data already fetched from monday.com via the existing hook/service.
  * Does NOT fetch data, does NOT hardcode project names, counts, or percentages.
+ * All values come dynamically from monday.com via the existing hook/service.
  *
  * Layout:
- *   Header card (title + total active resources)
- *   Three-column section: horizontal bar chart | donut chart | breakdown table
- *   Project summary cards row
+ *   Header card  (title + description | total KPI)
+ *   Three columns: donut chart | horizontal bar chart | breakdown table
+ *   Summary cards: 3-column grid, one card per project
  */
 
 import { useState } from 'react'
@@ -67,40 +68,119 @@ function buildProjectEntries(data: ChartDataPoint[], total: number): ProjectEntr
   }))
 }
 
-// ─── Tooltip content (shared across bar + donut) ───────────────────────────────
+// ─── Recharts donut tooltip ────────────────────────────────────────────────────
 
-interface TooltipData {
-  label: string
-  value: number
-  percent: number
-  color: string
-}
-
-function ProjectTooltip({ data }: { data: TooltipData }) {
+function DonutTooltipContent({ active, payload }: any) {
+  if (!active || !payload?.length) return null
+  const entry = payload[0].payload
   return (
     <div className={styles.tooltip}>
-      <div className={styles.tooltipDot} style={{ background: data.color }} />
+      <div className={styles.tooltipDot} style={{ background: entry.color }} />
       <div>
-        <p className={styles.tooltipName}>{data.label}</p>
-        <p className={styles.tooltipValue}>{data.value} resources</p>
-        <p className={styles.tooltipPct}>{data.percent.toFixed(1)}% of total</p>
+        <p className={styles.tooltipName}>{entry.name}</p>
+        <p className={styles.tooltipValue}>{entry.value} resource{entry.value !== 1 ? 's' : ''}</p>
+        <p className={styles.tooltipPct}>{(entry.pctDisplay ?? 0).toFixed(1)}% of total</p>
       </div>
     </div>
   )
 }
 
-// ─── Recharts donut tooltip ────────────────────────────────────────────────────
 
-function DonutTooltipContent({ active, payload }: any) {
-  if (!active || !payload?.length) return null
-  const entry: ProjectEntry = payload[0].payload
+// ─── Donut chart ──────────────────────────────────────────────────────────────
+
+function DonutChart({
+  projects,
+  total,
+  activeProject,
+  onProjectHover,
+  onProjectClick,
+}: {
+  projects: ProjectEntry[]
+  total: number
+  activeProject: string | null
+  onProjectHover: (label: string | null) => void
+  onProjectClick: (label: string) => void
+}) {
+  if (!projects.length) return null
+
+  // IMPORTANT: do NOT spread `percent` into pieData.
+  // Recharts treats a field named `percent` as a 0-1 decimal for its built-in
+  // label renderer and multiplies by 100 — our `percent` is already 0-100, so
+  // spreading it would produce "6667%" labels.
+  const pieData = projects.map(p => ({
+    name:    p.label,
+    label:   p.label,
+    value:   p.value,
+    color:   p.color,
+    rank:    p.rank,
+    pctDisplay: p.percent, // renamed — safe for custom tooltip, never touched by Recharts label
+  }))
+
   return (
-    <div className={styles.tooltip}>
-      <div className={styles.tooltipDot} style={{ background: entry.color }} />
-      <div>
-        <p className={styles.tooltipName}>{entry.label}</p>
-        <p className={styles.tooltipValue}>{entry.value} resources</p>
-        <p className={styles.tooltipPct}>{entry.percent.toFixed(1)}% of total</p>
+    <div className={styles.donutSection}>
+      <h3 className={styles.sectionTitle}>Proactive resource share</h3>
+      <div className={styles.donutWrapper}>
+        <ResponsiveContainer width="100%" height={240}>
+          <PieChart>
+            <Pie
+              data={pieData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              innerRadius={64}
+              outerRadius={100}
+              paddingAngle={2}
+              startAngle={90}
+              endAngle={-270}
+              labelLine={false}
+              onMouseEnter={(_: any, index: number) => onProjectHover(pieData[index].label)}
+              onMouseLeave={() => onProjectHover(null)}
+              onClick={(_: any, index: number) => onProjectClick(pieData[index].label)}
+              style={{ cursor: 'pointer' }}
+            >
+              {pieData.map((entry, index) => {
+                const isActive = activeProject === null || activeProject === entry.name
+                return (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={entry.color}
+                    opacity={isActive ? 1 : 0.25}
+                    stroke="none"
+                  />
+                )
+              })}
+            </Pie>
+            <Tooltip content={<DonutTooltipContent />} />
+          </PieChart>
+        </ResponsiveContainer>
+
+        {/* Centre label */}
+        <div className={styles.donutCenter} aria-hidden="true">
+          <span className={styles.donutTotal}>{total}</span>
+          <span className={styles.donutCenterLine}>Total</span>
+          <span className={styles.donutCenterLine}>Resources</span>
+        </div>
+      </div>
+
+      {/* Legend — dot + label below the donut */}
+      <div className={styles.donutLegend}>
+        {projects.map(p => {
+          const isActive = activeProject === null || activeProject === p.label
+          return (
+            <button
+              key={p.label}
+              className={`${styles.legendItem} ${!isActive ? styles.legendItemDim : ''}`}
+              onClick={() => onProjectClick(p.label)}
+              onMouseEnter={() => onProjectHover(p.label)}
+              onMouseLeave={() => onProjectHover(null)}
+              aria-label={`${p.label}: ${p.value} resources`}
+            >
+              <span className={styles.legendDot} style={{ background: p.color }} />
+              <span className={styles.legendText}>{p.label}</span>
+            </button>
+          )
+        })}
       </div>
     </div>
   )
@@ -124,7 +204,7 @@ function HorizontalBarChart({
 
   return (
     <div className={styles.barSection}>
-      <h3 className={styles.sectionTitle}>Resources by Project</h3>
+      <h3 className={styles.sectionTitle}>Proactive resources by project</h3>
       <div className={styles.barList}>
         {projects.map(p => {
           const isActive = activeProject === null || activeProject === p.label
@@ -132,7 +212,7 @@ function HorizontalBarChart({
           return (
             <div
               key={p.label}
-              className={`${styles.barRow} ${!isActive ? styles.barRowDimmed : ''}`}
+              className={`${styles.barRow} ${!isActive ? styles.barRowDim : ''}`}
               onMouseEnter={() => onProjectHover(p.label)}
               onMouseLeave={() => onProjectHover(null)}
               onClick={() => onProjectClick(p.label)}
@@ -148,7 +228,7 @@ function HorizontalBarChart({
                   style={{
                     width: `${pct}%`,
                     background: p.color,
-                    opacity: isActive ? 1 : 0.35,
+                    opacity: isActive ? 1 : 0.28,
                   }}
                 />
               </div>
@@ -159,99 +239,21 @@ function HorizontalBarChart({
           )
         })}
       </div>
-    </div>
-  )
-}
 
-// ─── Donut chart ──────────────────────────────────────────────────────────────
-
-function DonutChart({
-  projects,
-  total,
-  activeProject,
-  onProjectHover,
-  onProjectClick,
-}: {
-  projects: ProjectEntry[]
-  total: number
-  activeProject: string | null
-  onProjectHover: (label: string | null) => void
-  onProjectClick: (label: string) => void
-}) {
-  if (!projects.length) return null
-
-  // Recharts Pie uses the full entry as payload so we can colour + highlight
-  const pieData = projects.map(p => ({
-    ...p,
-    name: p.label,
-    // dim non-active segments via opacity in the Cell
-  }))
-
-  return (
-    <div className={styles.donutSection}>
-      <h3 className={styles.sectionTitle}>Share of resources by project</h3>
-      <div className={styles.donutWrapper}>
-        <ResponsiveContainer width="100%" height={280}>
-          <PieChart>
-            <Pie
-              data={pieData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={72}
-              outerRadius={115}
-              paddingAngle={2}
-              startAngle={90}
-              endAngle={-270}
-              onMouseEnter={(_: any, index: number) => onProjectHover(pieData[index].label)}
-              onMouseLeave={() => onProjectHover(null)}
-              onClick={(_: any, index: number) => onProjectClick(pieData[index].label)}
-              style={{ cursor: 'pointer' }}
-            >
-              {pieData.map((entry, index) => {
-                const isActive = activeProject === null || activeProject === entry.label
-                return (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={entry.color}
-                    opacity={isActive ? 1 : 0.3}
-                    stroke="none"
-                  />
-                )
-              })}
-            </Pie>
-            <Tooltip content={<DonutTooltipContent />} />
-          </PieChart>
-        </ResponsiveContainer>
-
-        {/* Centre label */}
-        <div className={styles.donutCenter} aria-hidden="true">
-          <span className={styles.donutTotal}>{total}</span>
-          <span className={styles.donutTotalLabel}>Total</span>
-          <span className={styles.donutTotalLabel}>Resources</span>
-        </div>
-      </div>
-
-      {/* Legend */}
-      <div className={styles.donutLegend}>
-        {projects.map(p => {
-          const isActive = activeProject === null || activeProject === p.label
-          return (
-            <button
-              key={p.label}
-              className={`${styles.legendItem} ${!isActive ? styles.legendItemDimmed : ''}`}
-              onClick={() => onProjectClick(p.label)}
-              onMouseEnter={() => onProjectHover(p.label)}
-              onMouseLeave={() => onProjectHover(null)}
-              aria-label={`${p.label}: ${p.value} resources`}
-            >
-              <span className={styles.legendDot} style={{ background: p.color }} />
-              <span className={styles.legendText}>{p.label}</span>
-            </button>
-          )
-        })}
-      </div>
+      {/* X-axis */}
+      {maxVal > 0 && (
+        <>
+          <div className={styles.xAxisRow}>
+            {(() => {
+              const step = Math.max(1, Math.ceil(maxVal / 4))
+              const ticks: number[] = []
+              for (let v = 0; v <= maxVal + step; v += step) ticks.push(v)
+              return ticks.map(t => <span key={t} className={styles.xTick}>{t}</span>)
+            })()}
+          </div>
+          <p className={styles.xAxisLabel}>Number of proactive resources</p>
+        </>
+      )}
     </div>
   )
 }
@@ -277,7 +279,7 @@ function BreakdownTable({
           <tr>
             <th className={styles.thHash}>#</th>
             <th className={styles.thProject}>Project</th>
-            <th className={styles.thResources}>Resources</th>
+            <th className={styles.thResources}>Proactive Resources</th>
             <th className={styles.thPct}>% of Total</th>
           </tr>
         </thead>
@@ -287,7 +289,7 @@ function BreakdownTable({
             return (
               <tr
                 key={p.label}
-                className={`${styles.tableRow} ${!isActive ? styles.tableRowDimmed : ''} ${activeProject === p.label ? styles.tableRowHighlighted : ''}`}
+                className={`${styles.tableRow} ${!isActive ? styles.tableRowDim : ''} ${activeProject === p.label ? styles.tableRowActive : ''}`}
                 onMouseEnter={() => onProjectHover(p.label)}
                 onMouseLeave={() => onProjectHover(null)}
                 onClick={() => onProjectClick(p.label)}
@@ -300,7 +302,7 @@ function BreakdownTable({
                 </td>
                 <td className={styles.tdProject}>{p.label}</td>
                 <td className={styles.tdResources}>{p.value}</td>
-                <td className={styles.tdPct}>{p.percent.toFixed(1)}%</td>
+                <td className={styles.tdPct}>{p.percent.toFixed(0)}%</td>
               </tr>
             )
           })}
@@ -311,6 +313,8 @@ function BreakdownTable({
 }
 
 // ─── Summary cards ─────────────────────────────────────────────────────────────
+// Exact same structure/class-names as KpiCards in DeliveryModelTab.
+// kpiGrid → kpiCard → kpiHeader (icon + label) / kpiBody (count + badge + ghost circle)
 
 function SummaryCards({
   projects,
@@ -324,60 +328,79 @@ function SummaryCards({
   onProjectClick: (label: string) => void
 }) {
   return (
-    <div className={styles.cardsGrid}>
+    <div className={styles.kpiGrid}>
       {projects.map(p => {
         const isActive = activeProject === null || activeProject === p.label
         return (
           <div
             key={p.label}
-            className={`${styles.summaryCard} ${!isActive ? styles.summaryCardDimmed : ''} ${activeProject === p.label ? styles.summaryCardHighlighted : ''}`}
-            style={{
-              borderTop: `3px solid ${p.color}`,
-            }}
+            className={`${styles.kpiCard} ${!isActive ? styles.kpiCardDim : ''} ${activeProject === p.label ? styles.kpiCardActive : ''}`}
+            style={{ background: p.color + '18' }}
             onMouseEnter={() => onProjectHover(p.label)}
             onMouseLeave={() => onProjectHover(null)}
             onClick={() => onProjectClick(p.label)}
             role="button"
             tabIndex={0}
-            aria-label={`${p.label}: ${p.value} resources, ${p.percent.toFixed(1)}% of total`}
+            aria-label={`${p.label}: ${p.value} resource${p.value !== 1 ? 's' : ''}, ${p.percent.toFixed(0)}% of total`}
             onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onProjectClick(p.label) }}
           >
-            {/* Icon + project name */}
-            <div className={styles.cardHeader}>
-              <span className={styles.cardIcon} style={{ background: p.color + '18', color: p.color }}>
-                {/* Resource/document icon (inline SVG) */}
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 2h7l3 3v9H3V2z" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinejoin="round"/>
-                  <path d="M10 2v3h3" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
-                  <path d="M5.5 7.5h5M5.5 10h3.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-                </svg>
+            {/* Header row: people icon + project name */}
+            <div className={styles.kpiHeader}>
+              <svg
+                className={styles.kpiIcon}
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                style={{ color: p.color }}
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <span className={styles.kpiLabel} style={{ color: p.color }}>
+                {p.label}
               </span>
-              <span className={styles.cardName}>{p.label}</span>
             </div>
 
-            {/* Count + percentage row */}
-            <div className={styles.cardBody}>
-              <span className={styles.cardCount}>{p.value}</span>
-              <div className={styles.cardMeta}>
-                <span className={styles.cardPct} style={{ color: p.color }}>
-                  {p.percent.toFixed(1)}% of total
-                </span>
-                {/* Ghost people icon */}
-                <svg
-                  className={styles.cardPeopleIcon}
-                  width="28"
-                  height="24"
-                  viewBox="0 0 28 24"
-                  fill="none"
-                  aria-hidden="true"
-                  style={{ color: p.color }}
+            {/* Body: large count + percentage pill + ghost circle */}
+            <div className={styles.kpiBody}>
+              <span className={styles.kpiCount}>{p.value}</span>
+              <div className={styles.kpiMeta}>
+                <span
+                  className={styles.kpiPctBadge}
+                  style={{ background: p.color + '22', color: p.color }}
                 >
-                  <circle cx="10" cy="6" r="4" stroke="currentColor" strokeWidth="1.5" opacity="0.35"/>
-                  <path d="M2 20c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" strokeWidth="1.5" opacity="0.35"/>
-                  <circle cx="20" cy="6" r="3" stroke="currentColor" strokeWidth="1.5" opacity="0.2"/>
-                  <path d="M18 20c0-3.314 1.343-6 3-6s3 2.686 3 6" stroke="currentColor" strokeWidth="1.5" opacity="0.2"/>
-                </svg>
+                  {p.percent.toFixed(0)}% of total
+                </span>
               </div>
+              <span
+                className={styles.kpiGhostCircle}
+                style={{ background: p.color + '18', color: p.color }}
+                aria-hidden="true"
+              >
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </span>
             </div>
           </div>
         )
@@ -390,7 +413,7 @@ function SummaryCards({
 
 interface ResourcesByProjectTabProps {
   data: ChartDataPoint[]    // sorted descending from backend
-  totalRecords: number       // total active resources across all projects
+  totalRecords: number       // total proactive resources across all projects
 }
 
 export default function ResourcesByProjectTab({ data, totalRecords }: ResourcesByProjectTabProps) {
@@ -408,28 +431,31 @@ export default function ResourcesByProjectTab({ data, totalRecords }: ResourcesB
 
   if (!projects.length) {
     return (
-      <div className={styles.empty}>
-        <p>No active resource data available for projects.</p>
+      <div className={styles.container}>
+        <div className={styles.emptyState}>
+          <p className={styles.emptyTitle}>No active resource data available for projects.</p>
+        </div>
       </div>
     )
   }
 
   return (
     <div className={styles.container}>
+
       {/* ── Header card ─────────────────────────────────────────── */}
       <div className={styles.headerCard}>
         <div className={styles.headerLeft}>
-          <h2 className={styles.headerTitle}>Resources by Project</h2>
+          <h2 className={styles.headerTitle}>Proactive Resources by Project</h2>
           <p className={styles.headerDesc}>
-            Number of active resources assigned to each project. Excludes rolled-off resources.
+            Resources currently in the AEP In-Progress onboarding state, grouped by project.
           </p>
         </div>
         <div className={styles.headerRight}>
-          {/* Group / people icon — matches CoreFlex KPI style */}
+          {/* People / group icon */}
           <svg
             className={styles.headerIcon}
-            width="28"
-            height="28"
+            width="30"
+            height="30"
             viewBox="0 0 24 24"
             fill="none"
             stroke="#1d3557"
@@ -445,22 +471,22 @@ export default function ResourcesByProjectTab({ data, totalRecords }: ResourcesB
           </svg>
           <div className={styles.headerTotalBlock}>
             <span className={styles.headerTotalNum}>{totalRecords}</span>
-            <span className={styles.headerTotalLabel}>Active resources</span>
+            <span className={styles.headerTotalLabel}>Total proactive{'\u00A0'}resources</span>
           </div>
         </div>
       </div>
 
       {/* ── Three-column analytics section ──────────────────────── */}
       <div className={styles.analyticsRow}>
-        <HorizontalBarChart
+        <DonutChart
           projects={projects}
+          total={totalRecords}
           activeProject={activeProject}
           onProjectHover={handleProjectHover}
           onProjectClick={handleProjectClick}
         />
-        <DonutChart
+        <HorizontalBarChart
           projects={projects}
-          total={totalRecords}
           activeProject={activeProject}
           onProjectHover={handleProjectHover}
           onProjectClick={handleProjectClick}
