@@ -1,0 +1,606 @@
+/* ── ResourcesByProjectTab ──────────────────────────────────────────────────── */
+
+/* ── Outer wrapper ───────────────────────────────────────────────────────── */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Header card ─────────────────────────────────────────────────────────── */
+.headerCard {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.headerTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.025em;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.headerDesc {
+  font-size: 0.875rem;
+  color: #6e6e73;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.headerIcon {
+  flex-shrink: 0;
+  opacity: 0.82;
+}
+
+.headerTotalBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+}
+
+.headerTotalNum {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1d3557;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.headerTotalLabel {
+  font-size: 0.78rem;
+  color: #6e6e73;
+  white-space: nowrap;
+  margin-top: 0.1rem;
+}
+
+/* ── Three-column analytics row ─────────────────────────────────────────── */
+.analyticsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+/* ─── Shared section card ────────────────────────────────────────────────── */
+.barSection,
+.donutSection,
+.tableSection {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* ─── Horizontal bar chart ───────────────────────────────────────────────── */
+.barList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: 140px 1fr 36px;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 2px 4px;
+  transition: background 120ms ease;
+  outline: none;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1d3557;
+    outline-offset: 1px;
+  }
+}
+
+.barRowDimmed {
+  opacity: 0.38;
+}
+
+.barLabel {
+  font-size: 0.78rem;
+  color: #3a3a3c;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barTrack {
+  height: 18px;
+  background: #f0f0f5;
+  border-radius: 999px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease;
+  min-width: 4px;
+}
+
+.barCount {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-align: right;
+  min-width: 28px;
+  transition: opacity 200ms ease;
+}
+
+/* ─── Donut chart ────────────────────────────────────────────────────────── */
+.donutWrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Floating centre label — sits on top of the Recharts SVG */
+.donutCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  /* Offset to compensate for legend below donut */
+  margin-top: -14px;
+}
+
+.donutTotal {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.donutTotalLabel {
+  font-size: 0.7rem;
+  color: #6e6e73;
+  line-height: 1.4;
+}
+
+/* Legend below donut */
+.donutLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
+  justify-content: center;
+  padding-top: 0.25rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 100ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1d3557;
+    outline-offset: 1px;
+  }
+}
+
+.legendItemDimmed {
+  opacity: 0.35;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendText {
+  font-size: 0.72rem;
+  color: #3a3a3c;
+  white-space: nowrap;
+}
+
+/* ─── Breakdown table ────────────────────────────────────────────────────── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table th {
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #aeaeb2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0 8px 8px;
+  border-bottom: 1px solid #f0f0f5;
+  white-space: nowrap;
+}
+
+.thHash { width: 32px; padding-left: 2px !important; }
+.thProject { }
+.thResources { text-align: right !important; }
+.thPct { text-align: right !important; width: 70px; }
+
+.tableRow {
+  transition: background 100ms ease;
+  border-radius: 6px;
+
+  &:hover {
+    background: #f7f8fa;
+  }
+
+  & td {
+    padding: 7px 8px;
+    border-bottom: 1px solid #f7f8fa;
+    color: #1d1d1f;
+  }
+
+  &:last-child td {
+    border-bottom: none;
+  }
+}
+
+.tableRowDimmed td {
+  opacity: 0.35;
+}
+
+.tableRowHighlighted {
+  background: #f7f8fa;
+}
+
+.tdRank {
+  padding-left: 2px !important;
+}
+
+.tdProject {
+  font-weight: 500;
+  color: #1d1d1f;
+  font-size: 0.8rem;
+}
+
+.tdResources {
+  text-align: right;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.tdPct {
+  text-align: right;
+  color: #6e6e73;
+}
+
+.rankBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ─── Summary cards ──────────────────────────────────────────────────────── */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.875rem;
+}
+
+.summaryCard {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1rem 1.1rem 0.9rem;
+  cursor: pointer;
+  transition: box-shadow 150ms ease, transform 150ms ease, opacity 200ms ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  outline: none;
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1d3557;
+    outline-offset: 1px;
+  }
+}
+
+.summaryCardDimmed {
+  opacity: 0.38;
+}
+
+.summaryCardHighlighted {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.cardName {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.cardBody {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cardCount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.cardPct {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cardPeopleIcon {
+  opacity: 0.18;
+}
+
+/* ─── Tooltip ────────────────────────────────────────────────────────────── */
+.tooltip {
+  background: #1d1d1f;
+  border-radius: 10px;
+  padding: 9px 13px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 200px;
+}
+
+.tooltipDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.tooltipName {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 2px;
+  line-height: 1.3;
+}
+
+.tooltipValue {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 1px;
+}
+
+.tooltipPct {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+}
+
+/* ─── Empty state ────────────────────────────────────────────────────────── */
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  font-size: 0.875rem;
+  color: #aeaeb2;
+  text-align: center;
+
+  p { margin: 0; }
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+
+/* Tablet: stack bar + donut, keep table below */
+@media (max-width: 1100px) {
+  .analyticsRow {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tableSection {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .headerCard {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .headerRight {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .headerTotalBlock {
+    align-items: flex-start;
+  }
+
+  .analyticsRow {
+    grid-template-columns: 1fr;
+  }
+
+  .tableSection {
+    grid-column: auto;
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .barRow {
+    grid-template-columns: 110px 1fr 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .barSection,
+  .donutSection,
+  .tableSection {
+    padding: 1rem;
+  }
+
+  .headerCard {
+    padding: 1rem;
+  }
+
+  .headerTotalNum {
+    font-size: 1.625rem;
+  }
+
+  .cardCount {
+    font-size: 1.625rem;
+  }
+}
+
+/* ─── Dark mode ──────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .headerCard,
+  .barSection,
+  .donutSection,
+  .tableSection,
+  .summaryCard {
+    background: #2c2c2e;
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .headerTitle,
+  .sectionTitle,
+  .barCount,
+  .tdProject,
+  .tdResources,
+  .cardCount,
+  .cardName,
+  .donutTotal {
+    color: #f5f5f7;
+  }
+
+  .headerDesc,
+  .barLabel,
+  .headerTotalLabel,
+  .donutTotalLabel,
+  .legendText,
+  .tdPct {
+    color: #aeaeb2;
+  }
+
+  .barTrack {
+    background: #3a3a3c;
+  }
+
+  .table th {
+    border-bottom-color: #3a3a3c;
+    color: #6e6e73;
+  }
+
+  .tableRow {
+    &:hover { background: #1a1a1a; }
+    td { border-bottom-color: #1a1a1a; color: #f5f5f7; }
+  }
+
+  .tableRowHighlighted { background: #1a1a1a; }
+
+  .headerTotalNum {
+    color: #7bb3e8;
+  }
+}

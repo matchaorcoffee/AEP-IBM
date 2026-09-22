@@ -33,6 +33,13 @@ import {
 } from 'recharts'
 import { useProjectAnalytics } from '../../../hooks/useProjectAnalytics'
 import type { ChartDefinition, ChartDataPoint } from '../../../services/portfolioAnalyticsService'
+import ResourcesByProjectTab from './ResourcesByProjectTab'
+import DeliveryModelTab from './DeliveryModelTab'
+import ProactiveCountTab from './ProactiveCountTab'
+import ChurnByReasonTab from './ChurnByReasonTab'
+import MonthlyOnboardingTab from './MonthlyOnboardingTab'
+import MonthlyOffboardingTab from './MonthlyOffboardingTab'
+import MonthlyResourceCountTab from './MonthlyResourceCountTab'
 import styles from './ProjectsDashboard.module.scss'
 
 // ─── AEP × IBM brand palette ─────────────────────────────────────────────────
@@ -362,19 +369,64 @@ export default function ProjectsDashboard() {
           </div>
 
           {/* Active chart panel */}
-          {charts[activeChartIdx] && (
-            <div
-              id={`proj-panel-${charts[activeChartIdx].id}`}
-              role="tabpanel"
-              aria-labelledby={`proj-tab-${charts[activeChartIdx].id}`}
-              className={styles.panel}
-            >
-              <p className={styles.chartDescription}>
-                {CHART_DESCRIPTIONS[charts[activeChartIdx].id] ?? ''}
-              </p>
-              <ChartRenderer chartDef={charts[activeChartIdx]} />
-            </div>
-          )}
+          {charts[activeChartIdx] && (() => {
+            const chartId = charts[activeChartIdx].id
+            const isCustom =
+              chartId === 'resources-by-project' ||
+              chartId === 'onshore-nearshore-offshore' ||
+              chartId === 'proactive-count' ||
+              chartId === 'churn-by-reason' ||
+              chartId === 'monthly-onboarding' ||
+              chartId === 'monthly-offboarding' ||
+              chartId === 'monthly-resource-count'
+            return (
+              <div
+                id={`proj-panel-${chartId}`}
+                role="tabpanel"
+                aria-labelledby={`proj-tab-${chartId}`}
+                className={isCustom ? styles.panelResourcesByProject : styles.panel}
+              >
+                {chartId === 'resources-by-project' ? (
+                  <ResourcesByProjectTab
+                    data={charts[activeChartIdx].data}
+                    totalRecords={analytics?.totalRecords ?? 0}
+                  />
+                ) : chartId === 'onshore-nearshore-offshore' ? (
+                  <DeliveryModelTab
+                    data={charts[activeChartIdx].data}
+                    totalRecords={analytics?.totalRecords ?? 0}
+                  />
+                ) : chartId === 'proactive-count' ? (
+                  <ProactiveCountTab
+                    data={charts[activeChartIdx].data}
+                  />
+                ) : chartId === 'churn-by-reason' ? (
+                  <ChurnByReasonTab
+                    data={charts[activeChartIdx].data}
+                  />
+                ) : chartId === 'monthly-onboarding' ? (
+                  <MonthlyOnboardingTab
+                    data={charts[activeChartIdx].data}
+                  />
+                ) : chartId === 'monthly-offboarding' ? (
+                  <MonthlyOffboardingTab
+                    data={charts[activeChartIdx].data}
+                  />
+                ) : chartId === 'monthly-resource-count' ? (
+                  <MonthlyResourceCountTab
+                    data={charts[activeChartIdx].data}
+                  />
+                ) : (
+                  <>
+                    <p className={styles.chartDescription}>
+                      {CHART_DESCRIPTIONS[chartId] ?? ''}
+                    </p>
+                    <ChartRenderer chartDef={charts[activeChartIdx]} />
+                  </>
+                )}
+              </div>
+            )
+          })()}
         </div>
       )}
     </section>
