@@ -1,7 +1,8 @@
 /**
  * MonthlyResourceCountTab
  *
- * Redesigned "Monthly Resource Count" dashboard tab.
+ * "Monthly Resource Count" dashboard tab.
+ * Visual design matches DeliveryModelTab (Project Resources by Delivery Model page).
  *
  * Consumes the `monthly-resource-count` chart data from the existing monday.com
  * integration (aggregateByMonth — active resources with a valid startDate,
@@ -10,11 +11,10 @@
  * Does NOT fetch data. Does NOT hardcode month names, counts, percentages,
  * or totals. All values come dynamically from monday.com.
  *
- * Layout (matches reference image):
- *   One large white card containing:
- *     - Header row:    title + description | KPI (total + icon)
- *     - Three columns: vertical bar chart | donut chart | breakdown table
- *     - Summary cards: one card per month (chronological, oldest → newest)
+ * Layout:
+ *   Header card  (title + description | total KPI)
+ *   Three columns: donut chart | vertical bar chart | breakdown table
+ *   Summary cards: 3-column grid, one card per month
  */
 
 import { useState } from 'react'
@@ -100,6 +100,92 @@ function DonutTooltip({ active, payload }: any) {
   )
 }
 
+// ─── Donut chart ────────────────────────────────────────────────────────────────
+
+function DonutChart({
+  entries,
+  total,
+  active,
+  onHover,
+  onClick,
+}: {
+  entries: MonthEntry[]
+  total: number
+  active: string | null
+  onHover: (label: string | null) => void
+  onClick: (label: string) => void
+}) {
+  // IMPORTANT: do NOT pass `label={OuterLabel}` — Recharts v3 passes `percent`
+  // as 0–1, but our MonthEntry.percent is 0–100, causing "3700%" label bugs.
+  // The legend below the donut already identifies every segment.
+  return (
+    <div className={styles.donutSection}>
+      <h3 className={styles.sectionTitle}>Share of active resources</h3>
+
+      <div className={styles.donutWrapper}>
+        <ResponsiveContainer width="100%" height={240}>
+          <PieChart>
+            <Pie
+              data={entries}
+              dataKey="value"
+              nameKey="label"
+              cx="50%"
+              cy="50%"
+              innerRadius={64}
+              outerRadius={96}
+              paddingAngle={2}
+              startAngle={90}
+              endAngle={-270}
+              labelLine={false}
+              onMouseEnter={(_: any, i: number) => onHover(entries[i].label)}
+              onMouseLeave={() => onHover(null)}
+              onClick={(_: any, i: number) => onClick(entries[i].label)}
+              style={{ cursor: 'pointer' }}
+            >
+              {entries.map((e, i) => (
+                <Cell
+                  key={i}
+                  fill={e.color}
+                  opacity={active === null || active === e.label ? 1 : 0.25}
+                  stroke="none"
+                />
+              ))}
+            </Pie>
+            <Tooltip content={<DonutTooltip />} />
+          </PieChart>
+        </ResponsiveContainer>
+
+        {/* Centre label */}
+        <div className={styles.donutCenter} aria-hidden="true">
+          <span className={styles.donutTotal}>{total}</span>
+          <span className={styles.donutCenterLine}>Total</span>
+          <span className={styles.donutCenterLine}>Resources</span>
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className={styles.donutLegend}>
+        {entries.map(e => {
+          const isActive = active === null || active === e.label
+          return (
+            <button
+              key={e.label}
+              className={`${styles.legendItem} ${!isActive ? styles.legendItemDim : ''}`}
+              onClick={() => onClick(e.label)}
+              onMouseEnter={() => onHover(e.label)}
+              onMouseLeave={() => onHover(null)}
+              aria-label={`${e.label}: ${e.value} resources`}
+            >
+              <span className={styles.legendDot} style={{ background: e.color }} />
+              <span className={styles.legendText}>{e.label}</span>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // ─── Vertical bar chart ─────────────────────────────────────────────────────────
 
 function VerticalBarChart({
@@ -174,121 +260,6 @@ function VerticalBarChart({
   )
 }
 
-// ─── Donut chart ────────────────────────────────────────────────────────────────
-
-const RADIAN = Math.PI / 180
-
-function OuterLabel({ cx, cy, midAngle, outerRadius, percent, fill }: any) {
-  if (percent < 0.04) return null
-  const LINE   = 18
-  const OFFSET = 5
-  const sin    = Math.sin(-midAngle * RADIAN)
-  const cos    = Math.cos(-midAngle * RADIAN)
-  const sx     = cx + (outerRadius + 3)  * cos
-  const sy     = cy + (outerRadius + 3)  * sin
-  const ex     = cx + (outerRadius + LINE) * cos
-  const ey     = cy + (outerRadius + LINE) * sin
-  const tx     = ex + (cos >= 0 ? OFFSET : -OFFSET)
-  return (
-    <g>
-      <path d={`M${sx},${sy}L${ex},${ey}`} stroke={fill} strokeWidth={1.4} fill="none" />
-      <circle cx={ex} cy={ey} r={3} fill={fill} />
-      <text
-        x={tx} y={ey}
-        textAnchor={cos >= 0 ? 'start' : 'end'}
-        dominantBaseline="central"
-        fontSize={11}
-        fontWeight={600}
-        fill={fill}
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    </g>
-  )
-}
-
-function DonutChart({
-  entries,
-  total,
-  active,
-  onHover,
-  onClick,
-}: {
-  entries: MonthEntry[]
-  total: number
-  active: string | null
-  onHover: (label: string | null) => void
-  onClick: (label: string) => void
-}) {
-  return (
-    <div className={styles.donutSection}>
-      <h3 className={styles.sectionTitle}>Share of active resources</h3>
-
-      <div className={styles.donutWrapper}>
-        <ResponsiveContainer width="100%" height={240}>
-          <PieChart>
-            <Pie
-              data={entries}
-              dataKey="value"
-              nameKey="label"
-              cx="50%"
-              cy="50%"
-              innerRadius={64}
-              outerRadius={96}
-              paddingAngle={2}
-              startAngle={90}
-              endAngle={-270}
-              labelLine={false}
-              label={OuterLabel}
-              onMouseEnter={(_: any, i: number) => onHover(entries[i].label)}
-              onMouseLeave={() => onHover(null)}
-              onClick={(_: any, i: number) => onClick(entries[i].label)}
-              style={{ cursor: 'pointer' }}
-            >
-              {entries.map((e, i) => (
-                <Cell
-                  key={i}
-                  fill={e.color}
-                  opacity={active === null || active === e.label ? 1 : 0.25}
-                  stroke="none"
-                />
-              ))}
-            </Pie>
-            <Tooltip content={<DonutTooltip />} />
-          </PieChart>
-        </ResponsiveContainer>
-
-        {/* Centre label */}
-        <div className={styles.donutCenter} aria-hidden="true">
-          <span className={styles.donutTotal}>{total}</span>
-          <span className={styles.donutCenterLine}>Total</span>
-          <span className={styles.donutCenterLine}>Resources</span>
-        </div>
-      </div>
-
-      {/* Legend */}
-      <div className={styles.donutLegend}>
-        {entries.map(e => {
-          const isActive = active === null || active === e.label
-          return (
-            <button
-              key={e.label}
-              className={`${styles.legendItem} ${!isActive ? styles.legendItemDim : ''}`}
-              onClick={() => onClick(e.label)}
-              onMouseEnter={() => onHover(e.label)}
-              onMouseLeave={() => onHover(null)}
-              aria-label={`${e.label}: ${e.value} resources`}
-            >
-              <span className={styles.legendDot} style={{ background: e.color }} />
-              <span className={styles.legendText}>{e.label}</span>
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
 // ─── Breakdown table ────────────────────────────────────────────────────────────
 // Sorted descending by value (ties broken by chronological order) for ranking.
 
@@ -349,7 +320,8 @@ function BreakdownTable({
   )
 }
 
-// ─── Summary cards ──────────────────────────────────────────────────────────────
+// ─── Summary cards — matches DeliveryModelTab KpiCards exactly ──────────────────
+// kpiGrid → kpiCard → kpiHeader (icon + label) / kpiBody (count + badge + ghost circle)
 
 function SummaryCards({
   entries,
@@ -363,14 +335,14 @@ function SummaryCards({
   onClick: (label: string) => void
 }) {
   return (
-    <div className={styles.cardsGrid}>
+    <div className={styles.kpiGrid}>
       {entries.map(e => {
         const isActive = active === null || active === e.label
         return (
           <div
             key={e.label}
-            className={`${styles.card} ${!isActive ? styles.cardDim : ''} ${active === e.label ? styles.cardActive : ''}`}
-            style={{ background: e.color + '0d', borderTop: `3px solid ${e.color}` }}
+            className={`${styles.kpiCard} ${!isActive ? styles.kpiCardDim : ''} ${active === e.label ? styles.kpiCardActive : ''}`}
+            style={{ background: e.color + '18' }}
             onMouseEnter={() => onHover(e.label)}
             onMouseLeave={() => onHover(null)}
             onClick={() => onClick(e.label)}
@@ -379,34 +351,46 @@ function SummaryCards({
             aria-label={`${e.label}: ${e.value} resource${e.value !== 1 ? 's' : ''}, ${e.percent.toFixed(0)}% of total`}
             onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') onClick(e.label) }}
           >
-            {/* Calendar icon + month label */}
-            <div className={styles.cardTop}>
-              <span
-                className={styles.cardIcon}
-                style={{ background: e.color, color: '#fff' }}
+            {/* Header: people icon + month label */}
+            <div className={styles.kpiHeader}>
+              <svg
+                className={styles.kpiIcon}
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                style={{ color: e.color }}
               >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <rect x="1.5" y="3" width="13" height="11.5" rx="2" stroke="currentColor" strokeWidth="1.4" fill="none"/>
-                  <path d="M1.5 6.5h13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-                  <path d="M5 1.5v3M11 1.5v3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-                </svg>
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <span className={styles.kpiLabel} style={{ color: e.color }}>
+                {e.label} Resources
               </span>
-              <span className={styles.cardMonthName}>{e.label}</span>
             </div>
 
-            {/* Count + badge + ghost people icon */}
-            <div className={styles.cardBottom}>
-              <span className={styles.cardCount}>{e.value}</span>
+            {/* Body: large count + percentage pill + ghost circle */}
+            <div className={styles.kpiBody}>
+              <span className={styles.kpiCount}>{e.value}</span>
+              <div className={styles.kpiMeta}>
+                <span
+                  className={styles.kpiPctBadge}
+                  style={{ background: e.color + '22', color: e.color }}
+                >
+                  {e.percent.toFixed(0)}% of total
+                </span>
+              </div>
               <span
-                className={styles.cardPct}
-                style={{ background: e.color + '28', color: e.color }}
-              >
-                {e.percent.toFixed(0)}% of total
-              </span>
-              {/* Compact circular icon — same style as Delivery Model / Monthly Onboarding page cards */}
-              <span
-                className={styles.cardGhostCircle}
+                className={styles.kpiGhostCircle}
                 style={{ background: e.color + '18', color: e.color }}
+                aria-hidden="true"
               >
                 <svg
                   width="28"
@@ -417,7 +401,6 @@ function SummaryCards({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  aria-hidden="true"
                 >
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
@@ -468,10 +451,10 @@ export default function MonthlyResourceCountTab({ data }: MonthlyResourceCountTa
   function handleClick(label: string) { setActive(prev => prev === label ? null : label) }
 
   return (
-    <div className={styles.outerCard}>
+    <div className={styles.container}>
 
-      {/* ── Header row ─────────────────────────────────────── */}
-      <div className={styles.headerRow}>
+      {/* ── Header card ─────────────────────────────────────────── */}
+      <div className={styles.headerCard}>
         <div className={styles.headerLeft}>
           <h2 className={styles.headerTitle}>
             Active Resources by Start Month (Last 3 Months)
@@ -480,12 +463,9 @@ export default function MonthlyResourceCountTab({ data }: MonthlyResourceCountTa
             Active resources with a recorded start date, bucketed by start month over the last 3 months.
           </p>
         </div>
-
-        {/* KPI box */}
-        <div className={styles.kpiBox}>
-          {/* People icon — Feather/Lucide "users" style, matches Monthly Onboarding page */}
+        <div className={styles.headerRight}>
           <svg
-            className={styles.kpiIcon}
+            className={styles.headerIcon}
             width="30"
             height="30"
             viewBox="0 0 24 24"
@@ -501,28 +481,28 @@ export default function MonthlyResourceCountTab({ data }: MonthlyResourceCountTa
             <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
-          <div className={styles.kpiNumbers}>
-            <span className={styles.kpiTotal}>{total}</span>
-            <span className={styles.kpiLabel}>Total active{'\u00A0'}resources</span>
+          <div className={styles.headerTotalBlock}>
+            <span className={styles.headerTotalNum}>{total}</span>
+            <span className={styles.headerTotalLabel}>Total active{'\u00A0'}resources</span>
           </div>
         </div>
       </div>
 
-      {/* ── Three-column analytics row ──────────────────────── */}
+      {/* ── Three-column analytics row ──────────────────────────── */}
       {!hasData ? (
         <EmptyState />
       ) : (
         <>
           <div className={styles.analyticsRow}>
-            <VerticalBarChart
+            <DonutChart
               entries={entries}
+              total={total}
               active={active}
               onHover={handleHover}
               onClick={handleClick}
             />
-            <DonutChart
+            <VerticalBarChart
               entries={entries}
-              total={total}
               active={active}
               onHover={handleHover}
               onClick={handleClick}
@@ -535,7 +515,7 @@ export default function MonthlyResourceCountTab({ data }: MonthlyResourceCountTa
             />
           </div>
 
-          {/* ── Summary cards ─────────────────────────────────── */}
+          {/* ── KPI summary cards ────────────────────────────────── */}
           <SummaryCards
             entries={entries}
             active={active}

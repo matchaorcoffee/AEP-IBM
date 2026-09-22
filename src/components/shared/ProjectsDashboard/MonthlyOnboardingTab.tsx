@@ -186,37 +186,6 @@ function VerticalBarChart({
 
 // ─── Donut chart ────────────────────────────────────────────────────────────────
 
-const RADIAN = Math.PI / 180
-
-function OuterLabel({ cx, cy, midAngle, outerRadius, percent, fill }: any) {
-  if (percent < 0.04) return null
-  const LINE   = 18
-  const OFFSET = 5
-  const sin    = Math.sin(-midAngle * RADIAN)
-  const cos    = Math.cos(-midAngle * RADIAN)
-  const sx     = cx + (outerRadius + 3)  * cos
-  const sy     = cy + (outerRadius + 3)  * sin
-  const ex     = cx + (outerRadius + LINE) * cos
-  const ey     = cy + (outerRadius + LINE) * sin
-  const tx     = ex + (cos >= 0 ? OFFSET : -OFFSET)
-  return (
-    <g>
-      <path d={`M${sx},${sy}L${ex},${ey}`} stroke={fill} strokeWidth={1.4} fill="none" />
-      <circle cx={ex} cy={ey} r={3} fill={fill} />
-      <text
-        x={tx} y={ey}
-        textAnchor={cos >= 0 ? 'start' : 'end'}
-        dominantBaseline="central"
-        fontSize={11}
-        fontWeight={600}
-        fill={fill}
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    </g>
-  )
-}
-
 function DonutChart({
   entries,
   total,
@@ -249,7 +218,6 @@ function DonutChart({
               startAngle={90}
               endAngle={-270}
               labelLine={false}
-              label={OuterLabel}
               onMouseEnter={(_: any, i: number) => onHover(entries[i].label)}
               onMouseLeave={() => onHover(null)}
               onClick={(_: any, i: number) => onClick(entries[i].label)}
@@ -359,7 +327,7 @@ function BreakdownTable({
   )
 }
 
-// ─── Summary cards ──────────────────────────────────────────────────────────────
+// ─── Summary cards — matches DeliveryModelTab KpiCards exactly ──────────────────
 
 function SummaryCards({
   entries,
@@ -373,14 +341,14 @@ function SummaryCards({
   onClick: (label: string) => void
 }) {
   return (
-    <div className={styles.cardsGrid}>
+    <div className={styles.kpiGrid}>
       {entries.map(e => {
         const isActive = active === null || active === e.label
         return (
           <div
             key={e.label}
-            className={`${styles.card} ${!isActive ? styles.cardDim : ''} ${active === e.label ? styles.cardActive : ''}`}
-            style={{ background: e.color + '0d', borderTop: `3px solid ${e.color}` }}
+            className={`${styles.kpiCard} ${!isActive ? styles.kpiCardDim : ''} ${active === e.label ? styles.kpiCardActive : ''}`}
+            style={{ background: e.color + '18' }}
             onMouseEnter={() => onHover(e.label)}
             onMouseLeave={() => onHover(null)}
             onClick={() => onClick(e.label)}
@@ -389,35 +357,46 @@ function SummaryCards({
             aria-label={`${e.label}: ${e.value} resource${e.value !== 1 ? 's' : ''}, ${e.percent.toFixed(0)}% of total`}
             onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') onClick(e.label) }}
           >
-            {/* Calendar icon + month label */}
-            <div className={styles.cardTop}>
-              <span
-                className={styles.cardIcon}
-                style={{ background: e.color, color: '#fff' }}
+            {/* Header: people icon + month label */}
+            <div className={styles.kpiHeader}>
+              <svg
+                className={styles.kpiIcon}
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                style={{ color: e.color }}
               >
-                {/* Calendar icon */}
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <rect x="1.5" y="3" width="13" height="11.5" rx="2" stroke="currentColor" strokeWidth="1.4" fill="none"/>
-                  <path d="M1.5 6.5h13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-                  <path d="M5 1.5v3M11 1.5v3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-                </svg>
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <span className={styles.kpiLabel} style={{ color: e.color }}>
+                {e.label}
               </span>
-              <span className={styles.cardMonthName}>{e.label}</span>
             </div>
 
-            {/* Count + badge + ghost people icon */}
-            <div className={styles.cardBottom}>
-              <span className={styles.cardCount}>{e.value}</span>
+            {/* Body: large count + percentage pill + ghost circle */}
+            <div className={styles.kpiBody}>
+              <span className={styles.kpiCount}>{e.value}</span>
+              <div className={styles.kpiMeta}>
+                <span
+                  className={styles.kpiPctBadge}
+                  style={{ background: e.color + '22', color: e.color }}
+                >
+                  {e.percent.toFixed(0)}% of total
+                </span>
+              </div>
               <span
-                className={styles.cardPct}
-                style={{ background: e.color + '28', color: e.color }}
-              >
-                {e.percent.toFixed(0)}% of total
-              </span>
-              {/* Compact circular icon — same style as Delivery Model page cards */}
-              <span
-                className={styles.cardGhostCircle}
+                className={styles.kpiGhostCircle}
                 style={{ background: e.color + '18', color: e.color }}
+                aria-hidden="true"
               >
                 <svg
                   width="28"
@@ -428,7 +407,6 @@ function SummaryCards({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  aria-hidden="true"
                 >
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
@@ -479,10 +457,10 @@ export default function MonthlyOnboardingTab({ data }: MonthlyOnboardingTabProps
   function handleClick(label: string) { setActive(prev => prev === label ? null : label) }
 
   return (
-    <div className={styles.outerCard}>
+    <div className={styles.container}>
 
-      {/* ── Header row ─────────────────────────────────────── */}
-      <div className={styles.headerRow}>
+      {/* ── Header card — matches DeliveryModelTab/ChurnByReasonTab ── */}
+      <div className={styles.headerCard}>
         <div className={styles.headerLeft}>
           <h2 className={styles.headerTitle}>
             Monthly Onboarding (Last 3 Months)
@@ -491,12 +469,9 @@ export default function MonthlyOnboardingTab({ data }: MonthlyOnboardingTabProps
             Resources onboarded (status: Completed or AEP In-Progress) per month over the last 3 months.
           </p>
         </div>
-
-        {/* KPI box */}
-        <div className={styles.kpiBox}>
-          {/* People icon — Feather/Lucide "users" style, matches Delivery Model page */}
+        <div className={styles.headerRight}>
           <svg
-            className={styles.kpiIcon}
+            className={styles.headerIcon}
             width="30"
             height="30"
             viewBox="0 0 24 24"
@@ -512,9 +487,9 @@ export default function MonthlyOnboardingTab({ data }: MonthlyOnboardingTabProps
             <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
-          <div className={styles.kpiNumbers}>
-            <span className={styles.kpiTotal}>{total}</span>
-            <span className={styles.kpiLabel}>Total onboarded{'\u00A0'}resources</span>
+          <div className={styles.headerTotalBlock}>
+            <span className={styles.headerTotalNum}>{total}</span>
+            <span className={styles.headerTotalLabel}>Total onboarded resources</span>
           </div>
         </div>
       </div>
@@ -525,15 +500,15 @@ export default function MonthlyOnboardingTab({ data }: MonthlyOnboardingTabProps
       ) : (
         <>
           <div className={styles.analyticsRow}>
-            <VerticalBarChart
+            <DonutChart
               entries={entries}
+              total={total}
               active={active}
               onHover={handleHover}
               onClick={handleClick}
             />
-            <DonutChart
+            <VerticalBarChart
               entries={entries}
-              total={total}
               active={active}
               onHover={handleHover}
               onClick={handleClick}
@@ -546,7 +521,7 @@ export default function MonthlyOnboardingTab({ data }: MonthlyOnboardingTabProps
             />
           </div>
 
-          {/* ── Summary cards ─────────────────────────────────── */}
+          {/* ── KPI summary cards ──────────────────────────────── */}
           <SummaryCards
             entries={entries}
             active={active}
