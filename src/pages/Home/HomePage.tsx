@@ -10,9 +10,9 @@ export default function HomePage() {
   return (
     <div className={styles.page}>
       <Hero />
+      <WelcomeSection />
       <TabPanel />
       <CleanEnergyFuture />
-      <WelcomeSection />
       <IbmGuidingPrinciples />
       <QuickLinks />
     </div>

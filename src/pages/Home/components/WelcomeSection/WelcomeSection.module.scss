@@ -146,10 +146,22 @@
 }
 
 @media (max-width: 768px) {
-  .welcome   { padding: var(--spacing-11) 0; min-height: auto; }
-  .inner     { padding: 0 var(--spacing-05); gap: var(--spacing-05); }
-  .heading   { font-size: clamp(2rem, 8vw, 2.8rem); }
-  .subtitle  { font-size: 0.95rem; }
-  .stats     { gap: var(--spacing-08); }
-  .statNumber { font-size: 2rem; }
+  .welcome    { padding: var(--spacing-10) 0; min-height: auto; }
+  .inner      { padding: 0 var(--spacing-05); gap: var(--spacing-05); }
+  .heading    { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+  .subtitle   { font-size: 0.95rem; }
+  .stats      { gap: var(--spacing-07); flex-wrap: wrap; }
+  .statNumber { font-size: 1.8rem; }
+}
+
+@media (max-width: 480px) {
+  .welcome    { padding: var(--spacing-09) 0; }
+  .inner      { padding: 0 var(--spacing-04); gap: var(--spacing-04); }
+  .heading    { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+  .subtitle   { font-size: 0.875rem; }
+  .stats      { gap: var(--spacing-06); }
+  .statNumber { font-size: 1.6rem; }
+  .actions    { flex-direction: column; align-items: center; }
+  .ctaPrimary,
+  .ctaSecondary { width: 100%; justify-content: center; padding: 12px 24px; }
 }

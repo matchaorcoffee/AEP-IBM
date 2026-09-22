@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styles from './TabPanel.module.scss'
 import { useFadeIn } from '../../../../hooks/useFadeIn'
 import sustainabilityImg from '../../assets/solarpanel.avif'
-import innovationImg from '../../assets/solarpanel.avif'
-import insightsImg from '../../assets/SustainableAssetManagement.avif'
+import innovationImg from '../../../../../assets/AI-Based Process Discovery.jpg'
+import insightsImg from '../../../../../assets/Sustainable Asset Management.jpg'
 import energyAndUtilitiesImg from '../../assets/EnergyAndUtilsBlog.avif'
 
 interface SlideData {
