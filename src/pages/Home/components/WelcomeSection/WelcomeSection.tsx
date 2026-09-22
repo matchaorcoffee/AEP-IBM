@@ -1,9 +1,12 @@
 import styles from './WelcomeSection.module.scss'
 import { Link } from 'react-router-dom'
+import { useFadeIn } from '../../../../hooks/useFadeIn'
 
 export default function WelcomeSection() {
+  const sectionRef = useFadeIn<HTMLElement>()
+
   return (
-    <section className={styles.welcome} aria-labelledby="welcome-heading">
+    <section ref={sectionRef} className={`${styles.welcome} fade-in`} aria-labelledby="welcome-heading">
       <div className={styles.inner}>
         <div className={styles.label}>AEP &amp; IBM Partnership</div>
         <h1 id="welcome-heading" className={styles.heading}>

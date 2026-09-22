@@ -23,6 +23,14 @@ export default function Hero() {
           advancements that benefit AEP customers.
         </p>
       </div>
+
+      {/* Scroll indicator */}
+      <div className={styles.scrollIndicator} aria-hidden="true">
+        <span>Scroll</span>
+        <svg className={styles.scrollChevron} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </div>
     </div>
   )
 }

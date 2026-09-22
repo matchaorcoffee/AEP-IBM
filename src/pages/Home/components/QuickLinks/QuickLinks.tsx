@@ -1,5 +1,6 @@
 import styles from './QuickLinks.module.scss'
 import { Link } from 'react-router-dom'
+import { useFadeIn } from '../../../../hooks/useFadeIn'
 
 const LINKS = [
   {
@@ -82,8 +83,10 @@ const LINKS = [
 ]
 
 export default function QuickLinks() {
+  const sectionRef = useFadeIn<HTMLElement>()
+
   return (
-    <section className={styles.section} aria-labelledby="quick-links-heading">
+    <section ref={sectionRef} className={`${styles.section} fade-in`} aria-labelledby="quick-links-heading">
       <div className={styles.inner}>
         <div className={styles.sectionHeader}>
           <h2 id="quick-links-heading" className={styles.sectionTitle}>Quick Access</h2>

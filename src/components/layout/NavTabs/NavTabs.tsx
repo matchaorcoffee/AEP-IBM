@@ -39,27 +39,7 @@ export default function NavTabs() {
   const portfolioTabRef = useRef<HTMLLIElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 })
-
-  useEffect(() => {
-    if (portfolioDropdownOpen && portfolioTabRef.current) {
-      const rect = portfolioTabRef.current.getBoundingClientRect()
-      setDropdownPos({ top: rect.bottom + 8, left: rect.left })
-    }
-  }, [portfolioDropdownOpen])
-
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      const target = e.target as Node
-      if (
-        portfolioTabRef.current && !portfolioTabRef.current.contains(target) &&
-        dropdownRef.current && !dropdownRef.current.contains(target)
-      ) {
-        setPortfolioDropdownOpen(false)
-      }
-    }
-    if (portfolioDropdownOpen) document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [portfolioDropdownOpen])
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     setMobileNavOpen(false)
@@ -76,6 +56,23 @@ export default function NavTabs() {
     navigate(path)
   }
 
+  function openDropdown() {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+    if (portfolioTabRef.current) {
+      const rect = portfolioTabRef.current.getBoundingClientRect()
+      setDropdownPos({ top: rect.bottom + 8, left: rect.left })
+    }
+    setPortfolioDropdownOpen(true)
+  }
+
+  function scheduleClose() {
+    closeTimerRef.current = setTimeout(() => setPortfolioDropdownOpen(false), 120)
+  }
+
+  function cancelClose() {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+  }
+
   return (
     <div className={styles.navOuter}>
       <nav className={styles.navCard} aria-label="Main navigation">
@@ -89,7 +86,13 @@ export default function NavTabs() {
         <ul className={styles.tabList} role="list">
           {NAV_ITEMS.map(item =>
             item.hasDropdown ? (
-              <li key={item.path} className={styles.tabItem} ref={portfolioTabRef}>
+              <li
+                key={item.path}
+                className={styles.tabItem}
+                ref={portfolioTabRef}
+                onMouseEnter={openDropdown}
+                onMouseLeave={scheduleClose}
+              >
                 <div className={`${styles.tab} ${isActive(item.path) ? styles.active : ''}`}>
                   <Link
                     to={item.path}
@@ -98,20 +101,13 @@ export default function NavTabs() {
                   >
                     {item.label}
                   </Link>
-                  <button
-                    className={styles.dropdownToggle}
-                    onClick={() => setPortfolioDropdownOpen(v => !v)}
-                    aria-label="Engagements submenu"
-                    aria-expanded={portfolioDropdownOpen}
-                    aria-haspopup="menu"
+                  <svg
+                    viewBox="0 0 10 6" width="10" height="6" fill="currentColor"
+                    aria-hidden="true"
+                    style={{ transform: portfolioDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 200ms ease', pointerEvents: 'none' }}
                   >
-                    <svg
-                      viewBox="0 0 10 6" width="10" height="6" fill="currentColor"
-                      style={{ transform: portfolioDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 150ms ease' }}
-                    >
-                      <path d="M0 0l5 6 5-6z" />
-                    </svg>
-                  </button>
+                    <path d="M0 0l5 6 5-6z" />
+                  </svg>
                 </div>
               </li>
             ) : (
@@ -155,13 +151,16 @@ export default function NavTabs() {
 
       </nav>
 
-      {/* Portfolio dropdown */}
-      {portfolioDropdownOpen && createPortal(
+      {/* Portfolio dropdown — always mounted so CSS transition plays */}
+      {createPortal(
         <div
           ref={dropdownRef}
-          className={styles.portfolioDropdown}
+          className={`${styles.portfolioDropdown} ${portfolioDropdownOpen ? styles.portfolioDropdownOpen : ''}`}
           role="menu"
+          aria-hidden={!portfolioDropdownOpen}
           style={{ top: dropdownPos.top, left: dropdownPos.left }}
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
         >
           <div className={styles.portfolioDropdownLeft}>
             <button
