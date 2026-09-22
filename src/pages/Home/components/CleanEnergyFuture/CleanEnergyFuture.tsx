@@ -1,16 +1,21 @@
+import { useFadeIn } from '../../../../hooks/useFadeIn'
 import styles from './CleanEnergyFuture.module.scss'
-import cleanEnergyImg from '../../assets/CleanEnergyFuture.jpg'
+import solarVideo from '../../assets/SolarVideo.mp4'
 
 export default function CleanEnergyFuture() {
+  const sectionRef = useFadeIn<HTMLElement>()
+
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={`${styles.section} fade-in`}>
       <div className={styles.imageWrapper}>
-        <img
-          src={cleanEnergyImg}
-          alt="Aerial view of houses with solar panels"
-          className={styles.image}
+        <video
+          src={solarVideo}
+          className={styles.video}
+          autoPlay
+          muted
+          loop
+          playsInline
         />
-        <div className={styles.accent} aria-hidden="true" />
       </div>
       <div className={styles.content}>
         <div className={styles.label}>Clean Energy</div>

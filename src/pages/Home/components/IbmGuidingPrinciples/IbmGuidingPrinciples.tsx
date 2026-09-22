@@ -1,4 +1,5 @@
 import styles from './IbmGuidingPrinciples.module.scss'
+import { useFadeIn } from '../../../../hooks/useFadeIn'
 
 const principles = [
   {
@@ -25,8 +26,10 @@ const principles = [
 ]
 
 export default function IbmGuidingPrinciples() {
+  const sectionRef = useFadeIn<HTMLElement>()
+
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={`${styles.section} fade-in`}>
       <div className={styles.sectionHeader}>
         <div className={styles.sectionLabel}>Our Approach</div>
         <h2 className={styles.sectionTitle}>IBM Guiding Principles</h2>

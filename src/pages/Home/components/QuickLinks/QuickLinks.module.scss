@@ -1,7 +1,7 @@
 .section {
-  background: #fff;
-  padding: var(--spacing-11) 0 var(--spacing-12);
-  border-top: 1px solid var(--color-border);
+  background: #0a0a0a;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: var(--spacing-10) 0 var(--spacing-11);
 }
 
 .inner {
@@ -11,55 +11,54 @@
 }
 
 .sectionHeader {
-  margin-bottom: var(--spacing-09);
+  margin-bottom: var(--spacing-08);
 }
 
 .sectionTitle {
   font-size: clamp(1.4rem, 2.5vw, 1.75rem);
   font-weight: 700;
-  color: #1a1a1a;
+  color: #ffffff;
   letter-spacing: -0.02em;
   margin: 0 0 6px 0;
 }
 
 .sectionSub {
   font-size: 0.9rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.4);
   margin: 0;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 12px;
 }
 
 .tile {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 18px 20px;
   text-decoration: none;
-  transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+  transition: border-color 150ms ease, background 150ms ease;
 
   &:hover {
-    border-color: #c8102e;
-    box-shadow: 0 4px 16px rgba(200, 16, 46, 0.10);
-    background: #fff5f5;
+    border-color: rgba(200, 16, 46, 0.5);
+    background: rgba(200, 16, 46, 0.06);
     text-decoration: none;
 
-    .arrow { opacity: 1; transform: translateX(0); color: #c8102e; }
-    .iconWrapper { background: #fee2e2; color: #c8102e; }
+    .arrow { opacity: 1; transform: translateX(0); color: #ff6b6b; }
+    .iconWrapper { background: rgba(200, 16, 46, 0.2); color: #ff6b6b; }
   }
 }
 
 .iconWrapper {
-  width: 48px;
-  height: 48px;
-  background: #fff0f1;
+  width: 44px;
+  height: 44px;
+  background: rgba(200, 16, 46, 0.12);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -80,13 +79,13 @@
 .label {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #ffffff;
   line-height: 1.2;
 }
 
 .desc {
   font-size: 0.8125rem;
-  color: #777;
+  color: rgba(255, 255, 255, 0.4);
   line-height: 1.4;
   white-space: nowrap;
   overflow: hidden;
@@ -95,7 +94,7 @@
 
 .arrow {
   flex-shrink: 0;
-  color: #aaa;
+  color: rgba(255, 255, 255, 0.25);
   opacity: 0.5;
   transform: translateX(-4px);
   transition: opacity 150ms ease, transform 150ms ease, color 150ms ease;
