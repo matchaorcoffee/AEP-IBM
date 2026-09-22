@@ -2,32 +2,42 @@
 
 .section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: stretch;
+  grid-template-columns: 3fr 2fr;
+  // Let each column size itself — do NOT stretch, which would force the video
+  // column to a fixed height and trigger cropping.
+  align-items: start;
   background: var(--color-card-bg);
   margin: var(--spacing-07) var(--spacing-07) var(--spacing-07);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  overflow: hidden;
+  // No overflow:hidden here — that clips the video at the card edge.
+  overflow: visible;
   box-shadow: var(--shadow-card);
-  min-height: 420px;
+  // No min-height — let the video's intrinsic height drive the row height.
 }
 
+// Clip just the rounded corners without clipping the video content.
+// We apply border-radius + overflow:hidden only to the inner wrappers.
 .imageWrapper {
-  position: relative;
-  overflow: hidden;
-  // Fill the full grid cell height — no aspect-ratio fighting the grid
-  min-height: 300px;
+  // Stay in normal flow so the grid row grows to the video's natural height.
+  display: block;
+  width: 100%;
+  // No overflow:hidden — don't clip the video.
+  overflow: visible;
+  // Clip the left column corners to match the card's border-radius.
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+  background: #000; // letterbox background for any unused space
 }
 
 .video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  // In-flow block element — the wrapper grows around it naturally.
   display: block;
+  width: 100%;
+  height: auto;        // preserve intrinsic aspect ratio
+  max-width: 100%;
+  object-fit: contain; // never crop — letterbox if needed
+  object-position: center;
+  // No position:absolute, no fixed height, no width >100%
 }
 
 .content {
@@ -37,6 +47,10 @@
   padding: var(--spacing-10) var(--spacing-09);
   gap: var(--spacing-05);
   background: var(--color-card-bg);
+  // Match the right-side card corners
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  // Clip the content column independently
+  overflow: hidden;
 }
 
 .label {
@@ -91,29 +105,44 @@
   }
 }
 
-@media (max-width: 900px) {
-  .section { grid-template-columns: 1fr 1fr; }
+// ── Responsive breakpoints ────────────────────────────────────────────────────
+
+// Tighten content padding as available width shrinks but keep two columns
+@media (max-width: 1100px) {
   .content { padding: var(--spacing-08) var(--spacing-06); }
-}
-
-@media (max-width: 768px) {
-  .section {
-    grid-template-columns: 1fr;
-    margin: var(--spacing-05) var(--spacing-04) var(--spacing-05);
-    border-radius: var(--radius-lg);
-    min-height: unset;
-  }
-
-  // Fixed height on mobile — no aspect-ratio
-  .imageWrapper { height: 260px; min-height: unset; }
-
-  .content { padding: var(--spacing-07) var(--spacing-05); }
-  .heading { font-size: clamp(1.3rem, 5vw, 1.7rem); }
   .body    { font-size: var(--font-size-sm); max-width: 100%; }
 }
 
+// Stack to single column when there is no longer enough horizontal room
+// for both the full video frame and readable text side-by-side.
+// 1024px covers 1024-wide viewports and 125% zoom on 1280px screens.
+@media (max-width: 1024px) {
+  .section {
+    grid-template-columns: 1fr;
+    margin: var(--spacing-05) var(--spacing-04);
+    border-radius: var(--radius-lg);
+  }
+
+  .imageWrapper {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .content {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: var(--spacing-07) var(--spacing-06);
+  }
+
+  .body { max-width: 100%; }
+}
+
+@media (max-width: 680px) {
+  .section  { margin: var(--spacing-05) var(--spacing-04) var(--spacing-05); }
+  .content  { padding: var(--spacing-07) var(--spacing-05); }
+  .heading  { font-size: clamp(1.3rem, 5vw, 1.7rem); }
+  .body     { font-size: var(--font-size-sm); }
+}
+
 @media (max-width: 480px) {
-  .section      { margin: var(--spacing-04) var(--spacing-03) var(--spacing-04); }
-  .imageWrapper { height: 220px; }
-  .content      { padding: var(--spacing-06) var(--spacing-05); }
+  .section  { margin: var(--spacing-04) var(--spacing-03) var(--spacing-04); }
+  .content  { padding: var(--spacing-06) var(--spacing-05); }
 }
