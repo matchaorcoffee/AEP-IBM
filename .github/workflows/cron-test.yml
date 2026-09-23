@@ -1,0 +1,21 @@
+name: Cron Test
+
+on:
+  schedule:
+    # Temporary diagnostic test: every 5 minutes
+    - cron: '*/5 * * * *'
+
+  # Keep manual triggering available for later testing
+  workflow_dispatch:
+
+jobs:
+  cron-test:
+    name: Test GitHub Cron
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Confirm scheduled execution
+        run: |
+          echo "GitHub scheduled workflow successfully triggered."
+          echo "Current UTC time:"
+          date -u
