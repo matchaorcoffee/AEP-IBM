@@ -2,17 +2,17 @@ name: Render Scheduled Jobs
 
 # ─── Schedules ────────────────────────────────────────────────────────────────
 #
-#  Job              Cron (UTC)       UTC time      PHT (UTC+8)
-#  ───────────────  ───────────────  ────────────  ────────────
-#  keep-alive       */14 * * * *     every 14 min  every 14 min
-#  daily-refresh    0 4 * * *        04:00 UTC      12:00 PHT
+#  Job              Cron (UTC)      UTC time                    PHT (UTC+8)
+#  ───────────────  ──────────────  ──────────────────────────  ────────────────────────────
+#  keep-alive       */5 * * * *     every 5 min (TEMP TEST)     every 5 min (TEMP TEST)
+#  daily-refresh    0 4 * * *       04:00 UTC daily             12:00 PM PHT daily
 #
 # ─────────────────────────────────────────────────────────────────────────────
 
 on:
   schedule:
-    # Keep-alive: every 14 minutes
-    - cron: '*/14 * * * *'
+    # Keep-alive: every 5 minutes (temporary — testing scheduled run visibility)
+    - cron: '*/5 * * * *'
     # Daily cache refresh: 04:00 UTC = 12:00 PM PHT
     - cron: '0 4 * * *'
 
@@ -37,22 +37,19 @@ jobs:
   #
   # Sends GET /health to prevent the Render free-tier service from going idle.
   # No authentication. No Monday.com interaction.
-  # Runs on every trigger of the */14 cron.
+  # Runs on every trigger of the */5 cron (TEMPORARY — revert to */14 once confirmed).
   # On workflow_dispatch it runs when the user selects "keep-alive" or "both".
 
   keep-alive:
     name: Keep Render Service Alive
     runs-on: ubuntu-latest
 
-    # On schedule: only run for the */14 cron.
-    # GitHub Actions does not pass which cron fired, so we filter by checking
-    # that the current minute is a multiple of 14 OR that the event is a
-    # manual dispatch requesting this job.
-    # Simpler approach: both crons trigger the workflow; each job guards itself
+    # On schedule: only run for the */5 cron.
+    # Both crons trigger the workflow; each job guards itself
     # with an if condition on github.event.schedule.
     if: |
       github.event_name == 'workflow_dispatch' && (github.event.inputs.job == 'keep-alive' || github.event.inputs.job == 'both')
-      || github.event.schedule == '*/14 * * * *'
+      || github.event.schedule == '*/5 * * * *'
 
     steps:
       - name: Ping /health
