@@ -1,0 +1,88 @@
+name: Render Scheduled Jobs
+
+# ─── Schedules ────────────────────────────────────────────────────────────────
+#
+#  Job              Cron (UTC)       UTC time      PHT (UTC+8)
+#  ───────────────  ───────────────  ────────────  ────────────
+#  keep-alive       */14 * * * *     every 14 min  every 14 min
+#  daily-refresh    0 4 * * *        04:00 UTC      12:00 PHT
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  schedule:
+    # Keep-alive: every 14 minutes
+    - cron: '*/14 * * * *'
+    # Daily cache refresh: 04:00 UTC = 12:00 PM PHT
+    - cron: '0 4 * * *'
+
+  # Allow manual triggering from the GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'Which job to run manually'
+        required: true
+        default: 'keep-alive'
+        type: choice
+        options:
+          - keep-alive
+          - daily-refresh
+          - both
+
+# ─── Jobs ─────────────────────────────────────────────────────────────────────
+
+jobs:
+
+  # ── 1. Keep-Alive ────────────────────────────────────────────────────────────
+  #
+  # Sends GET /health to prevent the Render free-tier service from going idle.
+  # No authentication. No Monday.com interaction.
+  # Runs on every trigger of the */14 cron.
+  # On workflow_dispatch it runs when the user selects "keep-alive" or "both".
+
+  keep-alive:
+    name: Keep Render Service Alive
+    runs-on: ubuntu-latest
+
+    # On schedule: only run for the */14 cron.
+    # GitHub Actions does not pass which cron fired, so we filter by checking
+    # that the current minute is a multiple of 14 OR that the event is a
+    # manual dispatch requesting this job.
+    # Simpler approach: both crons trigger the workflow; each job guards itself
+    # with an if condition on github.event.schedule.
+    if: |
+      github.event_name == 'workflow_dispatch' && (github.event.inputs.job == 'keep-alive' || github.event.inputs.job == 'both')
+      || github.event.schedule == '*/14 * * * *'
+
+    steps:
+      - name: Ping /health
+        run: |
+          curl --fail --silent --show-error \
+            https://aep-ibm.onrender.com/health
+
+  # ── 2. Daily Monday.com Cache Refresh ───────────────────────────────────────
+  #
+  # Sends POST /api/refresh-cache once per day at 12:00 PM PHT (04:00 UTC).
+  # Authenticated with X-Refresh-Key from repository secrets.
+  # REFRESH_KEY is never printed to logs.
+
+  daily-refresh:
+    name: Daily Monday.com Cache Refresh
+    runs-on: ubuntu-latest
+
+    # On schedule: only run for the 04:00 UTC cron.
+    # On workflow_dispatch: run when the user selects "daily-refresh" or "both".
+    if: |
+      github.event_name == 'workflow_dispatch' && (github.event.inputs.job == 'daily-refresh' || github.event.inputs.job == 'both')
+      || github.event.schedule == '0 4 * * *'
+
+    steps:
+      - name: Refresh Monday.com cache
+        env:
+          REFRESH_KEY: ${{ secrets.REFRESH_KEY }}
+        run: |
+          curl --fail --silent --show-error \
+            --request POST \
+            --header "X-Refresh-Key: ${REFRESH_KEY}" \
+            --header "Content-Type: application/json" \
+            https://aep-ibm.onrender.com/api/refresh-cache

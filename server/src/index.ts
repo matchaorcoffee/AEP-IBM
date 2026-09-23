@@ -19,7 +19,7 @@ import dotenv from 'dotenv'
 import path from 'path'
 import { discoverBoard } from './mondayService'
 import { buildPortfolioAnalytics, buildProjectAnalytics, PORTFOLIO_FILTER_MAP } from './portfolioAnalyticsService'
-import { getCachedRecords, getCacheMetadata } from './cache'
+import { getCachedRecords, getCacheMetadata, forceRefreshCache } from './cache'
 import type { BoardDiscovery, TestConnectionResult } from './types'
 
 // Load .env from project root (one level up from server/)
@@ -34,14 +34,60 @@ app.use(express.json())
 app.use(cors({
   // In production, restrict this to the actual GitHub Pages origin
   origin: process.env.ALLOWED_ORIGIN ?? '*',
-  methods: ['GET'],
+  methods: ['GET', 'POST'],
 }))
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
-/** Health check */
+/**
+ * Keep-alive health check — called every ~14 minutes by GitHub Actions.
+ * MUST NOT trigger any Monday.com request or cache refresh.
+ */
+app.get('/health', (_req, res) => {
+  console.log('[Health] Keep-alive request received')
+  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+})
+
+/** Legacy health check (preserved for existing callers) */
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
+})
+
+/**
+ * Scheduled cache refresh — called once daily by GitHub Actions.
+ *
+ * Security: requires X-Refresh-Key header matching process.env.REFRESH_KEY.
+ * Reuses the same fetchAllBoardItems → normalizeItems pipeline and the same
+ * in-memory cache that all dashboard endpoints read from.
+ * The cache is only replaced after a fully successful fetch; a Monday failure
+ * leaves the previous cached data intact.
+ */
+app.post('/api/refresh-cache', async (req, res) => {
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  const refreshKey = process.env.REFRESH_KEY
+  if (!refreshKey || req.headers['x-refresh-key'] !== refreshKey) {
+    res.status(401).json({ error: 'Unauthorized' })
+    return
+  }
+
+  console.log('[Cache] Scheduled refresh started')
+
+  try {
+    const recordCount = await forceRefreshCache()
+    console.log('[Cache] Monday data retrieved successfully')
+    console.log('[Cache] Cache updated successfully')
+    res.json({
+      status: 'ok',
+      recordCount,
+      refreshedAt: new Date().toISOString(),
+    })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    console.error('[Cache] Scheduled refresh failed:', message)
+    res.status(503).json({
+      error: 'Cache refresh failed. Previous cached data has been preserved.',
+    })
+  }
 })
 
 /**
