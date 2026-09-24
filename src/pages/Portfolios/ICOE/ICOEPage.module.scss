@@ -1,35 +1,22 @@
 /* ── Page shell ──────────────────────────────────────────────────────────── */
 .page {
-  min-height: calc(100vh - var(--header-total-height));
+  min-height: 100vh;
   background: var(--color-page-bg);
   scroll-behavior: smooth;
   margin-top: calc(-1 * var(--header-total-height));
 }
 
-/* ── Hero ──────────────────────────────────────────────────────────────────
-   Tall cinematic hero with a dark-to-brand gradient overlay.              */
+/* ── Hero — full-viewport, matches Home hero layout ──────────────────────── */
 .hero {
   width: 100%;
-  height: 380px;
+  height: 100svh;
+  min-height: 560px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: var(--header-total-height);
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(15, 15, 26, 0.72) 0%,
-      rgba(200, 16, 46, 0.36) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-  }
+  flex-shrink: 0;
 }
 
 .heroVideo,
@@ -43,47 +30,89 @@
   display: block;
 }
 
+/* Same overlay as Home hero */
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
 .heroContent {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 0 2rem;
-  max-width: 700px;
+  padding: 0 var(--spacing-07);
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-05);
 }
 
 .heroBadge {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 999px;
-  padding: 5px 16px;
-  font-size: 0.72rem;
-  font-weight: 600;
+  border-radius: var(--radius-full);
+  padding: 6px 18px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 0.875rem;
+  color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(8px);
 }
 
 .pageTitle {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  color: #fff;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
   letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin: 0 0 0.625rem;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  line-height: 1.08;
+  margin: 0;
 }
 
 .heroSub {
-  font-size: 1rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.78);
   line-height: 1.6;
+  max-width: 580px;
   margin: 0;
-  letter-spacing: 0.01em;
+}
+
+/* ── Scroll indicator — identical to Home ───────────────────────────────── */
+.scrollIndicator {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scrollChevron {
+  animation: scrollBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(6px); opacity: 1; }
 }
 
 /* ── Sliding-pill section nav ────────────────────────────────────────────── */
