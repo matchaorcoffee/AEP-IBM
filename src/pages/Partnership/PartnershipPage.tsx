@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import styles from './PartnershipPage.module.scss'
-import partnershipImg from './assets/Partnership.png'
+import partnershipVideo from './assets/Partnership Header.mp4'
 import aepIbmLogo from './assets/AEP_IBM_logo.png'
 
 const highlights = [
@@ -216,7 +216,16 @@ export default function PartnershipPage() {
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <div className={styles.hero}>
-        <img src={partnershipImg} alt="" className={styles.heroImg} aria-hidden="true" />
+        <video
+          className={styles.heroVideo}
+          src={partnershipVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
         <div className={styles.heroOverlay} aria-hidden="true" />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
@@ -225,6 +234,12 @@ export default function PartnershipPage() {
             A strategic alliance between AEP and IBM — driving innovation,
             efficiency, and impact across the enterprise.
           </p>
+        </div>
+        <div className={styles.scrollIndicator} aria-hidden="true">
+          <span>Scroll</span>
+          <svg className={styles.scrollChevron} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </div>
       </div>
 

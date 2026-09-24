@@ -1,24 +1,25 @@
 // ── Page shell ────────────────────────────────────────────────────────────────
 .page {
-  min-height: calc(100vh - var(--header-total-height));
-  background: #f4f6fb;
+  min-height: 100vh;
+  background: #f5f5f7;           // Apple's signature off-white page bg
   font-family: var(--font-family);
   margin-top: calc(-1 * var(--header-total-height));
 }
 
-// ── Hero — full-width image with overlay, identical to homepage ───────────────
+// ── Hero — full-viewport video hero ──────────────────────────────────────────
 .hero {
   width: 100%;
-  height: 380px;
+  height: 100svh;
+  min-height: 560px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: var(--header-total-height);
+  flex-shrink: 0;
 }
 
-.heroImg {
+.heroVideo {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -32,11 +33,13 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    135deg,
-    rgba(15, 15, 26, 0.65) 0%,
-    rgba(200, 16, 46, 0.35) 100%
+    to bottom,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(0, 0, 0, 0.75) 100%
   );
   z-index: 1;
+  pointer-events: none;
 }
 
 .heroContent {
@@ -44,194 +47,252 @@
   z-index: 2;
   text-align: center;
   padding: 0 var(--spacing-07);
-  max-width: 760px;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-05);
 }
 
 .heroBadge {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: var(--radius-full);
-  padding: 5px 14px;
+  padding: 6px 18px;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: var(--spacing-05);
+  color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(8px);
 }
 
 .heroHeading {
-  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-size: clamp(2.6rem, 6vw, 5rem);
   font-weight: var(--font-weight-bold);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
   color: #ffffff;
-  margin-bottom: var(--spacing-05);
-}
-
-.heroSub {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-regular);
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.6;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-// ── Main ──────────────────────────────────────────────────────────────────────
-.main {
-  padding: 48px 0 80px;
-}
-
-.inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-// ── Section heading ───────────────────────────────────────────────────────────
-.sectionHead {
-  margin-bottom: 32px;
-}
-
-.sectionTitle {
-  font-size: 1.375rem;
-  font-weight: 700;
-  color: #1c1b1f;
-  letter-spacing: -0.01em;
-  margin: 0 0 6px;
-}
-
-.sectionSub {
-  font-size: 0.9rem;
-  color: #6e6977;
   margin: 0;
 }
 
-// ── Grid ──────────────────────────────────────────────────────────────────────
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+.heroSub {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+  max-width: 580px;
+  margin: 0;
 }
 
-// ── Card — Material Design 3 "elevated card" ──────────────────────────────────
-.card {
+// ── Scroll indicator ──────────────────────────────────────────────────────────
+.scrollIndicator {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  text-decoration: none;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.06),
-    0 2px 8px rgba(0, 0, 0, 0.08);
-  transition:
-    box-shadow 200ms ease,
-    transform 200ms ease;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 
+.scrollChevron {
+  animation: scrollBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(6px); opacity: 1; }
+}
+
+// ── Main content area ─────────────────────────────────────────────────────────
+.main {
+  padding: clamp(48px, 6vw, 96px) 0 clamp(64px, 8vw, 112px);
+}
+
+// No max-width — content spans the full available viewport width.
+// Fluid horizontal padding keeps content from kissing the viewport edges.
+.inner {
+  width: 100%;
+  max-width: none;
+  padding-inline: clamp(16px, 3vw, 56px);
+  box-sizing: border-box;
+}
+
+// ── Section heading — Apple-style: centered, clean, generous spacing ──────────
+.sectionHead {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.sectionTitle {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: #1d1d1f;                  // Apple's near-black
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0 0 14px;
+}
+
+.sectionSub {
+  font-size: clamp(0.975rem, 1.4vw, 1.1rem);
+  color: #6e6e73;                  // Apple's muted grey
+  font-weight: 400;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+// ── 2-column tile grid ────────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);         // uniform gap — row = column
+}
+
+// ── Tile — the anchor IS the tile, no extra wrapper needed ────────────────────
+.card {
+  display: block;                       // block so it doesn't stretch oddly
+  position: relative;
+  text-decoration: none;
+  border-radius: 16px;
+  overflow: hidden;                     // clips image scale and gradient
+  background: #1a1a1a;                  // fallback while image loads
+  // Hover targets .cardImg scale — tile itself does not move
   &:hover {
-    box-shadow:
-      0 4px 8px rgba(0, 0, 0, 0.08),
-      0 8px 24px rgba(0, 0, 0, 0.12);
-    transform: translateY(-3px);
     text-decoration: none;
 
-    .cardImg { transform: scale(1.04); }
-    .cardAction { color: var(--color-accent); gap: 8px; }
-    .cardAction svg { transform: translateX(3px); }
+    .cardImg {
+      transform: scale(1.04);
+    }
+
+    .cardArrow {
+      transform: translateX(5px);
+    }
   }
 }
 
-// Flag image fills the top portion of the card
+// ── Full-bleed image — IS the tile ────────────────────────────────────────────
 .cardMedia {
+  position: relative;                   // stacking context for overlay + body
   width: 100%;
-  height: 160px;
-  overflow: hidden;
-  background: #f0f0f5;
-  flex-shrink: 0;
+  aspect-ratio: 16 / 9;                 // wide-screen promotional tile ratio
+  display: block;
 }
 
 .cardImg {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
-  transition: transform 300ms ease;
+  transition: transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-// Card text body
+// ── Bottom gradient — readable text, does NOT darken the full image ───────────
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.70) 0%,
+    rgba(0, 0, 0, 0.30) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+// ── Text body — absolutely positioned over the image, bottom-left ─────────────
 .cardBody {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 18px 20px 20px;
+  padding: clamp(20px, 3vw, 36px) clamp(20px, 3vw, 36px) clamp(24px, 3.5vw, 40px);
 }
 
-// Tonal chip — M3 "secondary container" style
+// Small uppercase label — white, subtle tracking
 .cardChip {
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  background: #fce8ea;
-  color: #9e0b22;
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.72);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 999px;
 }
 
-// Country name — M3 "title medium"
+// Country name — large white bold
 .cardTitle {
-  font-size: 1.0625rem;
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
   font-weight: 700;
-  color: #1c1b1f;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
-// Arrow link — M3 "label large"
+// "View Calendar →" CTA — white text link, red accent
 .cardAction {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.8125rem;
+  gap: 6px;
+  font-size: clamp(0.8125rem, 1.1vw, 0.9375rem);
   font-weight: 600;
-  color: #6e6977;
+  color: rgba(255, 255, 255, 0.85);
   margin-top: 4px;
-  transition: color 150ms ease, gap 150ms ease;
 
-  svg {
-    flex-shrink: 0;
-    transition: transform 150ms ease;
-  }
+  svg { flex-shrink: 0; }
+}
+
+// Arrow — slides right on hover
+.cardArrow {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 220ms ease;
 }
 
 // ── Responsive ────────────────────────────────────────────────────────────────
-@media (max-width: 1100px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
-}
+// NOTE: .inner padding-inline is fluid via clamp() — no breakpoint overrides needed.
+// Only override what clamp() cannot express: grid-template-columns and hero text.
 
 @media (max-width: 768px) {
-  .hero { height: 300px; }
-  .heroHeading { font-size: var(--font-size-h2); }
-  .heroSub { font-size: var(--font-size-sm); }
-  .heroContent { padding: 0 var(--spacing-05); }
-  .inner { padding: 0 24px; }
-  .main { padding: 36px 0 60px; }
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .cardMedia { height: 140px; }
+  // Hero
+  .heroHeading    { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+  .heroSub        { font-size: 0.9rem; max-width: 100%; }
+  .heroContent    { padding: 0 var(--spacing-05); gap: var(--spacing-04); }
+  .scrollIndicator { bottom: 24px; }
+
+  // Section header
+  .sectionHead    { margin-bottom: clamp(28px, 4vw, 48px); }
+  .sectionTitle   { font-size: clamp(1.6rem, 5vw, 2.2rem); }
+
+  // Grid — keep 2 columns on tablet, gaps scale via clamp automatically
+  .cardTitle      { font-size: clamp(1.1rem, 3vw, 1.5rem); }
 }
 
-@media (max-width: 480px) {
-  .hero { height: 260px; }
-  .inner { padding: 0 16px; }
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .cardMedia { height: 120px; }
-  .cardBody { padding: 14px 16px 16px; }
+@media (max-width: 560px) {
+  // Hero
+  .heroHeading    { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+  .heroSub        { font-size: 0.85rem; }
+
+  // 1 column on small mobile — aspect ratio unchanged (16/9 already set)
+  .grid           { grid-template-columns: minmax(0, 1fr); }
+  .card           { border-radius: 12px; }
+  .cardTitle      { font-size: 1.375rem; }
 }

@@ -137,7 +137,7 @@ export default function IbmCicsPage() {
   return (
     <div className={styles.page}>
 
-      {/* ── Hero — video with overlay ──────────────────────────────────── */}
+      {/* ── Hero — full-viewport video with overlay ────────────────────── */}
       <div className={styles.hero} role="region" aria-label="IBM FutureNow Centers">
         <video
           className={styles.heroVideo}
@@ -155,6 +155,14 @@ export default function IbmCicsPage() {
             Global capability combining industry and process skills with solutioning expertise —
             spanning 7 countries and 34 languages.
           </p>
+        </div>
+
+        {/* Scroll indicator — matches HomePage Hero */}
+        <div className={styles.scrollIndicator} aria-hidden="true">
+          <span>Scroll</span>
+          <svg className={styles.scrollChevron} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </div>
       </div>
 
