@@ -1,35 +1,22 @@
 /* ── Page shell ──────────────────────────────────────────────────────────── */
 .page {
-  min-height: calc(100vh - var(--header-total-height));
-  background: #f5f5f7;
+  min-height: 100vh;
+  background: var(--color-page-bg);
   scroll-behavior: smooth;
   margin-top: calc(-1 * var(--header-total-height));
 }
 
-/* ── Hero ──────────────────────────────────────────────────────────────────
-   Tall cinematic hero with a dark-to-brand gradient overlay.              */
+/* ── Hero — full-viewport, matches Home hero layout ──────────────────────── */
 .hero {
   width: 100%;
-  height: 400px;
+  height: 100svh;
+  min-height: 560px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: var(--header-total-height);
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(15, 15, 26, 0.72) 0%,
-      rgba(200, 16, 46, 0.36) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-  }
+  flex-shrink: 0;
 }
 
 .heroVideo,
@@ -43,47 +30,89 @@
   display: block;
 }
 
+/* Same overlay as Home hero */
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
 .heroContent {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 0 2rem;
-  max-width: 700px;
+  padding: 0 var(--spacing-07);
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-05);
 }
 
 .heroBadge {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 999px;
-  padding: 5px 16px;
-  font-size: 0.72rem;
-  font-weight: 600;
+  border-radius: var(--radius-full);
+  padding: 6px 18px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 0.875rem;
+  color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(8px);
 }
 
 .pageTitle {
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  font-weight: 700;
-  color: #fff;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
   letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin: 0 0 0.625rem;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  line-height: 1.08;
+  margin: 0;
 }
 
 .heroSub {
-  font-size: 1.0625rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.78);
   line-height: 1.6;
+  max-width: 580px;
   margin: 0;
-  letter-spacing: 0.01em;
+}
+
+/* ── Scroll indicator — identical to Home ───────────────────────────────── */
+.scrollIndicator {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scrollChevron {
+  animation: scrollBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(6px); opacity: 1; }
 }
 
 /* ── Sliding-pill section nav ────────────────────────────────────────────── */
@@ -93,7 +122,7 @@
   display: flex;
   justify-content: center;
   padding: 2.25rem 1.5rem 0;
-  background: #f5f5f7;
+  background: #ffffff;
 }
 
 /* Outer track */
@@ -186,7 +215,7 @@
 /* ── Analytics section ──────────────────────────────────────────────────── */
 .analyticsSection {
   padding: 5.5rem 0 6.5rem;
-  background: #f5f5f7;
+  background: var(--color-page-bg);
   scroll-margin-top: calc(var(--header-total-height) + 60px);
 }
 
@@ -413,159 +442,13 @@
 .asset   { width: 100%; display: block; }
 .video   { width: 100%; display: block; border-radius: 12px; }
 
-/* ── Highlights section ──────────────────────────────────────────────────── */
-.highlightsSection {
-  background: #fff;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 5.5rem 0 6rem;
-  scroll-margin-top: calc(var(--header-total-height) + 60px);
-}
-
-.highlightsInner {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 2.5rem;
-}
-
-.highlightsHeaderRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2.75rem;
-}
-
-.highlightsTitle {
-  font-size: clamp(1.5rem, 3vw, 2.125rem);
-  font-weight: 700;
-  color: #1d1d1f;
-  margin: 0;
-  letter-spacing: -0.025em;
-}
-
-.backToTop {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: #c8102e;
-  transition: color 120ms ease;
-
-  &:hover { text-decoration: underline; }
-}
-
-.highlightsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 22px;
-  align-items: stretch;
-}
-
-/* Dark red cards */
-.hlCardRed {
-  background: #c8102e;
-  border-radius: 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-  box-shadow: 0 4px 18px rgba(200, 16, 46, 0.18);
-}
-
-.hlCardContent {
-  padding: 2rem;
-  flex: 1;
-}
-
-.hlCardTitle {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: #fff;
-  text-align: center;
-  margin: 0 0 1.125rem;
-  letter-spacing: -0.01em;
-}
-
-.hlCardText {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.88);
-  line-height: 1.72;
-  margin: 0 0 0.75rem;
-
-  &:last-child { margin-bottom: 0; }
-}
-
-.hlDivider {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 1rem 0;
-}
-
-.hlCardImg {
-  width: 100%;
-  display: block;
-  object-fit: cover;
-  max-height: 260px;
-}
-
-/* Light grey center card */
-.hlCardGrey {
-  background: #f5f5f7;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 22px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.hlCardTitleDark {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: #1d1d1f;
-  text-align: center;
-  margin: 0 0 1.5rem;
-  letter-spacing: -0.01em;
-}
-
-.nicheList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  width: 100%;
-}
-
-.nicheItem {
-  font-size: 0.875rem;
-  color: #c8102e;
-  text-align: center;
-  line-height: 1.5;
-  padding: 9px 4px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  font-weight: 500;
-
-  &:last-child { border-bottom: none; }
-}
-
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .analyticsSection { padding: 4.5rem 0 5.5rem; }
   .analyticsInner { padding: 0 2rem; }
-  .highlightsSection { padding: 4.5rem 0 5rem; }
-  .highlightsInner { padding: 0 2rem; }
 }
 
 @media (max-width: 900px) {
-  .hero { height: 320px; }
-  .heroContent { padding: 0 1.5rem; }
   .cardGrid { gap: 16px; }
   .chartImg { height: 200px; }
 }
@@ -579,9 +462,10 @@
 }
 
 @media (max-width: 768px) {
-  .hero { height: 280px; }
-  .heroContent { padding: 0 1.25rem; }
-  .pageTitle { font-size: clamp(1.6rem, 6vw, 2.25rem); }
+  .pageTitle { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+  .heroSub   { font-size: 0.9rem; max-width: 100%; }
+  .heroContent { padding: 0 var(--spacing-05); gap: var(--spacing-04); }
+  .scrollIndicator { bottom: 24px; }
 
   .segWrap { padding: 1.75rem 1.25rem 0; }
   .segBtn { padding: 8px 20px; font-size: 0.875rem; }
@@ -617,21 +501,14 @@
   .cardChartArea { padding: 0.875rem 1.125rem 1rem; }
   .cardTitle { font-size: 0.875rem; }
   .chartImg { height: 180px; }
-
-  .highlightsSection { padding: 3rem 0 3.5rem; }
-  .highlightsInner { padding: 0 1.25rem; }
-  .highlightsGrid { grid-template-columns: 1fr; gap: 16px; }
-  .highlightsHeaderRow { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.75rem; }
-  .hlCardRed { border-radius: 18px; }
-  .hlCardGrey { border-radius: 18px; }
 }
 
 @media (max-width: 480px) {
-  .hero { height: 230px; }
+  .pageTitle { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+  .heroSub   { font-size: 0.85rem; }
   .cardHeader { padding: 0.875rem 1rem 0.75rem; }
   .cardChartArea { padding: 0.75rem 1rem 0.875rem; }
   .analyticsSection { padding: 2.5rem 0 3rem; }
   .analyticsInner { padding: 0 1rem; }
-  .highlightsInner { padding: 0 1rem; }
   .chartImg { height: 160px; }
 }

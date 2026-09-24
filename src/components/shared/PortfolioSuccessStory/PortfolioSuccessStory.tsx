@@ -35,41 +35,47 @@ export default function PortfolioSuccessStory({ successStory }: PortfolioSuccess
       className={`${styles.section} ${visible ? styles.sectionVisible : ''}`}
       aria-labelledby="success-story-heading"
     >
-      {/* ── Heading only — no summary paragraph ── */}
-      <div className={styles.header}>
-        <h2 id="success-story-heading" className={styles.heading}>From Challenge to Impact</h2>
-      </div>
+      <div className={styles.inner}>
+        {/* ── Section header ── */}
+        <div className={styles.header}>
+          <span className={styles.eyebrow}>Portfolio Story</span>
+          <h2 id="success-story-heading" className={styles.heading}>From Challenge to Impact</h2>
+        </div>
 
-      {/* ── Three stages ── */}
-      <div className={styles.stages}>
-        {STAGES.map((stage, idx) => {
-          const content = successStory[stage.key]
-          const isImpact = stage.key === 'impact'
+        {/* ── Three stage cards ── */}
+        <div className={styles.stages}>
+          {STAGES.map((stage, idx) => {
+            const content = successStory[stage.key]
+            const isImpact = stage.key === 'impact'
 
-          return (
-            <div key={stage.key} className={styles.stageWrapper}>
-              <div
-                className={`${styles.stageCard} ${isImpact ? styles.stageCardImpact : ''} ${visible ? styles.stageCardVisible : ''}`}
-                style={{ transitionDelay: `${idx * 100}ms` }}
-              >
-                <span className={styles.stageNumber} aria-hidden="true">{stage.number}</span>
-                <h3 className={styles.stageLabel}>{stage.label}</h3>
-                {content && (
-                  <p className={styles.stageContent}>{content}</p>
+            return (
+              <div key={stage.key} className={styles.stageWrapper}>
+                <div
+                  className={`${styles.stageCard} ${isImpact ? styles.stageCardImpact : ''} ${visible ? styles.stageCardVisible : ''}`}
+                  style={{ transitionDelay: `${idx * 100}ms` }}
+                >
+                  <div className={styles.stageNumberRow}>
+                    <span className={styles.stageNumber} aria-hidden="true">{stage.number}</span>
+                    <h3 className={styles.stageLabel}>{stage.label}</h3>
+                  </div>
+                  <hr className={styles.stageDivider} aria-hidden="true" />
+                  {content && (
+                    <p className={styles.stageContent}>{content}</p>
+                  )}
+                </div>
+
+                {/* Connector arrow between stages */}
+                {idx < STAGES.length - 1 && (
+                  <div className={styles.connector} aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
                 )}
               </div>
-
-              {/* Connector arrow between stages */}
-              {idx < STAGES.length - 1 && (
-                <div className={styles.connector} aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              )}
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </section>
   )

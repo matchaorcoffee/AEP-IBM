@@ -5,17 +5,22 @@ import ibmImg from './assets/IBM.jpg'
 import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
 import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
 import PortfolioDashboard from '../../../components/shared/PortfolioDashboard/PortfolioDashboard'
+import PortfolioHighlights from '../../../components/shared/PortfolioHighlights/PortfolioHighlights'
 import { PORTFOLIO_SHOWCASE } from '../../../data/portfolio-showcase'
 
 const PORTFOLIO_SLUG = 'digital-emerging'
 const PORTFOLIO_NAME = 'Digital Emerging Technology'
 const SHOWCASE = PORTFOLIO_SHOWCASE[PORTFOLIO_SLUG]
+
 const NICHE_SKILLS = [
   'Specialized development skills covering React Native, Native ios and Android, Unity and Web',
   'Mobile and XR device Testing skills',
   'Multiple MDM and system admin skills required to support',
   'Eggplant Test Automation delivered through TCOE as part of DET',
 ]
+const CHALLENGES = ['The digital emerging technology team has a broad portfolio of products that serve critical business functions and utilize specialized skills to deliver capabilities. Goals this year are focused on critical business updates combined with crucial lifecycle upgrades to achieve stability and adoption. Limited access for certain technologies outside US for some platforms limits resources.']
+const MITIGATIONS = ['Pursuing options to broaden ability to deliver and support from other Geos.']
+
 const NAV_LINKS = [{ id: 'analytics', label: `${PORTFOLIO_NAME} by the Numbers` }, { id: 'highlights', label: 'Highlights' }]
 
 function useSlidingPill(refs: React.RefObject<HTMLButtonElement | null>[], activeIndex: number) {
@@ -69,33 +74,13 @@ export default function DigitalEmergingPage() {
       <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
       <PortfolioSuccessStory successStory={SHOWCASE} />
       <PortfolioDashboard portfolioSlug={PORTFOLIO_SLUG} portfolioName={PORTFOLIO_NAME} />
-      <section id="highlights" className={styles.highlightsSection} aria-labelledby="highlights-heading">
-        <div className={styles.highlightsInner}>
-          <div className={styles.highlightsHeaderRow}>
-            <h2 id="highlights-heading" className={styles.highlightsTitle}>Highlights</h2>
-            <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top ↑</button>
-          </div>
-          <div className={styles.highlightsGrid}>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Main challenges</h3>
-                <p className={styles.hlCardText}>The digital emerging technology team has a broad portfolio of products that serve critical business functions and utilize specialized skills to deliver capabilities. Goals this year are focused on critical business updates combined with crucial lifecycle upgrades to achieve stability and adoption. Limited access for certain technologies outside US for some platforms limits resources.</p>
-              </div>
-              <img src={ibmImg} alt="IBM" className={styles.hlCardImg} />
-            </div>
-            <div className={styles.hlCardGrey}>
-              <h3 className={styles.hlCardTitleDark}>Niche Skills</h3>
-              <ul className={styles.nicheList}>{NICHE_SKILLS.map((skill, i) => <li key={i} className={styles.nicheItem}>{skill}</li>)}</ul>
-            </div>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Mitigation</h3>
-                <p className={styles.hlCardText}>Pursuing options to broaden ability to deliver and support from other Geos.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PortfolioHighlights
+        challenges={CHALLENGES}
+        mitigations={MITIGATIONS}
+        nicheSkills={NICHE_SKILLS}
+        ibmImg={ibmImg}
+        onBackToTop={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}
+      />
     </div>
   )
 }

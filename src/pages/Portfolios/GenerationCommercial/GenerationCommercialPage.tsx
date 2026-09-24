@@ -5,12 +5,22 @@ import ibmImg from './assets/IBM.jpg'
 import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
 import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
 import PortfolioDashboard from '../../../components/shared/PortfolioDashboard/PortfolioDashboard'
+import PortfolioHighlights from '../../../components/shared/PortfolioHighlights/PortfolioHighlights'
 import { PORTFOLIO_SHOWCASE } from '../../../data/portfolio-showcase'
 
 const PORTFOLIO_SLUG = 'generation-commercial'
 const PORTFOLIO_NAME = 'Generation & Commercial Ops'
 const SHOWCASE = PORTFOLIO_SHOWCASE[PORTFOLIO_SLUG]
+
 const NICHE_SKILLS = ['Ecosys', 'Adapt2', 'FIS-Aligne Procore']
+const CHALLENGES = ['Finding experts with Specialized Commercial Market and ETRM Domain skills.']
+const MITIGATIONS = [
+  'Reskilling and upskilling matrix',
+  'Proactive hiring & onboarding',
+  'Identify resources across geographies',
+  'Working to strengthen demand management',
+]
+
 const NAV_LINKS = [{ id: 'analytics', label: `${PORTFOLIO_NAME} by the Numbers` }, { id: 'highlights', label: 'Highlights' }]
 
 function useSlidingPill(refs: React.RefObject<HTMLButtonElement | null>[], activeIndex: number) {
@@ -64,39 +74,13 @@ export default function GenerationCommercialPage() {
       <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
       <PortfolioSuccessStory successStory={SHOWCASE} />
       <PortfolioDashboard portfolioSlug={PORTFOLIO_SLUG} portfolioName={PORTFOLIO_NAME} />
-      <section id="highlights" className={styles.highlightsSection} aria-labelledby="highlights-heading">
-        <div className={styles.highlightsInner}>
-          <div className={styles.highlightsHeaderRow}>
-            <h2 id="highlights-heading" className={styles.highlightsTitle}>Highlights</h2>
-            <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top ↑</button>
-          </div>
-          <div className={styles.highlightsGrid}>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Main challenges</h3>
-                <p className={styles.hlCardText}>Finding experts with Specialized Commercial Market and ETRM Domain skills.</p>
-              </div>
-              <img src={ibmImg} alt="IBM" className={styles.hlCardImg} />
-            </div>
-            <div className={styles.hlCardGrey}>
-              <h3 className={styles.hlCardTitleDark}>Niche Skills</h3>
-              <ul className={styles.nicheList}>{NICHE_SKILLS.map((skill, i) => <li key={i} className={styles.nicheItem}>{skill}</li>)}</ul>
-            </div>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Mitigation</h3>
-                <p className={styles.hlCardText}>Reskilling and upskilling matrix</p>
-                <hr className={styles.hlDivider} />
-                <p className={styles.hlCardText}>Proactive hiring &amp; onboarding</p>
-                <hr className={styles.hlDivider} />
-                <p className={styles.hlCardText}>Identify resources across geographies</p>
-                <hr className={styles.hlDivider} />
-                <p className={styles.hlCardText}>Working to strengthen demand management</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PortfolioHighlights
+        challenges={CHALLENGES}
+        mitigations={MITIGATIONS}
+        nicheSkills={NICHE_SKILLS}
+        ibmImg={ibmImg}
+        onBackToTop={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}
+      />
     </div>
   )
 }

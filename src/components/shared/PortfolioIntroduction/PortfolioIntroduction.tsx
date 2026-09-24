@@ -24,7 +24,7 @@ export default function PortfolioIntroduction({
     <div className={styles.portfolioIntro}>
       <div className={styles.introInner}>
         <div className={styles.introMeta}>
-          <h2 className={styles.introHeading}>About {portfolioName}</h2>
+          <span className={styles.introHeading}>About {portfolioName}</span>
 
           {showcase.fullName && (
             <p className={styles.introFullName}>{showcase.fullName}</p>

@@ -5,12 +5,23 @@ import ibmImg from './assets/IBM.jpg'
 import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
 import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
 import PortfolioDashboard from '../../../components/shared/PortfolioDashboard/PortfolioDashboard'
+import PortfolioHighlights from '../../../components/shared/PortfolioHighlights/PortfolioHighlights'
 import { PORTFOLIO_SHOWCASE } from '../../../data/portfolio-showcase'
 
 const PORTFOLIO_SLUG = 'icoe'
 const PORTFOLIO_NAME = 'ICOE'
 const SHOWCASE = PORTFOLIO_SHOWCASE[PORTFOLIO_SLUG]
+
 const NICHE_SKILLS = ['webMethods Developer', 'Kafka Administrator']
+const CHALLENGES = [
+  'Most of the wM developer pool available are higher band resources. But the client wants to fix the skew in the experience mix and onboard only Junior / Mid level resources going forward.',
+  'Kafka Administrator position at onsite — We have gone through churn with this position frequently in the past year.',
+]
+const MITIGATIONS = [
+  'Onboarded two Graduate Hires as Junior resources on IBM cost. These resources have been completely mentored and started billing from June and the feedback has been highly positive. We are requesting two more Grad Hires to be onboarded next year through the same channel.',
+  'Onboarded an offshore Kafka Admin at India to mitigate this skill challenge. Identified and onboarding a junior resource from Brazil to be mentored for next 6-10 months without billing to AEP for long term planning.',
+]
+
 const NAV_LINKS = [{ id: 'analytics', label: `${PORTFOLIO_NAME} by the Numbers` }, { id: 'highlights', label: 'Highlights' }]
 
 function useSlidingPill(refs: React.RefObject<HTMLButtonElement | null>[], activeIndex: number) {
@@ -64,36 +75,13 @@ export default function ICOEPage() {
       <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
       <PortfolioSuccessStory successStory={SHOWCASE} />
       <PortfolioDashboard portfolioSlug={PORTFOLIO_SLUG} portfolioName={PORTFOLIO_NAME} />
-      <section id="highlights" className={styles.highlightsSection} aria-labelledby="highlights-heading">
-        <div className={styles.highlightsInner}>
-          <div className={styles.highlightsHeaderRow}>
-            <h2 id="highlights-heading" className={styles.highlightsTitle}>Highlights</h2>
-            <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top ↑</button>
-          </div>
-          <div className={styles.highlightsGrid}>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Main challenges</h3>
-                <p className={styles.hlCardText}>Most of the wM developer pool available are higher band resources. But the client wants to fix the skew in the experience mix and onboard only Junior / Mid level resources going forward.</p>
-                <p className={styles.hlCardText}>Kafka Administrator position at onsite — We have gone through churn with this position frequently in the past year.</p>
-              </div>
-              <img src={ibmImg} alt="IBM" className={styles.hlCardImg} />
-            </div>
-            <div className={styles.hlCardGrey}>
-              <h3 className={styles.hlCardTitleDark}>Niche Skills</h3>
-              <ul className={styles.nicheList}>{NICHE_SKILLS.map((skill, i) => <li key={i} className={styles.nicheItem}>{skill}</li>)}</ul>
-            </div>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Mitigation</h3>
-                <p className={styles.hlCardText}>Onboarded two Graduate Hires as Junior resources on IBM cost. These resources have been completely mentored and started billing from June and the feedback has been highly positive. We are requesting two more Grad Hires to be onboarded next year through the same channel.</p>
-                <hr className={styles.hlDivider} />
-                <p className={styles.hlCardText}>Onboarded an offshore Kafka Admin at India to mitigate this skill challenge. Identified and onboarding a junior resource from Brazil to be mentored for next 6-10 months without billing to AEP for long term planning.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PortfolioHighlights
+        challenges={CHALLENGES}
+        mitigations={MITIGATIONS}
+        nicheSkills={NICHE_SKILLS}
+        ibmImg={ibmImg}
+        onBackToTop={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}
+      />
     </div>
   )
 }
