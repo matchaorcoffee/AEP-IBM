@@ -7,8 +7,6 @@ import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessSt
 import PortfolioDashboard from '../../../components/shared/PortfolioDashboard/PortfolioDashboard'
 import { PORTFOLIO_SHOWCASE } from '../../../data/portfolio-showcase'
 
-const videos = import.meta.glob('./assets/*.{mp4,webm,mov}', { eager: true, query: '?url', import: 'default' })
-
 const PORTFOLIO_SLUG = 'automation-coe'
 const PORTFOLIO_NAME = 'Automation COE'
 const SHOWCASE = PORTFOLIO_SHOWCASE[PORTFOLIO_SLUG]
@@ -31,7 +29,6 @@ function useSlidingPill(refs: React.RefObject<HTMLButtonElement | null>[], activ
 }
 
 export default function AutomationCOEPage() {
-  const videoFiles = Object.values(videos) as string[]
   const [activePillIdx, setActivePillIdx] = useState(0)
   const navBtnRefs = [useRef<HTMLButtonElement>(null), useRef<HTMLButtonElement>(null)]
   const { pillStyle, pillReady } = useSlidingPill(navBtnRefs, activePillIdx)
@@ -94,7 +91,6 @@ export default function AutomationCOEPage() {
           </div>
         </div>
       </section>
-      {videoFiles.length > 0 && <div className={styles.content}>{videoFiles.map((src, i) => <video key={i} src={src} controls className={styles.video} />)}</div>}
     </div>
   )
 }
