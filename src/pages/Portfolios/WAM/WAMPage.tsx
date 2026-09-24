@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
 import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
 import PortfolioDashboard from '../../../components/shared/PortfolioDashboard/PortfolioDashboard'
+import PortfolioHighlights from '../../../components/shared/PortfolioHighlights/PortfolioHighlights'
 import { PORTFOLIO_SHOWCASE } from '../../../data/portfolio-showcase'
 
 const PORTFOLIO_SLUG = 'wam'
@@ -19,6 +20,15 @@ const NICHE_SKILLS = [
   'Eggplant Test Automation',
   'Dynatrace',
   'Splunk',
+]
+
+const CHALLENGES = [
+  'In preparation for MAS, the team has undergone necessary training; however, hands-on experience remains limited. The admin team is encountering challenges during the initial installation on the Sandbox environment. Additionally, the team is facing difficulties in identifying the technical changes introduced by the latest iFix, based on the release notes provided by IBM Product team.',
+]
+
+const MITIGATIONS = [
+  'For the first time MAS installation, the team is receiving support from IBM Maximo Service Line. To enhance skills, the team is also undergoing MAS-specific training.',
+  'Regarding iFix, the team is collaborating with IBM Product team to identify any gaps and is planning to address them in future releases.',
 ]
 
 const NAV_LINKS = [
@@ -134,58 +144,13 @@ export default function WAMPage() {
       <PortfolioDashboard portfolioSlug={PORTFOLIO_SLUG} portfolioName={PORTFOLIO_NAME} />
 
       {/* Highlights */}
-      <section id="highlights" className={styles.highlightsSection} aria-labelledby="highlights-heading">
-        <div className={styles.highlightsInner}>
-          <div className={styles.highlightsHeaderRow}>
-            <h2 id="highlights-heading" className={styles.highlightsTitle}>Highlights</h2>
-            <button
-              className={styles.backToTop}
-              onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Back to top ↑
-            </button>
-          </div>
-
-          <div className={styles.highlightsGrid}>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Main challenges</h3>
-                <p className={styles.hlCardText}>
-                  In preparation for MAS, the team has undergone necessary training; however, hands-on experience remains limited.
-                  The admin team is encountering challenges during the initial installation on the Sandbox environment.
-                  Additionally, the team is facing difficulties in identifying the technical changes introduced by the latest iFix,
-                  based on the release notes provided by IBM Product team.
-                </p>
-              </div>
-              <img src={ibmImg} alt="IBM" className={styles.hlCardImg} />
-            </div>
-
-            <div className={styles.hlCardGrey}>
-              <h3 className={styles.hlCardTitleDark}>Niche Skills</h3>
-              <ul className={styles.nicheList}>
-                {NICHE_SKILLS.map((skill, i) => (
-                  <li key={i} className={styles.nicheItem}>{skill}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Mitigation</h3>
-                <p className={styles.hlCardText}>
-                  For the first time MAS installation, the team is receiving support from IBM Maximo Service Line.
-                  To enhance skills, the team is also undergoing MAS-specific training.
-                </p>
-                <hr className={styles.hlDivider} />
-                <p className={styles.hlCardText}>
-                  Regarding iFix, the team is collaborating with IBM Product team to identify any gaps and is planning
-                  to address them in future releases.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PortfolioHighlights
+        challenges={CHALLENGES}
+        mitigations={MITIGATIONS}
+        nicheSkills={NICHE_SKILLS}
+        ibmImg={ibmImg}
+        onBackToTop={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}
+      />
 
     </div>
   )

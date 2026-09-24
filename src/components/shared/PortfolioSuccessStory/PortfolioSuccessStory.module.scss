@@ -1,11 +1,12 @@
-/* ── Section shell ─────────────────────────────────────────────────────────── */
+/* ── Portfolio Success Story ─────────────────────────────────────────────────
+   "From Challenge to Impact" — redesigned to match Home page design system.
+   ─────────────────────────────────────────────────────────────────────────── */
+
 .section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 2rem 2.5rem;
+  background: var(--color-page-bg);
   border-bottom: 1px solid var(--color-border);
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(20px);
   transition: opacity var(--transition-slow), transform var(--transition-slow);
 
   @media (prefers-reduced-motion: reduce) {
@@ -20,46 +21,75 @@
   transform: translateY(0);
 }
 
-/* ── Heading ─────────────────────────────────────────────────────────────────  */
+/* ── Inner container ────────────────────────────────────────────────────────  */
+.inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--spacing-10) var(--spacing-07);
+}
+
+/* ── Section header ─────────────────────────────────────────────────────────  */
 .header {
-  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-04);
+  margin-bottom: var(--spacing-08);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(200, 16, 46, 0.08);
+  color: #c8102e;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(200, 16, 46, 0.2);
 }
 
 .heading {
-  font-size: 0.8125rem;
-  font-weight: var(--font-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-muted);
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
   margin: 0;
+  line-height: 1.25;
 }
 
-/* ── Stages row ──────────────────────────────────────────────────────────────  */
+/* ── Three stage cards ───────────────────────────────────────────────────────  */
 .stages {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: stretch;
   gap: 0;
 }
 
-/* ── Wrapper holds card + connector ─────────────────────────────────────────  */
 .stageWrapper {
-  display: flex;
-  align-items: flex-start;
-  flex: 1;
-  min-width: 0;
+  display: contents;
 }
 
-/* ── Stage card ──────────────────────────────────────────────────────────────  */
+/* ── Stage card ───────────────────────────────────────────────────────────── */
 .stageCard {
-  flex: 1;
-  min-width: 0;
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 1.375rem 1.25rem;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-07);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+  box-shadow: var(--shadow-card);
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity var(--transition-slow), transform var(--transition-slow);
+  transform: translateY(12px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow),
+              box-shadow var(--transition-fast);
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
 
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
@@ -71,87 +101,116 @@
 .stageCardVisible {
   opacity: 1;
   transform: translateY(0);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
-/* Impact card — slightly stronger emphasis */
+/* Impact card — accent border */
 .stageCardImpact {
-  border-color: var(--color-accent);
+  border-color: rgba(200, 16, 46, 0.3);
   border-width: 1.5px;
   background: var(--color-accent-subtle);
 }
 
-/* ── Stage internals ─────────────────────────────────────────────────────────  */
+/* ── Stage card internals ────────────────────────────────────────────────────  */
+.stageNumberRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-03);
+}
+
 .stageNumber {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--color-page-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
   font-size: 0.7rem;
   font-weight: var(--font-weight-bold);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   color: var(--color-text-muted);
-  margin-bottom: 0.375rem;
-  line-height: 1;
+  flex-shrink: 0;
 }
 
 .stageCardImpact .stageNumber {
-  color: var(--color-accent);
+  background: rgba(200, 16, 46, 0.12);
+  border-color: rgba(200, 16, 46, 0.25);
+  color: #c8102e;
 }
 
 .stageLabel {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   color: var(--color-text-primary);
-  margin: 0 0 0.625rem;
-  line-height: 1.3;
-}
-
-.stageCardImpact .stageLabel {
-  color: var(--color-accent-dark);
-}
-
-.stageContent {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  line-height: var(--line-height-body);
   margin: 0;
 }
 
-/* ── Connector arrow ─────────────────────────────────────────────────────────  */
+.stageCardImpact .stageLabel {
+  color: #9e0b22;
+}
+
+.stageDivider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--spacing-02) 0;
+}
+
+.stageCardImpact .stageDivider {
+  border-color: rgba(200, 16, 46, 0.15);
+}
+
+.stageContent {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-body);
+  margin: 0;
+  flex: 1;
+}
+
+/* ── Connector arrow between stage cards ─────────────────────────────────────  */
 .connector {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 2.5rem;
-  padding-top: 1.5rem; /* align with card content area */
+  flex-shrink: 0;
   color: var(--color-border-strong);
+  padding-top: var(--spacing-07); /* align with card content area */
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────────  */
-@media (max-width: 768px) {
-  .section {
-    padding: 1.75rem 1.25rem 2rem;
+@media (max-width: 900px) {
+  .inner {
+    padding: var(--spacing-09) var(--spacing-06);
   }
 
   .stages {
-    flex-direction: column;
-    gap: 0;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-04);
   }
 
-  .stageWrapper {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .stageCard {
-    width: 100%;
-  }
-
-  /* Rotate the connector arrow 90° to point downward on mobile */
+  /* Hide connectors on mobile — they become stacked vertically */
   .connector {
-    width: 100%;
-    padding: 0.375rem 0;
-    transform: rotate(90deg);
-    color: var(--color-border-strong);
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .inner {
+    padding: var(--spacing-08) var(--spacing-05);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-03);
+    margin-bottom: var(--spacing-06);
   }
 }

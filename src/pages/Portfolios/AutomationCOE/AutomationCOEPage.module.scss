@@ -1,7 +1,7 @@
 /* ── Page shell ──────────────────────────────────────────────────────────── */
 .page {
   min-height: calc(100vh - var(--header-total-height));
-  background: #f5f5f7; /* Apple-style off-white page background */
+  background: var(--color-page-bg);
   scroll-behavior: smooth;
   margin-top: calc(-1 * var(--header-total-height));
 }
@@ -92,7 +92,7 @@
   display: flex;
   justify-content: center;
   padding: 2.25rem 1.5rem 0;
-  background: #f5f5f7;
+  background: #ffffff;
 }
 
 .segControl {
@@ -180,7 +180,7 @@
 /* ── Analytics section ──────────────────────────────────────────────────── */
 .analyticsSection {
   padding: 5rem 0 6rem;
-  background: #f5f5f7;
+  background: var(--color-page-bg);
   scroll-margin-top: calc(var(--header-total-height) + 60px);
 }
 
@@ -400,152 +400,9 @@
 .asset   { width: 100%; display: block; }
 .video   { width: 100%; display: block; border-radius: 12px; }
 
-/* ── Highlights section ──────────────────────────────────────────────────── */
-.highlightsSection {
-  background: #fff;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 5rem 0 5.5rem;
-  scroll-margin-top: calc(var(--header-total-height) + 60px);
-}
-
-.highlightsInner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.highlightsHeaderRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2.5rem;
-}
-
-.highlightsTitle {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  color: #1d1d1f;
-  margin: 0;
-  letter-spacing: -0.025em;
-}
-
-.backToTop {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: #c8102e;
-  transition: color 120ms ease;
-
-  &:hover { text-decoration: underline; }
-}
-
-.highlightsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
-  align-items: stretch;
-}
-
-/* Dark red cards */
-.hlCardRed {
-  background: #c8102e;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(200, 16, 46, 0.18);
-}
-
-.hlCardContent {
-  padding: 1.75rem;
-  flex: 1;
-}
-
-.hlCardTitle {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;
-  text-align: center;
-  margin: 0 0 1.125rem;
-  letter-spacing: -0.01em;
-}
-
-.hlCardText {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.88);
-  line-height: 1.7;
-  margin: 0 0 0.75rem;
-
-  &:last-child { margin-bottom: 0; }
-}
-
-.hlDivider {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 1rem 0;
-}
-
-.hlCardImg {
-  width: 100%;
-  display: block;
-  object-fit: cover;
-  max-height: 260px;
-}
-
-/* Light grey center card */
-.hlCardGrey {
-  background: #f5f5f7;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 20px;
-  padding: 1.75rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.hlCardTitleDark {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1d1d1f;
-  text-align: center;
-  margin: 0 0 1.5rem;
-  letter-spacing: -0.01em;
-}
-
-.nicheList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  width: 100%;
-}
-
-.nicheItem {
-  font-size: 0.875rem;
-  color: #c8102e;
-  text-align: center;
-  line-height: 1.5;
-  padding: 8px 4px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  font-weight: 500;
-
-  &:last-child { border-bottom: none; }
-}
-
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .analyticsSection { padding: 4rem 0 5rem; }
-  .highlightsSection { padding: 4rem 0 4.5rem; }
 }
 
 @media (max-width: 900px) {
@@ -585,13 +442,6 @@
   .cardChartArea { padding:  0.875rem 1.125rem 1rem; }
   .cardTitle { font-size:  0.875rem; }
   .chartImg { height: 180px; }
-
-  .highlightsSection { padding: 3rem 0 3.5rem; }
-  .highlightsInner { padding: 0 1.25rem; }
-  .highlightsGrid { grid-template-columns: 1fr; gap: 16px; }
-  .highlightsHeaderRow { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.75rem; }
-  .hlCardRed { border-radius: 16px; }
-  .hlCardGrey { border-radius: 16px; }
 }
 
 @media (max-width: 480px) {
@@ -600,7 +450,6 @@
   .cardChartArea { padding: 1rem 1.25rem 1.5rem; }
   .analyticsSection { padding: 2.5rem 0 3rem; }
   .analyticsInner { padding: 0 1rem; }
-  .highlightsInner { padding: 0 1rem; }
   
   .chartImg { height: 160px; }
 }

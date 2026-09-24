@@ -1,71 +1,83 @@
-/* ── Portfolio intro block ──────────────────────────────────────────────────
-   Reusable "About [Portfolio]" editorial section.
-   Visual baseline taken from the WAM portfolio introduction.
+/* ── Portfolio Introduction block ───────────────────────────────────────────
+   "About [Portfolio]" section — redesigned to match Home page design system.
    ─────────────────────────────────────────────────────────────────────────── */
 
 .portfolioIntro {
-  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .introInner {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 2rem 2rem 2.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  padding: var(--spacing-10) var(--spacing-07);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-10);
+  align-items: start;
 }
 
+/* ── Left column: label + heading + description ─────────────────────────── */
 .introMeta {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-04);
 }
 
-/* "About [Portfolio]" label — uppercase, brand-red, small */
+/* Section eyebrow label — matches Home "AEP & IBM Partnership" pill */
 .introHeading {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  background: rgba(200, 16, 46, 0.08);
   color: #c8102e;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(200, 16, 46, 0.2);
+  width: fit-content;
   margin: 0;
-  line-height: 1;
+  line-height: 1.4;
 }
 
-/* Optional full-name expansion (shown only when fullName is provided) */
+/* Optional full-name subtitle */
 .introFullName {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #c8102e;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
   margin: 0;
-  line-height: 1;
+  line-height: 1.25;
 }
 
 /* Body description text */
 .introDescription {
-  font-size: 0.9375rem;
-  color: #444;
-  line-height: 1.65;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-body);
   margin: 0;
-  max-width: 680px;
 }
 
-/* ── Optional capabilities list ("What [Portfolio] Enables") ──────────────── */
+/* ── Right column: capabilities ─────────────────────────────────────────── */
 .capabilities {
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
+  gap: var(--spacing-05);
+  background: var(--color-page-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-07);
 }
 
 .capabilitiesLabel {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #999;
+  color: var(--color-text-muted);
   margin: 0;
 }
 
@@ -75,29 +87,37 @@
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--spacing-02) var(--spacing-03);
 }
 
 .capabilityItem {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: #1a1a1a;
-  background: #f8f8fb;
-  border: 1px solid #e5e7eb;
-  border-radius: 999px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
   padding: 5px 14px;
   line-height: 1.4;
   white-space: nowrap;
+  box-shadow: var(--shadow-xs);
 }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .introInner {
-    padding: 1.5rem 1.25rem 1.75rem;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-07);
+    padding: var(--spacing-09) var(--spacing-06);
+  }
+}
+
+@media (max-width: 600px) {
+  .introInner {
+    padding: var(--spacing-08) var(--spacing-05);
   }
 
-  .capabilityList {
-    flex-direction: column;
-    align-items: flex-start;
+  .introFullName {
+    font-size: 1.4rem;
   }
 }

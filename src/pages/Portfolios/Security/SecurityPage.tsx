@@ -5,13 +5,15 @@ import ibmImg from './assets/IBM.jpg'
 import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
 import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
 import PortfolioDashboard from '../../../components/shared/PortfolioDashboard/PortfolioDashboard'
+import PortfolioHighlights from '../../../components/shared/PortfolioHighlights/PortfolioHighlights'
 import { PORTFOLIO_SHOWCASE } from '../../../data/portfolio-showcase'
 
 const PORTFOLIO_SLUG = 'security'
 const PORTFOLIO_NAME = 'Security'
 const SHOWCASE = PORTFOLIO_SHOWCASE[PORTFOLIO_SLUG]
+
 const NICHE_SKILLS = ['CyberArk', 'IAM Specialist']
-const MAIN_CHALLENGES = [
+const CHALLENGES = [
   'Hard to find resources with the CyberArk experience needed + Powershell experience + NERC restrictions. Only US resources are NERC compliant, nearshore resources are not NERC compliant (Brazil, Mexico, Costa Rica) so they are not a fit for AEP.',
   'Resources with IAM experience are hard to find',
 ]
@@ -19,6 +21,7 @@ const MITIGATIONS = [
   'Proactive search for strong resources',
   'Train junior resources on Active Directory and other IAM demands.',
 ]
+
 const NAV_LINKS = [{ id: 'analytics', label: `${PORTFOLIO_NAME} by the Numbers` }, { id: 'highlights', label: 'Highlights' }]
 
 function useSlidingPill(refs: React.RefObject<HTMLButtonElement | null>[], activeIndex: number) {
@@ -72,33 +75,13 @@ export default function SecurityPage() {
       <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
       <PortfolioSuccessStory successStory={SHOWCASE} />
       <PortfolioDashboard portfolioSlug={PORTFOLIO_SLUG} portfolioName={PORTFOLIO_NAME} />
-      <section id="highlights" className={styles.highlightsSection} aria-labelledby="highlights-heading">
-        <div className={styles.highlightsInner}>
-          <div className={styles.highlightsHeaderRow}>
-            <h2 id="highlights-heading" className={styles.highlightsTitle}>Highlights</h2>
-            <button className={styles.backToTop} onClick={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}>Back to top ↑</button>
-          </div>
-          <div className={styles.highlightsGrid}>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Main challenges</h3>
-                {MAIN_CHALLENGES.map((text, i) => <p key={i} className={styles.hlCardText}>{text}</p>)}
-              </div>
-              <img src={ibmImg} alt="IBM" className={styles.hlCardImg} />
-            </div>
-            <div className={styles.hlCardGrey}>
-              <h3 className={styles.hlCardTitleDark}>Niche Skills</h3>
-              <ul className={styles.nicheList}>{NICHE_SKILLS.map((skill, i) => <li key={i} className={styles.nicheItem}>{skill}</li>)}</ul>
-            </div>
-            <div className={styles.hlCardRed}>
-              <div className={styles.hlCardContent}>
-                <h3 className={styles.hlCardTitle}>Mitigation</h3>
-                {MITIGATIONS.map((text, i) => <p key={i} className={styles.hlCardText}>{text}</p>)}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PortfolioHighlights
+        challenges={CHALLENGES}
+        mitigations={MITIGATIONS}
+        nicheSkills={NICHE_SKILLS}
+        ibmImg={ibmImg}
+        onBackToTop={() => document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' })}
+      />
     </div>
   )
 }
