@@ -1,5 +1,6 @@
 /* ─────────────────────────────────────────────────────────────────────────
-   EngagementsPage — Portfolio content with sliding-pill tab navigation
+   EngagementsPage / Portfolios — Premium IBM / AEP Design Language
+   Matches Home Page styling, spacing, typography, tokens, and hover states
    ───────────────────────────────────────────────────────────────────────── */
 
 /* ── Page shell ──────────────────────────────────────────────────────────── */
@@ -12,13 +13,15 @@
 /* ── Hero ────────────────────────────────────────────────────────────────── */
 .hero {
   width: 100%;
-  height: 380px;
+  height: 100vh;
+  min-height: 700px;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: var(--header-total-height);
+  background: #000;
 }
 
 .heroImg {
@@ -35,9 +38,10 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    135deg,
-    rgba(15, 15, 26, 0.70) 0%,
-    rgba(200, 16, 46, 0.38) 100%
+    180deg,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.50) 50%,
+    rgba(0, 0, 0, 0.75) 100%
   );
   z-index: 1;
 }
@@ -46,55 +50,82 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 0 2rem;
-  max-width: 700px;
+  padding: 0 var(--spacing-07);
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-05);
 }
 
 .heroBadge {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: var(--radius-full);
-  padding: 5px 14px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.09em;
+  padding: 6px 18px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 0.875rem;
+  color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(8px);
 }
 
 .heroHeading {
-  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-  font-weight: 700;
-  line-height: 1.1;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.08;
   letter-spacing: -0.03em;
-  color: #fff;
-  margin: 0 0 0.625rem;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
 }
 
 .heroSub {
-  font-size: 1rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.65;
-  margin: 0 auto;
-  max-width: 520px;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+  max-width: 620px;
+  margin: 0;
 }
 
-/* ── Tab switcher area ───────────────────────────────────────────────────── */
+// ── Scroll indicator ──────────────────────────────────────────────────────────
+.scrollIndicator {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.scrollChevron {
+  animation: scrollBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(6px); opacity: 1; }
+}
+
+/* ── Sliding-pill switcher ── */
 .tabSwitcherWrap {
   display: flex;
   justify-content: center;
-  padding: 2.75rem 1.5rem 0;
+  padding: var(--spacing-09) var(--spacing-06) 0;
 }
 
-/* ── Sliding-pill segmented control ─────────────────────────────────────────
-   Outer track: soft neutral background, pill-shaped, subtle border.
-   Inner pill: IBM/AEP red that physically slides between the two options.  */
 .segControl {
   position: relative;
   display: inline-flex;
@@ -107,41 +138,37 @@
   isolation: isolate;
 }
 
-/* Sliding pill — absolutely positioned behind the active button text */
 .segPill {
   position: absolute;
   top: 4px;
   bottom: 4px;
   border-radius: var(--radius-full);
   background: var(--color-accent);
-  box-shadow: 0 2px 10px rgba(200, 16, 46, 0.30);
-  /* No transition on mount — added via .segPillAnimated after first measure */
+  box-shadow: 0 4px 16px rgba(200, 16, 46, 0.35);
   z-index: 0;
   pointer-events: none;
 }
 
-/* Transition enabled after initial positioning to prevent slide-from-0 */
 .segPillAnimated {
   transition: left 320ms cubic-bezier(0.34, 1.10, 0.64, 1),
               width 320ms cubic-bezier(0.34, 1.10, 0.64, 1);
 }
 
-/* Each option button */
 .segBtn {
   position: relative;
   z-index: 1;
   background: none;
   border: none;
   border-radius: var(--radius-full);
-  padding: 9px 28px;
+  padding: 10px 30px;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   line-height: 1.3;
   cursor: pointer;
   white-space: nowrap;
   color: var(--color-text-secondary);
-  transition: color var(--transition-medium);
-  min-width: 120px;
+  transition: color var(--transition-fast);
+  min-width: 124px;
   text-align: center;
   outline: none;
 
@@ -153,12 +180,12 @@
 }
 
 .segBtnActive {
-  color: #fff;
+  color: #ffffff;
 }
 
-/* ── Content panels ──────────────────────────────────────────────────────── */
+/* ── Content panels ── */
 .contentArea {
-  /* Each child panel manages its own padding */
+  position: relative;
 }
 
 .panel {
@@ -167,242 +194,345 @@
 
 .panelVisible {
   display: block;
-  animation: panelIn 220ms ease forwards;
+  animation: panelFadeIn 280ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes panelIn {
-  from { opacity: 0; transform: translateY(8px); }
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Portfolio cards section ─────────────────────────────────────────────── */
+/* ── Section Container ── */
 .cardsSection {
-  padding: 3.5rem 0 5rem;
+  padding: var(--spacing-08) 0 var(--spacing-12);
+}
+
+.projectsSection {
+  padding: var(--spacing-08) 0 var(--spacing-12);
 }
 
 .inner {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--spacing-07);
 }
 
 .sectionHeader {
-  margin-bottom: 2.5rem;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--spacing-10);
+}
+
+.sectionLabel {
+  display: inline-flex;
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(200, 16, 46, 0.2);
+  margin-bottom: var(--spacing-03);
 }
 
 .sectionTitle {
-  font-size: clamp(1.25rem, 2.5vw, 1.625rem);
-  font-weight: 700;
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
-  letter-spacing: -0.02em;
-  margin: 0 0 6px;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 var(--spacing-03);
 }
 
 .sectionSub {
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-secondary);
+  line-height: 1.65;
   margin: 0;
 }
 
-/* ── Portfolio card grid ─────────────────────────────────────────────────── */
+/* ── Grid — Apple-Style 2-Column Showcase ── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-08);
 }
 
+/* ── Portfolio Card — Full Image Promotional Tile ── */
 .card {
   position: relative;
-  display: block;
-  height: 200px;
-  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 440px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   text-decoration: none;
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  background: #0f0f1a;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 320ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 320ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.26);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.18), 0 6px 16px rgba(0, 0, 0, 0.10);
     text-decoration: none;
 
-    .cardImg img { transform: scale(1.06); }
-    .cardOverlay { background: linear-gradient(135deg, rgba(15,15,26,0.78) 0%, rgba(200,16,46,0.55) 100%); }
-    .cardArrow { opacity: 1; transform: translate(2px, -2px); }
+    .cardImg {
+      transform: scale(1.05);
+    }
+
+    .cardOverlay {
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.15) 0%,
+        rgba(10, 10, 18, 0.45) 40%,
+        rgba(10, 10, 18, 0.88) 80%,
+        rgba(10, 10, 18, 0.96) 100%
+      );
+    }
+
+    .cardCta {
+      background: #ffffff;
+      color: #0f0f1a;
+      border-color: #ffffff;
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
+
+      .cardArrow {
+        transform: translateX(3px);
+      }
+    }
   }
 
   &:focus-visible {
-    outline: 3px solid var(--color-accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
   }
 }
 
-.cardImg {
+.cardVisual {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 300ms ease;
-  }
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .cardOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(15,15,26,0.65) 0%, rgba(200,16,46,0.38) 100%);
-  transition: background 200ms ease;
-  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.10) 0%,
+    rgba(10, 10, 18, 0.35) 40%,
+    rgba(10, 10, 18, 0.80) 80%,
+    rgba(10, 10, 18, 0.92) 100%
+  );
+  transition: background 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
-.cardBody {
+.cardContent {
   position: relative;
   z-index: 2;
+  padding: var(--spacing-08) var(--spacing-08);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 20px;
-  text-align: center;
-  gap: 6px;
+  align-items: flex-start;
+  gap: var(--spacing-03);
 }
 
-.cardLabel {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+.cardCategory {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.cardTitle {
+  font-size: clamp(1.65rem, 2.4vw, 2.2rem);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .cardDesc {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.45;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 480px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.cardCtaWrapper {
+  margin-top: var(--spacing-04);
+}
+
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+  transition:
+    background 250ms ease,
+    color 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease;
 }
 
 .cardArrow {
-  position: absolute;
-  bottom: 14px;
-  right: 14px;
-  z-index: 2;
-  color: rgba(255, 255, 255, 0.7);
-  opacity: 0.7;
-  transition: opacity 150ms ease, transform 150ms ease;
+  transition: transform 250ms ease;
 }
 
-/* ── Projects panel ──────────────────────────────────────────────────────── */
-.projectsSection {
-  padding: 3.5rem 0 5rem;
+/* ── Projects Hub Preview Card ── */
+.projectsPreview {
+  max-width: 960px;
+  margin: 0 auto;
 }
 
-.projectsHeader {
-  margin-bottom: 2.25rem;
-}
-
-/* Hero thumbnail card — links to the full Projects page */
 .projectsThumb {
-  position: relative;
-  display: block;
-  width: 100%;
-  max-width: 520px;
-  height: 280px;
-  border-radius: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   text-decoration: none;
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  box-shadow: var(--shadow-card);
+  transition:
+    transform var(--transition-medium),
+    box-shadow var(--transition-medium),
+    border-color var(--transition-medium);
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.26);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card-hover), 0 20px 40px rgba(0, 0, 0, 0.08);
+    border-color: rgba(200, 16, 46, 0.35);
     text-decoration: none;
 
-    .projectsThumbOverlay {
-      background: linear-gradient(
-        160deg,
-        rgba(15, 15, 26, 0.78) 0%,
-        rgba(200, 16, 46, 0.52) 100%
-      );
+    .projectsThumbImg {
+      transform: scale(1.04);
+    }
+
+    .projectsThumbAction {
+      color: var(--color-accent-dark);
+      box-shadow: 0 4px 18px rgba(200, 16, 46, 0.35);
     }
   }
 
   &:focus-visible {
-    outline: 3px solid var(--color-accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
 }
 
+.projectsThumbVisual {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+  background: #0f0f1a;
+}
+
 .projectsThumbImg {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .projectsThumbOverlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    160deg,
-    rgba(15, 15, 26, 0.62) 0%,
-    rgba(200, 16, 46, 0.36) 100%
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(15, 15, 26, 0.5) 100%
   );
-  z-index: 1;
-  transition: background 200ms ease;
 }
 
-.projectsThumbContent {
-  position: relative;
-  z-index: 2;
+.projectsThumbBody {
+  padding: var(--spacing-09) var(--spacing-08);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  padding: 24px;
-  gap: 5px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--spacing-04);
+  background: var(--color-card-bg);
 }
 
 .projectsThumbBadge {
   display: inline-flex;
-  align-self: flex-start;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--radius-full);
-  padding: 3px 10px;
-  font-size: 0.68rem;
-  font-weight: 600;
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
 }
 
 .projectsThumbTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.2;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.25;
   letter-spacing: -0.02em;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  margin: 0;
 }
 
 .projectsThumbSub {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.5;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin: 0;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   DARK MODE  (OS-level prefers-color-scheme)
-   ───────────────────────────────────────────────────────────────────────── */
+.projectsThumbAction {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  margin-top: var(--spacing-03);
+  background: var(--color-accent);
+  color: #ffffff;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(200, 16, 46, 0.28);
+}
+
+/* ── Dark Mode ── */
 @media (prefers-color-scheme: dark) {
   .segControl {
     background: #1c1c1e;
@@ -415,7 +545,7 @@
   }
 
   .segBtnActive {
-    color: #fff;
+    color: #ffffff;
   }
 
   .segPill {
@@ -424,34 +554,111 @@
   }
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   RESPONSIVE
-   ───────────────────────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .hero { height: 320px; }
-  .grid { grid-template-columns: repeat(2, 1fr); }
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-05);
+  }
+
+  .projectsThumb {
+    grid-template-columns: 1fr;
+  }
+
+  .projectsThumbVisual {
+    min-height: 240px;
+  }
+
+  .projectsThumbBody {
+    padding: var(--spacing-07) var(--spacing-06);
+  }
 }
 
 @media (max-width: 768px) {
-  .hero { height: 280px; }
-  .heroHeading { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .hero {
+    height: 100svh;
+    min-height: 560px;
+  }
 
-  .tabSwitcherWrap { padding: 2rem 1.25rem 0; }
-  .segBtn { padding: 8px 20px; font-size: 0.875rem; min-width: 100px; }
+  .heroHeading {
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+  }
 
-  .inner { padding: 0 1.25rem; }
-  .cardsSection { padding: 2.5rem 0 3.5rem; }
-  .projectsSection { padding: 2.5rem 0 3.5rem; }
-  .projectsThumb { height: 240px; }
+  .heroSub {
+    font-size: 0.9rem;
+  }
+
+  .heroContent {
+    padding: 0 var(--spacing-05);
+    gap: var(--spacing-04);
+  }
+
+  .scrollIndicator {
+    bottom: 24px;
+  }
+
+  .tabSwitcherWrap {
+    padding: var(--spacing-07) var(--spacing-05) 0;
+  }
+
+  .segBtn {
+    padding: 8px 20px;
+    font-size: 0.875rem;
+    min-width: 100px;
+  }
+
+  .inner {
+    padding: 0 var(--spacing-05);
+  }
+
+  .cardsSection,
+  .projectsSection {
+    padding: var(--spacing-06) 0 var(--spacing-09);
+  }
+
+  .sectionHeader {
+    margin-bottom: var(--spacing-07);
+  }
 }
 
 @media (max-width: 600px) {
-  .hero { height: 240px; }
-  .grid { grid-template-columns: 1fr; }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-04);
+  }
 
-  .tabSwitcherWrap { padding: 1.75rem 1rem 0; }
-  .segBtn { padding: 8px 16px; font-size: 0.8125rem; min-width: 88px; }
+  .hero {
+    height: 100svh;
+    min-height: 520px;
+  }
 
-  .inner { padding: 0 1rem; }
-  .projectsThumb { height: 200px; max-width: 100%; }
+  .heroHeading {
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
+  }
+
+  .heroSub {
+    font-size: 0.85rem;
+  }
+
+  .heroContent {
+    padding: 0 var(--spacing-04);
+  }
+
+  .tabSwitcherWrap {
+    padding: var(--spacing-06) var(--spacing-04) 0;
+  }
+
+  .segBtn {
+    padding: 8px 16px;
+    font-size: 0.8125rem;
+    min-width: 88px;
+  }
+
+  .inner {
+    padding: 0 var(--spacing-04);
+  }
+
+  .projectsThumbBody {
+    padding: var(--spacing-06) var(--spacing-05);
+  }
 }
