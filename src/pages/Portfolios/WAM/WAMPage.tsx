@@ -1,5 +1,5 @@
 import styles from './WAMPage.module.scss'
-import wamHero from './assets/WAM.png'
+import wamVideo from './assets/WAM Header.mp4'
 import ibmImg from './assets/IBM.jpg'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
@@ -89,7 +89,16 @@ export default function WAMPage() {
 
       {/* Hero */}
       <div className={styles.hero}>
-        <img src={wamHero} alt="WAM" className={styles.heroImg} />
+        <video
+          className={styles.heroVideo}
+          src={wamVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
           <h1 className={styles.pageTitle}>{PORTFOLIO_NAME}</h1>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import styles from './SharedServicesPage.module.scss'
-import hero from './assets/SharedServices.png'
+import headerVideo from './assets/SharedServices Header.mp4'
 import ibmImg from './assets/IBM.jpg'
 import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
 import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
@@ -40,7 +40,16 @@ export default function SharedServicesPage() {
   return (
     <div className={styles.page} id="top">
       <div className={styles.hero}>
-        <img src={hero} alt={PORTFOLIO_NAME} className={styles.heroImg} />
+        <video
+          className={styles.heroVideo}
+          src={headerVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
           <h1 className={styles.pageTitle}>{PORTFOLIO_NAME}</h1>

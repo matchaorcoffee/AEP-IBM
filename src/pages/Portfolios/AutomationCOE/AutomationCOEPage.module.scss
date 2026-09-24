@@ -32,6 +32,7 @@
   }
 }
 
+.heroVideo,
 .heroImg {
   position: absolute;
   inset: 0;
@@ -300,7 +301,8 @@
   gap:  20px;
   align-items:  stretch;
 }
-
+
+
 
 /* ── Individual chart card ──────────────────────────────────────────────── */
 .chartCard {

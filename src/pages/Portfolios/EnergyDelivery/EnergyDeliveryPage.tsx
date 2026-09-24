@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import styles from './EnergyDeliveryPage.module.scss'
-import energyDeliveryHero from './assets/EnergyDelivery.png'
+import energyDeliveryVideo from './assets/EnergyDelivery Header.mp4'
 import ibmImg from './assets/IBM.jpg'
 import PortfolioIntroduction from '../../../components/shared/PortfolioIntroduction/PortfolioIntroduction'
 import PortfolioSuccessStory from '../../../components/shared/PortfolioSuccessStory/PortfolioSuccessStory'
@@ -45,7 +45,16 @@ export default function EnergyDeliveryPage() {
   return (
     <div className={styles.page} id="top">
       <div className={styles.hero}>
-        <img src={energyDeliveryHero} alt="Energy Delivery" className={styles.heroImg} />
+        <video
+          className={styles.heroVideo}
+          src={energyDeliveryVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
           <h1 className={styles.pageTitle}>{PORTFOLIO_NAME}</h1>
