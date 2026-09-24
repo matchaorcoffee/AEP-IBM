@@ -1,5 +1,5 @@
 import styles from './IbmHolidaysPage.module.scss'
-import holidaysImg    from './assets/Holidays.jpg'
+import holidaysVideo  from './assets/countries/Holidays Header.mp4'
 import brazilImg      from './assets/Brazil.png'
 import costaRicaImg   from './assets/CostaRica.png'
 import indiaImg       from './assets/India.png'
@@ -24,7 +24,16 @@ export default function IbmHolidaysPage() {
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <div className={styles.hero}>
-        <img src={holidaysImg} alt="IBM Holidays" className={styles.heroImg} />
+        <video
+          className={styles.heroVideo}
+          src={holidaysVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
         <div className={styles.heroOverlay} aria-hidden="true" />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
@@ -32,6 +41,12 @@ export default function IbmHolidaysPage() {
           <p className={styles.heroSub}>
             Public holiday calendars for every IBM AEP country location — all in one place.
           </p>
+        </div>
+        <div className={styles.scrollIndicator} aria-hidden="true">
+          <span>Scroll</span>
+          <svg className={styles.scrollChevron} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </div>
       </div>
 
@@ -45,7 +60,7 @@ export default function IbmHolidaysPage() {
             <p className={styles.sectionSub}>Click a card to open the full holiday calendar for that location.</p>
           </div>
 
-          {/* Cards */}
+          {/* Tiles */}
           <div className={styles.grid}>
             {countries.map(c => (
               <a
@@ -55,21 +70,23 @@ export default function IbmHolidaysPage() {
                 rel="noopener noreferrer"
                 className={styles.card}
               >
-                {/* Flag image */}
+                {/* Full-bleed image — text overlaid on top */}
                 <div className={styles.cardMedia}>
                   <img src={c.src} alt={`${c.label} flag`} className={styles.cardImg} />
-                </div>
-
-                {/* Card body */}
-                <div className={styles.cardBody}>
-                  <span className={styles.cardChip}>Public Holidays</span>
-                  <span className={styles.cardTitle}>{c.label}</span>
-                  <span className={styles.cardAction}>
-                    View Calendar
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M3 8h10M9 4l4 4-4 4"/>
-                    </svg>
-                  </span>
+                  {/* Gradient + text overlay — lives inside the image container */}
+                  <div className={styles.cardOverlay} aria-hidden="true" />
+                  <div className={styles.cardBody}>
+                    <span className={styles.cardChip}>Public Holidays</span>
+                    <span className={styles.cardTitle}>{c.label}</span>
+                    <span className={styles.cardAction}>
+                      View Calendar
+                      <span className={styles.cardArrow} aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 8h10M9 4l4 4-4 4"/>
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </a>
             ))}
