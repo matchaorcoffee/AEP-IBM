@@ -12,77 +12,88 @@ const PORTFOLIO_ITEMS = [
     path: '/portfolios/wam',
     desc: 'Work & Asset Management solutions',
     category: 'Asset Management',
-    img: new URL('../Portfolios/WAM/assets/WAM.png', import.meta.url).href,
+    video: new URL('../Portfolios/WAM/assets/WAM Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/WAM/assets/WAM.png', import.meta.url).href,
   },
   {
     label: 'Energy Delivery',
     path: '/portfolios/energy-delivery',
     desc: 'Reliable energy transmission & distribution',
     category: 'Transmission & Distribution',
-    img: new URL('../Portfolios/EnergyDelivery/assets/EnergyDelivery.png', import.meta.url).href,
+    video: new URL('../Portfolios/EnergyDelivery/assets/EnergyDelivery Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/EnergyDelivery/assets/EnergyDelivery.png', import.meta.url).href,
   },
   {
     label: 'Grid Operations',
     path: '/portfolios/grid-operations',
     desc: 'Real-time grid monitoring & control',
     category: 'Operations',
-    img: new URL('../Portfolios/GridOperations/assets/GridOperations.png', import.meta.url).href,
+    video: new URL('../Portfolios/GridOperations/assets/GridOperations Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/GridOperations/assets/GridOperations.png', import.meta.url).href,
   },
   {
     label: 'Generation & Commercial Ops',
     path: '/portfolios/generation-commercial',
     desc: 'Power generation & commercial optimization',
     category: 'Generation',
-    img: new URL('../Portfolios/GenerationCommercial/assets/GenerationCommercial.png', import.meta.url).href,
+    video: new URL('../Portfolios/GenerationCommercial/assets/GenerationCommercial Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/GenerationCommercial/assets/GenerationCommercial.png', import.meta.url).href,
   },
   {
     label: 'Shared Services',
     path: '/portfolios/shared-services',
     desc: 'Enterprise-wide shared capabilities',
     category: 'Enterprise',
-    img: new URL('../Portfolios/SharedServices/assets/SharedServices.png', import.meta.url).href,
+    video: new URL('../Portfolios/SharedServices/assets/SharedServices Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/SharedServices/assets/SharedServices.png', import.meta.url).href,
   },
   {
     label: 'ICOE',
     path: '/portfolios/icoe',
     desc: 'Innovation Center of Excellence',
     category: 'Innovation',
-    img: new URL('../Portfolios/ICOE/assets/ICOE.png', import.meta.url).href,
+    video: new URL('../Portfolios/ICOE/assets/ICOE Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/ICOE/assets/ICOE.png', import.meta.url).href,
   },
   {
     label: 'Automation COE',
     path: '/portfolios/automation-coe',
     desc: 'Intelligent automation & RPA initiatives',
     category: 'Automation',
-    img: new URL('../Portfolios/AutomationCOE/assets/AutomationCOE.png', import.meta.url).href,
+    video: new URL('../Portfolios/AutomationCOE/assets/Automation Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/AutomationCOE/assets/AutomationCOE.png', import.meta.url).href,
   },
   {
     label: 'Digital Emerging Technology',
     path: '/portfolios/digital-emerging',
     desc: 'Next-gen digital & emerging tech programs',
     category: 'Emerging Tech',
-    img: new URL('../Portfolios/DigitalEmerging/assets/DigitalEmerging.png', import.meta.url).href,
+    video: new URL('../Portfolios/DigitalEmerging/assets/DigitalEmerging Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/DigitalEmerging/assets/DigitalEmerging.png', import.meta.url).href,
   },
   {
     label: 'Data Platforms',
     path: '/portfolios/data-platforms',
     desc: 'Data infrastructure & analytics platforms',
     category: 'Data & Analytics',
-    img: new URL('../Portfolios/DataPlatforms/assets/DataPlatforms.png', import.meta.url).href,
+    video: new URL('../Portfolios/DataPlatforms/assets/DataPlatforms Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/DataPlatforms/assets/DataPlatforms.png', import.meta.url).href,
   },
   {
     label: 'Security',
     path: '/portfolios/security',
     desc: 'Cybersecurity & risk management',
     category: 'Cybersecurity',
-    img: new URL('../Portfolios/Security/assets/Security.png', import.meta.url).href,
+    video: new URL('../Portfolios/Security/assets/Security Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/Security/assets/Security.png', import.meta.url).href,
   },
   {
     label: 'Customer',
     path: '/portfolios/customer',
     desc: 'Customer experience & engagement',
     category: 'Customer Experience',
-    img: new URL('../Portfolios/Customer/assets/Customer.png', import.meta.url).href,
+    video: new URL('../Portfolios/Customer/assets/Customer Header.mp4', import.meta.url).href,
+    poster: new URL('../Portfolios/Customer/assets/Customer.png', import.meta.url).href,
   },
 ]
 
@@ -226,7 +237,16 @@ export default function EngagementsPage() {
               {PORTFOLIO_ITEMS.map(item => (
                 <Link key={item.path} to={item.path} className={styles.card}>
                   <div className={styles.cardVisual}>
-                    <img src={item.img} alt={item.label} className={styles.cardImg} />
+                    <video
+                      className={styles.cardVideo}
+                      src={item.video}
+                      poster={item.poster}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      aria-hidden="true"
+                    />
                     <div className={styles.cardOverlay} aria-hidden="true" />
                   </div>
                   <div className={styles.cardContent}>
