@@ -1,4 +1,5 @@
 import styles from './PortfolioHighlights.module.scss'
+import { useFadeIn } from '../../../hooks/useFadeIn'
 
 export interface PortfolioHighlightsProps {
   /** Main challenge text — one or more paragraphs */
@@ -27,8 +28,15 @@ export default function PortfolioHighlights({
   ibmImg,
   onBackToTop,
 }: PortfolioHighlightsProps) {
+  const { ref, visible } = useFadeIn<HTMLElement>()
+
   return (
-    <section id="highlights" className={styles.section} aria-labelledby="highlights-heading">
+    <section
+      ref={ref}
+      id="highlights"
+      className={`${styles.section} ${visible ? styles.sectionVisible : styles.sectionHidden}`}
+      aria-labelledby="highlights-heading"
+    >
       <div className={styles.inner}>
 
         {/* ── Section header ── */}
@@ -53,7 +61,10 @@ export default function PortfolioHighlights({
         <div className={styles.grid}>
 
           {/* Card 1 — Main Challenges */}
-          <div className={styles.cardChallenge}>
+          <div
+            className={`${styles.cardChallenge} ${visible ? styles.cardVisible : styles.cardFade}`}
+            style={{ transitionDelay: visible ? '0ms' : '0ms' }}
+          >
             <div className={styles.cardHeader}>
               <span className={styles.cardEyebrow}>Challenge</span>
               <h3 className={styles.cardTitle}>Main Challenges</h3>
@@ -69,7 +80,10 @@ export default function PortfolioHighlights({
           </div>
 
           {/* Card 2 — Niche Skills */}
-          <div className={styles.cardSkills}>
+          <div
+            className={`${styles.cardSkills} ${visible ? styles.cardVisible : styles.cardFade}`}
+            style={{ transitionDelay: visible ? '120ms' : '0ms' }}
+          >
             <div className={styles.cardHeader}>
               <span className={styles.cardEyebrowMuted}>Expertise</span>
               <h3 className={styles.cardTitleDark}>Niche Skills</h3>
@@ -85,7 +99,10 @@ export default function PortfolioHighlights({
           </div>
 
           {/* Card 3 — Mitigation */}
-          <div className={styles.cardMitigation}>
+          <div
+            className={`${styles.cardMitigation} ${visible ? styles.cardVisible : styles.cardFade}`}
+            style={{ transitionDelay: visible ? '240ms' : '0ms' }}
+          >
             <div className={styles.cardHeader}>
               <span className={styles.cardEyebrow}>Response</span>
               <h3 className={styles.cardTitle}>Mitigation</h3>

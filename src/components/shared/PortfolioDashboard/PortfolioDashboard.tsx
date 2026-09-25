@@ -22,7 +22,7 @@
  * The token NEVER appears in this file or any file it imports.
  */
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   BarChart,
   Bar,
@@ -346,6 +346,25 @@ export default function PortfolioDashboard({
 
   const [activeChartIdx, setActiveChartIdx] = useState(0)
 
+  // ── fade-in on scroll ──────────────────────────────────────────────────────
+  const [sectionVisible, setSectionVisible] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setSectionVisible(true)
+      return
+    }
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setSectionVisible(true); obs.disconnect() } },
+      { threshold: 0.08 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
   const charts = analytics?.charts ?? []
 
   const formatLastUpdated = (date: Date | null): string => {
@@ -361,8 +380,9 @@ export default function PortfolioDashboard({
 
   return (
     <section
+      ref={sectionRef}
       id="analytics"
-      className={styles.section}
+      className={`${styles.section} ${sectionVisible ? styles.sectionVisible : styles.sectionHidden}`}
       aria-labelledby="analytics-heading"
     >
       {/* Section heading row */}

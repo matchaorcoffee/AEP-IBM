@@ -6,7 +6,7 @@
   background: #0f0f0f;
   scroll-behavior: smooth;
   margin-top: calc(-1 * var(--header-total-height));
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ── Hero — full-viewport, matches Home hero layout ──────────────────────── */

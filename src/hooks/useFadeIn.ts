@@ -1,25 +1,36 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /**
- * Tesla-style scroll fade-in.
- * Attaches an IntersectionObserver to the returned ref.
- * When the element enters the viewport, adds the `.visible` class
- * which triggers the CSS transition defined in _animations.scss.
+ * useFadeIn
  *
- * @param threshold  0–1, fraction of element visible before triggering (default 0.15)
+ * Observes a target element and sets `visible = true` once it enters the
+ * viewport.  The observer is immediately disconnected after the first
+ * intersection so the element only animates once per page load.
+ *
+ * @param threshold  Fraction of the element that must be visible before
+ *                   triggering (default 0.12 — fires slightly before the
+ *                   element is fully in view for a natural feel).
  */
-export function useFadeIn<T extends HTMLElement>(threshold = 0.15) {
+export function useFadeIn<T extends HTMLElement = HTMLElement>(threshold = 0.12) {
   const ref = useRef<T>(null)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
 
+    // Respect prefers-reduced-motion — mark visible immediately so CSS
+    // skip-animation rules (opacity:1; transform:none) take effect.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setVisible(true)
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.add('fade-in--visible')
-          observer.disconnect() // fire once
+          setVisible(true)
+          observer.disconnect()
         }
       },
       { threshold }
@@ -29,5 +40,5 @@ export function useFadeIn<T extends HTMLElement>(threshold = 0.15) {
     return () => observer.disconnect()
   }, [threshold])
 
-  return ref
+  return { ref, visible }
 }
