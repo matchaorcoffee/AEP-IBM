@@ -3,13 +3,18 @@ import { useEffect, useRef, useState } from 'react'
 /**
  * useFadeIn
  *
- * Observes a target element and sets `visible = true` once it enters the
- * viewport.  The observer is immediately disconnected after the first
- * intersection so the element only animates once per page load.
+ * Observes a target element and, once it enters the viewport:
+ *   1. Adds the global `.fade-in--visible` CSS class directly on the element
+ *      (supports the legacy `.fade-in` / `.fade-in--visible` global stylesheet pattern).
+ *   2. Sets `visible = true` (supports the module-CSS sectionHidden/sectionVisible pattern).
+ *
+ * Returns `{ ref, visible }`.  Callers that only need the ref can destructure:
+ *   const { ref: sectionRef } = useFadeIn<HTMLElement>()
+ *
+ * The observer disconnects after the first intersection so the animation fires once.
  *
  * @param threshold  Fraction of the element that must be visible before
- *                   triggering (default 0.12 — fires slightly before the
- *                   element is fully in view for a natural feel).
+ *                   triggering (default 0.12).
  */
 export function useFadeIn<T extends HTMLElement = HTMLElement>(threshold = 0.12) {
   const ref = useRef<T>(null)
@@ -19,9 +24,9 @@ export function useFadeIn<T extends HTMLElement = HTMLElement>(threshold = 0.12)
     const el = ref.current
     if (!el) return
 
-    // Respect prefers-reduced-motion — mark visible immediately so CSS
-    // skip-animation rules (opacity:1; transform:none) take effect.
+    // Respect prefers-reduced-motion — mark visible immediately.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.classList.add('fade-in--visible')
       setVisible(true)
       return
     }
@@ -29,6 +34,7 @@ export function useFadeIn<T extends HTMLElement = HTMLElement>(threshold = 0.12)
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          el.classList.add('fade-in--visible')
           setVisible(true)
           observer.disconnect()
         }
