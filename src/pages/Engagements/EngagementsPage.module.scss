@@ -281,7 +281,7 @@
     box-shadow: 0 20px 48px rgba(0, 0, 0, 0.18), 0 6px 16px rgba(0, 0, 0, 0.10);
     text-decoration: none;
 
-    .cardImg {
+    .cardVideo {
       transform: scale(1.05);
     }
 
@@ -322,7 +322,7 @@
   z-index: 1;
 }
 
-.cardImg {
+.cardVideo {
   width: 100%;
   height: 100%;
   object-fit: cover;
