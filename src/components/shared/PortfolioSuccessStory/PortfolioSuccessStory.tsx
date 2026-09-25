@@ -36,10 +36,15 @@ export default function PortfolioSuccessStory({ successStory }: PortfolioSuccess
       aria-labelledby="success-story-heading"
     >
       <div className={styles.inner}>
-        {/* ── Section header ── */}
+        {/* ── Section header (editorial stacked) ── */}
         <div className={styles.header}>
-          <span className={styles.eyebrow}>Portfolio Story</span>
+          <div className={styles.eyebrowWrapper}>
+            <span className={styles.eyebrow}>Portfolio Story</span>
+          </div>
           <h2 id="success-story-heading" className={styles.heading}>From Challenge to Impact</h2>
+          <p className={styles.subheading}>
+            How structured engagement and targeted expertise transform complex operational challenges into measurable enterprise value.
+          </p>
         </div>
 
         {/* ── Three stage cards ── */}
@@ -52,13 +57,17 @@ export default function PortfolioSuccessStory({ successStory }: PortfolioSuccess
               <div key={stage.key} className={styles.stageWrapper}>
                 <div
                   className={`${styles.stageCard} ${isImpact ? styles.stageCardImpact : ''} ${visible ? styles.stageCardVisible : ''}`}
-                  style={{ transitionDelay: `${idx * 100}ms` }}
+                  style={{ transitionDelay: `${idx * 120}ms` }}
                 >
+                  <div className={styles.cardGlow} aria-hidden="true" />
                   <div className={styles.stageNumberRow}>
                     <span className={styles.stageNumber} aria-hidden="true">{stage.number}</span>
-                    <h3 className={styles.stageLabel}>{stage.label}</h3>
+                    <div className={styles.stageLabelGroup}>
+                      <span className={styles.stageMeta}>Stage {stage.number}</span>
+                      <h3 className={styles.stageLabel}>{stage.label}</h3>
+                    </div>
                   </div>
-                  <hr className={styles.stageDivider} aria-hidden="true" />
+                  <div className={styles.stageDivider} aria-hidden="true" />
                   {content && (
                     <p className={styles.stageContent}>{content}</p>
                   )}
@@ -67,9 +76,12 @@ export default function PortfolioSuccessStory({ successStory }: PortfolioSuccess
                 {/* Connector arrow between stages */}
                 {idx < STAGES.length - 1 && (
                   <div className={styles.connector} aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                    <span className={styles.connectorCircle}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                      </svg>
+                    </span>
                   </div>
                 )}
               </div>

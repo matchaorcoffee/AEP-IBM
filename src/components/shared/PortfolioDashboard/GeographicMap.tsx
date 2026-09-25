@@ -206,7 +206,7 @@ export default function GeographicMap({ data }: { data: ChartDataPoint[] }) {
             center: [10, 28], // beautifully frames the continents (US, Brazil, UK, India, Philippines, Canada)
           }}
           width={800}
-          height={400}
+          height={260}
           style={{ width: '100%', height: 'auto' }}
         >
           <Geographies geography={GEO_URL}>

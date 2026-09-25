@@ -177,13 +177,13 @@ export default function NavTabs() {
             </button>
             <div className={styles.portfolioDropdownLeftDivider} aria-hidden="true" />
             <button
-              className={`${styles.portfolioDropdownNavItem} ${leftSelection === 'portfolio' ? styles.portfolioDropdownNavItemActive : ''}`}
+              className={styles.portfolioDropdownNavItem}
               onClick={() => setLeftSelection('portfolio')}
             >
               Portfolio
             </button>
             <button
-              className={`${styles.portfolioDropdownNavItem} ${leftSelection === 'projects' ? styles.portfolioDropdownNavItemActive : ''}`}
+              className={styles.portfolioDropdownNavItem}
               onClick={() => { setPortfolioDropdownOpen(false); navigate('/projects') }}
             >
               Projects

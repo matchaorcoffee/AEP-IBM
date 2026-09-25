@@ -109,7 +109,7 @@ function MondayBarChart({ data }: { data: ChartDataPoint[] }) {
               type="category"
               dataKey="label"
               width={180}
-              tick={{ fontSize: 11, fill: '#3a3a3c' }}
+              tick={{ fontSize: 11, fill: '#1d1d1f' }}
               axisLine={false}
               tickLine={false}
             />
@@ -130,7 +130,7 @@ function MondayBarChart({ data }: { data: ChartDataPoint[] }) {
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f5" vertical={false} />
             <XAxis
               dataKey="label"
-              tick={{ fontSize: 11, fill: '#3a3a3c' }}
+              tick={{ fontSize: 11, fill: '#1d1d1f' }}
               axisLine={false}
               tickLine={false}
               interval={0}

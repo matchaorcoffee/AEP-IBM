@@ -65,15 +65,17 @@ export default function AutomationCOEPage() {
           </svg>
         </div>
       </div>
-      <div className={styles.segWrap}>
-        <nav className={styles.segControl} role="navigation" aria-label="Page sections">
-          <span className={`${styles.segPill}${pillReady ? ` ${styles.segPillAnimated}` : ''}`} style={pillStyle} aria-hidden="true" />
-          {NAV_LINKS.map((link, idx) => (
-            <button key={link.id} ref={navBtnRefs[idx]} className={`${styles.segBtn}${activePillIdx === idx ? ` ${styles.segBtnActive}` : ''}`} aria-pressed={activePillIdx === idx} onClick={() => handleNavClick(idx, link.id)}>{link.label}</button>
-          ))}
-        </nav>
+      <div className={styles.aboveTheFold}>
+        <div className={styles.segWrap}>
+          <nav className={styles.segControl} role="navigation" aria-label="Page sections">
+            <span className={`${styles.segPill}${pillReady ? ` ${styles.segPillAnimated}` : ''}`} style={pillStyle} aria-hidden="true" />
+            {NAV_LINKS.map((link, idx) => (
+              <button key={link.id} ref={navBtnRefs[idx]} className={`${styles.segBtn}${activePillIdx === idx ? ` ${styles.segBtnActive}` : ''}`} aria-pressed={activePillIdx === idx} onClick={() => handleNavClick(idx, link.id)}>{link.label}</button>
+            ))}
+          </nav>
+        </div>
+        <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
       </div>
-      <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
       <PortfolioSuccessStory successStory={SHOWCASE} />
       <PortfolioDashboard portfolioSlug={PORTFOLIO_SLUG} portfolioName={PORTFOLIO_NAME} />
       <PortfolioHighlights

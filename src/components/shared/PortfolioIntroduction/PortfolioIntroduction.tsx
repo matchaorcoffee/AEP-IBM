@@ -21,14 +21,16 @@ export default function PortfolioIntroduction({
   showcase,
 }: PortfolioIntroductionProps) {
   return (
-    <div className={styles.portfolioIntro}>
+    <section className={styles.portfolioIntro} aria-labelledby="portfolio-about-heading">
       <div className={styles.introInner}>
         <div className={styles.introMeta}>
-          <span className={styles.introHeading}>About {portfolioName}</span>
+          <div className={styles.eyebrowWrapper}>
+            <span className={styles.introHeading}>About {portfolioName}</span>
+          </div>
 
-          {showcase.fullName && (
-            <p className={styles.introFullName}>{showcase.fullName}</p>
-          )}
+          <h2 id="portfolio-about-heading" className={styles.introTitle}>
+            {showcase.fullName || `Strategic Overview & Capabilities`}
+          </h2>
 
           <p className={styles.introDescription}>{showcase.description}</p>
         </div>
@@ -44,6 +46,6 @@ export default function PortfolioIntroduction({
           </div>
         )}
       </div>
-    </div>
+    </section>
   )
 }
