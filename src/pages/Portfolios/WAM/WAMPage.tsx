@@ -105,37 +105,47 @@ export default function WAMPage() {
           preload="auto"
           aria-hidden="true"
         />
+        <div className={styles.heroOverlay} aria-hidden="true" />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
           <h1 className={styles.pageTitle}>{PORTFOLIO_NAME}</h1>
           <p className={styles.heroSub}>Work &amp; Asset Management solutions</p>
         </div>
+        <div className={styles.scrollIndicator} aria-hidden="true">
+          <span>Scroll</span>
+          <svg className={styles.scrollChevron} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
       </div>
 
-      {/* Section nav pill */}
-      <div className={styles.segWrap}>
-        <nav className={styles.segControl} role="navigation" aria-label="WAM page sections">
-          <span
-            className={`${styles.segPill}${pillReady ? ` ${styles.segPillAnimated}` : ''}`}
-            style={pillStyle}
-            aria-hidden="true"
-          />
-          {NAV_LINKS.map((link, idx) => (
-            <button
-              key={link.id}
-              ref={navBtnRefs[idx]}
-              className={`${styles.segBtn}${activePillIdx === idx ? ` ${styles.segBtnActive}` : ''}`}
-              aria-pressed={activePillIdx === idx}
-              onClick={() => handleNavClick(idx, link.id)}
-            >
-              {link.label}
-            </button>
-          ))}
-        </nav>
-      </div>
+      {/* Full-viewport white section: tabs + About */}
+      <div className={styles.aboveTheFold}>
+        {/* Section nav pill */}
+        <div className={styles.segWrap}>
+          <nav className={styles.segControl} role="navigation" aria-label="WAM page sections">
+            <span
+              className={`${styles.segPill}${pillReady ? ` ${styles.segPillAnimated}` : ''}`}
+              style={pillStyle}
+              aria-hidden="true"
+            />
+            {NAV_LINKS.map((link, idx) => (
+              <button
+                key={link.id}
+                ref={navBtnRefs[idx]}
+                className={`${styles.segBtn}${activePillIdx === idx ? ` ${styles.segBtnActive}` : ''}`}
+                aria-pressed={activePillIdx === idx}
+                onClick={() => handleNavClick(idx, link.id)}
+              >
+                {link.label}
+              </button>
+            ))}
+          </nav>
+        </div>
 
-      {/* About WAM */}
-      <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
+        {/* About WAM */}
+        <PortfolioIntroduction portfolioName={PORTFOLIO_NAME} showcase={SHOWCASE} />
+      </div>
 
       {/* From Challenge to Impact */}
       <PortfolioSuccessStory successStory={SHOWCASE} />

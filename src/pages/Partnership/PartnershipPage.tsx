@@ -30,7 +30,7 @@ const highlights = [
       </svg>
     ),
     title: 'Digital Transformation',
-    desc: 'End-to-end digital solutions spanning grid modernisation, enterprise platforms, data analytics, and customer experience.',
+    desc: 'End-to-end digital solutions spanning grid modernization, enterprise platforms, data analytics, and customer experience.',
   },
   {
     icon: (
@@ -246,10 +246,10 @@ export default function PartnershipPage() {
       {/* ── Org chart section ─────────────────────────────────────────── */}
       <section className={styles.chartSection}>
         <div className={styles.chartHead}>
-          <span className={styles.sectionEyebrow}>Account Organisation</span>
+          <span className={styles.sectionEyebrow}>Account Organization</span>
           <h2 className={styles.sectionTitle}>AEP Account Org Chart</h2>
           <p className={styles.sectionSub}>
-            Explore the leadership structure and team organisation across the AEP–IBM engagement.
+            Explore the leadership structure and team organization across the AEP–IBM engagement.
           </p>
           <img src={aepIbmLogo} alt="AEP – IBM" className={styles.chartLogo} />
         </div>

@@ -1,83 +1,106 @@
 /* ── Portfolio Introduction block ───────────────────────────────────────────
-   "About [Portfolio]" section — redesigned to match Home page design system.
+   "About [Portfolio]" section — sits inside .aboveTheFold container.
+   The white bg + full width + min-height are owned by the parent wrapper.
    ─────────────────────────────────────────────────────────────────────────── */
 
 .portfolioIntro {
-  background: #ffffff;
-  border-bottom: 1px solid var(--color-border);
+  width: 100%;
+  max-width: none;
+  /* no own background — inherited from .aboveTheFold */
+  padding-inline: clamp(32px, 7vw, 140px);
+  padding-block: clamp(4rem, 8vh, 8rem);
+  box-sizing: border-box;
+  /* flex-grow so it fills the remaining height of the aboveTheFold container */
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .introInner {
-  max-width: 1240px;
+  width: 100%;
+  max-width: none;
   margin: 0 auto;
-  padding: var(--spacing-10) var(--spacing-07);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-10);
+  grid-template-columns: 1fr;
+  gap: var(--spacing-08);
   align-items: start;
+}
+
+.introInner:has(.capabilities) {
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: clamp(2rem, 4vw, 4.5rem);
 }
 
 /* ── Left column: label + heading + description ─────────────────────────── */
 .introMeta {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-04);
+  gap: 1.25rem;
+  max-width: 900px;
 }
 
-/* Section eyebrow label — matches Home "AEP & IBM Partnership" pill */
+.eyebrowWrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Section eyebrow label — small IBM red uppercase pill */
 .introHeading {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-02);
   background: rgba(200, 16, 46, 0.08);
   color: #c8102e;
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 5px 16px;
   border-radius: var(--radius-full);
-  border: 1px solid rgba(200, 16, 46, 0.2);
+  border: 1px solid rgba(200, 16, 46, 0.25);
   width: fit-content;
   margin: 0;
   line-height: 1.4;
 }
 
-/* Optional full-name subtitle */
-.introFullName {
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.02em;
-  color: var(--color-text-primary);
+/* Editorial title — large bold dark */
+.introTitle {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #1f2328;
   margin: 0;
-  line-height: 1.25;
+  line-height: 1.15;
 }
 
-/* Body description text */
+/* Body description text — dark gray with comfortable line height */
 .introDescription {
-  font-size: var(--font-size-base);
-  color: var(--color-text-secondary);
-  line-height: var(--line-height-body);
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  color: #57606a;
+  line-height: 1.75;
   margin: 0;
+  max-width: 820px;
 }
 
 /* ── Right column: capabilities ─────────────────────────────────────────── */
 .capabilities {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-05);
-  background: var(--color-page-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-07);
+  gap: 1rem;
+  background: #f7f8fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .capabilitiesLabel {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: #57606a;
   margin: 0;
 }
 
@@ -87,37 +110,24 @@
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-02) var(--spacing-03);
+  gap: 0.625rem;
 }
 
 .capabilityItem {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2328;
   background: #ffffff;
-  border: 1px solid var(--color-border);
+  border: 1px solid #d0d7de;
   border-radius: var(--radius-full);
-  padding: 5px 14px;
+  padding: 6px 16px;
   line-height: 1.4;
   white-space: nowrap;
-  box-shadow: var(--shadow-xs);
 }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .introInner {
+  .introInner:has(.capabilities) {
     grid-template-columns: 1fr;
-    gap: var(--spacing-07);
-    padding: var(--spacing-09) var(--spacing-06);
-  }
-}
-
-@media (max-width: 600px) {
-  .introInner {
-    padding: var(--spacing-08) var(--spacing-05);
-  }
-
-  .introFullName {
-    font-size: 1.4rem;
+    gap: 2rem;
   }
 }
