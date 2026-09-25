@@ -1,4 +1,5 @@
 import styles from './PortfolioIntroduction.module.scss'
+import { useFadeIn } from '../../../hooks/useFadeIn'
 import type { PortfolioShowcaseContent } from '../../../data/portfolio-showcase'
 
 interface PortfolioIntroductionProps {
@@ -20,8 +21,14 @@ export default function PortfolioIntroduction({
   portfolioName,
   showcase,
 }: PortfolioIntroductionProps) {
+  const { ref, visible } = useFadeIn<HTMLElement>()
+
   return (
-    <section className={styles.portfolioIntro} aria-labelledby="portfolio-about-heading">
+    <section
+      ref={ref}
+      className={`${styles.portfolioIntro} ${visible ? styles.portfolioIntroVisible : styles.portfolioIntroHidden}`}
+      aria-labelledby="portfolio-about-heading"
+    >
       <div className={styles.introInner}>
         <div className={styles.introMeta}>
           <div className={styles.eyebrowWrapper}>
@@ -39,8 +46,14 @@ export default function PortfolioIntroduction({
           <div className={styles.capabilities}>
             <p className={styles.capabilitiesLabel}>What {portfolioName} Enables</p>
             <ul className={styles.capabilityList}>
-              {showcase.capabilities.map((cap) => (
-                <li key={cap} className={styles.capabilityItem}>{cap}</li>
+              {showcase.capabilities.map((cap, idx) => (
+                <li
+                  key={cap}
+                  className={`${styles.capabilityItem} ${visible ? styles.capabilityItemVisible : styles.capabilityItemFade}`}
+                  style={{ transitionDelay: visible ? `${200 + idx * 80}ms` : '0ms' }}
+                >
+                  {cap}
+                </li>
               ))}
             </ul>
           </div>
