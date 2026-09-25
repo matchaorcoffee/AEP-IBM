@@ -83,7 +83,7 @@ const LINKS = [
 ]
 
 export default function QuickLinks() {
-  const sectionRef = useFadeIn<HTMLElement>()
+  const { ref: sectionRef } = useFadeIn<HTMLElement>()
 
   return (
     <section ref={sectionRef} className={`${styles.section} fade-in`} aria-labelledby="quick-links-heading">

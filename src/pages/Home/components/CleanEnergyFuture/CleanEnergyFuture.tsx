@@ -3,7 +3,7 @@ import styles from './CleanEnergyFuture.module.scss'
 import solarVideo from '../../assets/SolarVideo.mp4'
 
 export default function CleanEnergyFuture() {
-  const sectionRef = useFadeIn<HTMLElement>()
+  const { ref: sectionRef } = useFadeIn<HTMLElement>()
 
   return (
     <section ref={sectionRef} className={`${styles.section} fade-in`}>

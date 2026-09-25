@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useFadeIn } from '../../../../hooks/useFadeIn'
 
 export default function WelcomeSection() {
-  const sectionRef = useFadeIn<HTMLElement>()
+  const { ref: sectionRef } = useFadeIn<HTMLElement>()
 
   return (
     <section ref={sectionRef} className={`${styles.welcome} fade-in`} aria-labelledby="welcome-heading">
