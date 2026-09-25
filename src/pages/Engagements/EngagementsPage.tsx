@@ -91,8 +91,8 @@ type Tab = 'portfolio' | 'projects'
 /* ── Page ───────────────────────────────────────────────────────────────── */
 export default function EngagementsPage() {
   const [activeTab, setActiveTab] = useState<Tab>('portfolio')
-  const cardsSectionRef = useFadeIn<HTMLElement>()
-  const projectsSectionRef = useFadeIn<HTMLElement>()
+  const { ref: cardsSectionRef } = useFadeIn<HTMLElement>()
+  const { ref: projectsSectionRef } = useFadeIn<HTMLElement>()
 
   /* ── Sliding-pill geometry ───────────────────────────────────────────────
      Measure the active button's bounds relative to the track container and

@@ -26,7 +26,7 @@ const principles = [
 ]
 
 export default function IbmGuidingPrinciples() {
-  const sectionRef = useFadeIn<HTMLElement>()
+  const { ref: sectionRef } = useFadeIn<HTMLElement>()
 
   return (
     <section ref={sectionRef} className={`${styles.section} fade-in`}>

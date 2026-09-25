@@ -96,8 +96,8 @@ const SUB_ITEMS = [
 ]
 
 export default function PortfoliosPage() {
-  const cardsSectionRef = useFadeIn<HTMLElement>()
-  const projectsSectionRef = useFadeIn<HTMLElement>()
+  const { ref: cardsSectionRef } = useFadeIn<HTMLElement>()
+  const { ref: projectsSectionRef } = useFadeIn<HTMLElement>()
 
   return (
     <div className={styles.page}>

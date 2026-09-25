@@ -132,7 +132,7 @@ export default function TabPanel() {
     }
   }
 
-  const sectionRef = useFadeIn<HTMLElement>()
+  const { ref: sectionRef } = useFadeIn<HTMLElement>()
 
   return (
     <section
