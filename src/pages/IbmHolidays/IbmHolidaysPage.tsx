@@ -1,29 +1,84 @@
+import React, { useState, useMemo } from 'react'
 import styles from './IbmHolidaysPage.module.scss'
 import { useFadeIn } from '../../hooks/useFadeIn'
-import HolidayWorldMap from './HolidayWorldMap'
-import type { HolidayCountry } from './HolidayWorldMap'
-import holidaysVideo  from './assets/countries/Holidays Header.mp4'
-import brazilImg      from './assets/Brazil.png'
-import costaRicaImg   from './assets/CostaRica.png'
-import indiaImg       from './assets/India.png'
-import mexicoImg      from './assets/Mexico.png'
-import philippinesImg from './assets/Philippines.png'
-import usaImg         from './assets/USA.png'
-import canadaImg      from './assets/Canada.png'
+import {
+  SUPPORTED_COUNTRIES,
+  getHolidaysByYear,
+  getNextHolidayForCountry,
+} from '../../data/mock-holidays'
+import type { Holiday } from '../../models/Holiday'
+import CountryCards from './components/CountryCards/CountryCards'
+import ActiveLocationHero from './components/ActiveLocationHero/ActiveLocationHero'
+import LocationSelectorModal from './components/LocationSelectorModal/LocationSelectorModal'
+import UpcomingTimeline from './components/UpcomingTimeline/UpcomingTimeline'
+import MonthlyCalendar from './components/MonthlyCalendar/MonthlyCalendar'
+import HolidayDetailsModal from './components/HolidayDetailsModal/HolidayDetailsModal'
 
-const countries: HolidayCountry[] = [
-  { id: 'brazil',      label: 'Brazil',      url: 'https://www.officeholidays.com/countries/brazil',       src: brazilImg,      isoCodes: ['BRA'] },
-  { id: 'costa-rica',  label: 'Costa Rica',  url: 'https://www.officeholidays.com/countries/costa-rica',  src: costaRicaImg,   isoCodes: ['CRI'] },
-  { id: 'india',       label: 'India',       url: 'https://www.officeholidays.com/countries/india',        src: indiaImg,       isoCodes: ['IND'] },
-  { id: 'mexico',      label: 'Mexico',      url: 'https://www.officeholidays.com/countries/mexico',       src: mexicoImg,      isoCodes: ['MEX'] },
-  { id: 'philippines', label: 'Philippines', url: 'https://www.officeholidays.com/countries/philippines',  src: philippinesImg, isoCodes: ['PHL'] },
-  { id: 'usa',         label: 'USA',         url: 'https://www.officeholidays.com/countries/usa',          src: usaImg,         isoCodes: ['USA'] },
-  { id: 'canada',      label: 'Canada',      url: 'https://www.officeholidays.com/countries/canada',       src: canadaImg,      isoCodes: ['CAN'] },
-]
+import holidaysVideo from './assets/countries/Holidays Header.mp4'
+
+// Primary quick-access country IDs — separate concept from supported countries list
+const PRIMARY_COUNTRY_IDS = ['usa', 'india', 'philippines']
 
 export default function IbmHolidaysPage() {
-  const mapFade      = useFadeIn<HTMLElement>(0.08)
-  const cardsFade    = useFadeIn<HTMLElement>(0.06)
+  const contentFade = useFadeIn<HTMLElement>(0.08)
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  const [selectedCountry, setSelectedCountry] = useState<string>('all')
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false)
+  const [currentDate, setCurrentDate] = useState<Date>(() => {
+    // Current viewed calendar month
+    const now = new Date()
+    return new Date(now.getFullYear(), now.getMonth(), 1)
+  })
+  const [selectedHoliday, setSelectedHoliday] = useState<Holiday | null>(null)
+
+  // ── Month Navigation ───────────────────────────────────────────────────────
+  const handlePrevMonth = () => {
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))
+  }
+
+  const handleNextMonth = () => {
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))
+  }
+
+  // ── Primary 3 Quick-Access Country Cards ───────────────────────────────────
+  const primaryCountries = useMemo(() => {
+    return SUPPORTED_COUNTRIES.filter(c => PRIMARY_COUNTRY_IDS.includes(c.id))
+  }, [])
+
+  // ── Selected Country Details & Metrics ─────────────────────────────────────
+  const selectedCountryInfo = useMemo(() => {
+    return SUPPORTED_COUNTRIES.find(c => c.id === selectedCountry)
+  }, [selectedCountry])
+
+  const displayedYear = currentDate.getFullYear()
+
+  // ── Filtered Holidays For Calendar (based on currently viewed year & country) ─
+  const calendarHolidays = useMemo(() => {
+    return getHolidaysByYear(selectedCountry, displayedYear)
+  }, [selectedCountry, displayedYear])
+
+  // ── Next Upcoming Holiday for Active Location ──────────────────────────────
+  const activeNextHoliday = useMemo(() => {
+    return getNextHolidayForCountry(selectedCountry)
+  }, [selectedCountry])
+
+  // ── Upcoming Holidays Across Locations (Chronological from today) ───────────
+  const upcomingTimelineHolidays = useMemo(() => {
+    const today = new Date()
+    const currentYear = today.getFullYear()
+    const todayIso = `${currentYear}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+
+    const combined = [
+      ...getHolidaysByYear(selectedCountry, currentYear),
+      ...getHolidaysByYear(selectedCountry, currentYear + 1),
+    ]
+
+    const upcoming = combined.filter(h => h.date >= todayIso)
+    return upcoming.length > 0 ? upcoming.slice(0, 14) : combined.slice(0, 14)
+  }, [selectedCountry])
+
+  const selectedCountryLabel = selectedCountryInfo ? selectedCountryInfo.label : 'All Locations'
 
   return (
     <div className={styles.page}>
@@ -56,80 +111,77 @@ export default function IbmHolidaysPage() {
         </div>
       </div>
 
-      {/* ── White section — Select a Country + World Map ──────────────── */}
+      {/* ── Main Planning Section ─────────────────────────────────────── */}
       <section
-        ref={mapFade.ref}
-        className={`${styles.mapSection} ${mapFade.visible ? styles.fadeVisible : styles.fadeHidden}`}
+        ref={contentFade.ref}
+        className={`${styles.mainSection} ${contentFade.visible ? styles.fadeVisible : styles.fadeHidden}`}
       >
-        <div className={styles.inner}>
+        <div className={styles.mainContainer}>
 
-          {/* Section label */}
+          {/* Section Header */}
           <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Select a Country</h2>
+            <h2 className={styles.sectionTitle}>Global Holiday Calendar</h2>
             <p className={styles.sectionSub}>
-              Hover over a country to explore. Double-click to open its holiday calendar.
+              Plan ahead across all AEP–IBM delivery locations with validated holiday schedules
             </p>
           </div>
 
-          {/* ── Interactive world map ─────────────────────────────────── */}
-          <HolidayWorldMap countries={countries} />
+          {/* ── 1. Primary Location Cards + View All Locations ───────── */}
+          <CountryCards
+            primaryCountries={primaryCountries}
+            supportedCountries={SUPPORTED_COUNTRIES}
+            selectedCountry={selectedCountry}
+            onSelectCountry={setSelectedCountry}
+            onOpenAllLocations={() => setIsLocationModalOpen(true)}
+            getNextHoliday={getNextHolidayForCountry}
+          />
+
+          {/* ── 2. Dynamic Single Selected-Location Visual ───────────── */}
+          <ActiveLocationHero
+            selectedCountry={selectedCountry}
+            selectedCountryInfo={selectedCountryInfo}
+            displayedYear={displayedYear}
+            nextHoliday={activeNextHoliday}
+            holidayCountThisYear={calendarHolidays.length}
+            onOpenAllLocations={() => setIsLocationModalOpen(true)}
+            onSelectHoliday={setSelectedHoliday}
+          />
+
+          {/* ── 3. Monthly Calendar Grid ────────────────────────────── */}
+          <MonthlyCalendar
+            currentDate={currentDate}
+            onPrevMonth={handlePrevMonth}
+            onNextMonth={handleNextMonth}
+            holidays={calendarHolidays}
+            onSelectHoliday={setSelectedHoliday}
+          />
+
+          {/* ── 4. Upcoming Holidays Chronological Timeline ─────────── */}
+          <UpcomingTimeline
+            holidays={upcomingTimelineHolidays}
+            onSelectHoliday={setSelectedHoliday}
+            selectedCountry={selectedCountry}
+            selectedCountryLabel={selectedCountryLabel}
+          />
 
         </div>
       </section>
 
-      {/* ── Black section — Featured Countries ────────────────────────── */}
-      <section
-        ref={cardsFade.ref}
-        className={`${styles.cardsSection} ${cardsFade.visible ? styles.fadeVisible : styles.fadeHidden}`}
-      >
-        <div className={styles.inner}>
+      {/* ── Location Selector Modal (Searchable All Locations) ───────── */}
+      <LocationSelectorModal
+        isOpen={isLocationModalOpen}
+        onClose={() => setIsLocationModalOpen(false)}
+        supportedCountries={SUPPORTED_COUNTRIES}
+        primaryCountryIds={PRIMARY_COUNTRY_IDS}
+        selectedCountry={selectedCountry}
+        onSelectCountry={setSelectedCountry}
+      />
 
-          <div className={styles.cardsSectionHead}>
-            <h3 className={styles.cardsSectionTitle}>Featured Countries</h3>
-            <a
-              href="https://www.officeholidays.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.cardsSectionLink}
-            >
-              View All Countries →
-            </a>
-          </div>
-
-          <div className={styles.grid}>
-            {countries.map(c => (
-              <a
-                key={c.id}
-                href={c.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.card}
-              >
-                {/* Top image thumbnail */}
-                <div className={styles.cardMedia}>
-                  <img src={c.src} alt={`${c.label} flag`} className={styles.cardImg} />
-                  <div className={styles.cardOverlay} aria-hidden="true" />
-                </div>
-
-                {/* Text content below the image */}
-                <div className={styles.cardBody}>
-                  <span className={styles.cardChip}>Public Holidays</span>
-                  <span className={styles.cardTitle}>{c.label}</span>
-                  <span className={styles.cardAction}>
-                    View Calendar
-                    <span className={styles.cardArrow} aria-hidden="true">
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 8h10M9 4l4 4-4 4"/>
-                      </svg>
-                    </span>
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-
-        </div>
-      </section>
+      {/* ── Holiday Details Modal ────────────────────────────────────── */}
+      <HolidayDetailsModal
+        holiday={selectedHoliday}
+        onClose={() => setSelectedHoliday(null)}
+      />
 
     </div>
   )

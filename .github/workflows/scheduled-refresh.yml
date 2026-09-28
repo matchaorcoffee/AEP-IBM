@@ -1,0 +1,46 @@
+name: Render Scheduled Jobs
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'Job to run'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+          - keep-alive
+          - daily-refresh
+          - both
+
+jobs:
+  keep-alive:
+    name: Keep Render Service Awake
+    if: |
+      github.event.schedule == '*/5 * * * *' ||
+      (github.event_name == 'workflow_dispatch' && (inputs.job == 'keep-alive' || inputs.job == 'both'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render health endpoint
+        run: |
+          echo "Pinging Render health endpoint to prevent spin-down..."
+          curl --fail --silent --show-error https://aep-ibm.onrender.com/health
+          echo "Health check succeeded."
+
+  daily-refresh:
+    name: Refresh Monday.com Cache
+    if: |
+      github.event.schedule == '0 4 * * *' ||
+      (github.event_name == 'workflow_dispatch' && (inputs.job == 'daily-refresh' || inputs.job == 'both'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger cache refresh
+        run: |
+          echo "Triggering Monday.com cache refresh..."
+          curl --fail --silent --show-error -X POST \
+            -H "X-Refresh-Key: ${{ secrets.REFRESH_KEY }}" \
+            https://aep-ibm.onrender.com/api/refresh-cache
+          echo "Cache refresh triggered successfully."
