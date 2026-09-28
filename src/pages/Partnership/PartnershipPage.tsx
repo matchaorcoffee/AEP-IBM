@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import styles from './PartnershipPage.module.scss'
 import partnershipVideo from './assets/Partnership Header.mp4'
 import aepIbmLogo from './assets/AEP_IBM_logo.png'
+import { useFadeIn } from '../../hooks/useFadeIn'
 
 const highlights = [
   {
@@ -75,6 +76,9 @@ interface OrgChartModalData {
 }
 
 export default function PartnershipPage() {
+  const { ref: chartRef }     = useFadeIn<HTMLElement>()
+  const { ref: highlightsRef } = useFadeIn<HTMLElement>()
+
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [frameHeight, setFrameHeight] = useState<number>(600)
   const [modalOpen, setModalOpen] = useState(false)
@@ -244,7 +248,7 @@ export default function PartnershipPage() {
       </div>
 
       {/* ── Org chart section ─────────────────────────────────────────── */}
-      <section className={styles.chartSection}>
+      <section ref={chartRef} className={`${styles.chartSection} fade-in`}>
         <div className={styles.chartHead}>
           <span className={styles.sectionEyebrow}>Account Organization</span>
           <h2 className={styles.sectionTitle}>AEP Account Org Chart</h2>
@@ -265,7 +269,7 @@ export default function PartnershipPage() {
       </section>
 
       {/* ── Highlights section ────────────────────────────────────────── */}
-      <section className={styles.highlights}>
+      <section ref={highlightsRef} className={`${styles.highlights} fade-in`}>
         <div className={styles.highlightsInner}>
           <div className={styles.sectionHead}>
             <span className={styles.sectionEyebrow}>What We Deliver</span>

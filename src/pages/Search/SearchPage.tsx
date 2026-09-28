@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import styles from './SearchPage.module.scss'
+import { useFadeIn } from '../../hooks/useFadeIn'
 import { useContent } from '../../context/ContentContext'
 import ContentCard from '../../components/shared/ContentCard/ContentCard'
 import iconSearch from '../../assets/icons/icon-search.svg'
@@ -9,6 +10,9 @@ import iconClose from '../../assets/icons/icon-close.svg'
 const CONTENT_FILTERS = ['All', 'Document', 'Video', 'Tool', 'Guide', 'Article']
 
 export default function SearchPage() {
+  const { ref: searchRef }  = useFadeIn<HTMLElement>()
+  const { ref: resultsRef } = useFadeIn<HTMLElement>()
+
   const { searchCards, toggleBookmark } = useContent()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
@@ -47,7 +51,7 @@ export default function SearchPage() {
   return (
     <div className={styles.page}>
       {/* Search bar section */}
-      <section className={styles.searchSection} aria-label="Search">
+      <section ref={searchRef} className={`${styles.searchSection} fade-in`} aria-label="Search">
         <div className={styles.searchInner}>
           <div className={styles.searchLabel}>AEP &amp; IBM Resources</div>
           <h1 className={styles.searchTitle}>Search</h1>
@@ -89,7 +93,7 @@ export default function SearchPage() {
       </section>
 
       {/* Results */}
-      <section className={styles.results} aria-label="Search results">
+      <section ref={resultsRef} className={`${styles.results} fade-in`} aria-label="Search results">
         <div className={styles.resultsInner}>
           {qParam && (
             <p className={styles.resultCount}>
