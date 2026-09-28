@@ -1,6 +1,5 @@
 import styles from './IbmHolidaysPage.module.scss'
 import { useFadeIn } from '../../hooks/useFadeIn'
-import HolidayWorldMap from './HolidayWorldMap'
 import type { HolidayCountry } from './HolidayWorldMap'
 import holidaysVideo  from './assets/countries/Holidays Header.mp4'
 import brazilImg      from './assets/Brazil.png'
@@ -22,7 +21,6 @@ const countries: HolidayCountry[] = [
 ]
 
 export default function IbmHolidaysPage() {
-  const mapFade      = useFadeIn<HTMLElement>(0.08)
   const cardsFade    = useFadeIn<HTMLElement>(0.06)
 
   return (
@@ -55,27 +53,6 @@ export default function IbmHolidaysPage() {
           </svg>
         </div>
       </div>
-
-      {/* ── White section — Select a Country + World Map ──────────────── */}
-      <section
-        ref={mapFade.ref}
-        className={`${styles.mapSection} ${mapFade.visible ? styles.fadeVisible : styles.fadeHidden}`}
-      >
-        <div className={styles.inner}>
-
-          {/* Section label */}
-          <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Select a Country</h2>
-            <p className={styles.sectionSub}>
-              Hover over a country to explore. Double-click to open its holiday calendar.
-            </p>
-          </div>
-
-          {/* ── Interactive world map ─────────────────────────────────── */}
-          <HolidayWorldMap countries={countries} />
-
-        </div>
-      </section>
 
       {/* ── Black section — Featured Countries ────────────────────────── */}
       <section
