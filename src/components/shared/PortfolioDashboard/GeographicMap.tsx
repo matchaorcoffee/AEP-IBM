@@ -137,21 +137,21 @@ export default function GeographicMap({ data }: { data: ChartDataPoint[] }) {
 
   // Get color for a country based on resource count
   const getColorForCount = (count: number) => {
-    if (count === 0) return '#f3f4f6' // beautiful light gray for no matching data / 0 resources
-    if (maxResources <= 0) return '#d6e4ff' // fallback light blue
+    if (count === 0) return '#d1d5db' // light gray for no data
+    if (maxResources <= 0) return '#cfe2fe' // fallback light blue
 
     const minVal = 1
     const factor = maxResources > minVal
       ? (count - minVal) / (maxResources - minVal)
-      : 0.5 // if only one active count, map to mid color gradient
+      : 0.5
 
-    // Dynamic linear interpolation from light blue (#cfe2fe) to deep navy (#0a2c5c)
+    // Interpolate from light blue (#cfe2fe) to deep navy (#0a2c5c)
     return interpolateColor('#cfe2fe', '#0a2c5c', factor)
   }
 
   // Get hover color for a country
   const getHoverColorForCount = (count: number) => {
-    if (count === 0) return '#e5e7eb' // slightly darker gray on hover for 0 resources
+    if (count === 0) return '#9ca3af' // darker gray on hover for 0 resources
     if (maxResources <= 0) return '#a6c8ff'
 
     const minVal = 1
@@ -202,11 +202,11 @@ export default function GeographicMap({ data }: { data: ChartDataPoint[] }) {
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
-            scale: 135,
-            center: [10, 28], // beautifully frames the continents (US, Brazil, UK, India, Philippines, Canada)
+            scale: 153,
+            center: [10, 20],
           }}
-          width={800}
-          height={260}
+          width={960}
+          height={420}
           style={{ width: '100%', height: 'auto' }}
         >
           <Geographies geography={GEO_URL}>
@@ -295,11 +295,11 @@ export default function GeographicMap({ data }: { data: ChartDataPoint[] }) {
         )}
       </div>
 
-      {/* ─── Blue Gradient Legend ─── */}
+      {/* ─── Pink/Red Gradient Legend ─── */}
       <div className={styles.legendContainer}>
         <div className={styles.legendLabel}>Number of resources</div>
         <div className={styles.legendGradientWrapper}>
-          <div className={styles.legendGradientBar} />
+          <div className={styles.legendGradientBar} style={{ background: 'linear-gradient(to right, #cfe2fe, #0a2c5c)' }} />
           <div className={styles.legendTicks}>
             {legendTicks.map((tick, index) => (
               <div key={index} className={styles.legendTick}>
