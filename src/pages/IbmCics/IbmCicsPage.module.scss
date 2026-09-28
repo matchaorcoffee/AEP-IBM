@@ -1,9 +1,9 @@
 // ── Page shell ────────────────────────────────────────────────────────────────
 .page {
-   min-height: 100vh;
+  min-height: 100vh;
   background: var(--color-page-bg);
   // Pull page up behind the fixed floating nav (same as HomePage)
-  margin-top: 0;
+  margin-top: calc(-1 * var(--header-total-height));
 }
 
 // ── Hero — full-viewport, matches HomePage Hero exactly ───────────────────────
