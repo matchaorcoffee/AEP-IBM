@@ -449,11 +449,26 @@
   margin: 0;
 }
 
-// ── Highlights section ────────────────────────────────────────────────────────
+// ── Highlights section — black theme ─────────────────────────────────────────
 .highlights {
-  background: #fff;
+  background: #0a0a0a;
   padding: 72px 0 80px;
-  border-bottom: 1px solid #e8eaed;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  // Override shared text styles for dark background
+  .sectionEyebrow {
+    background: rgba(200, 16, 46, 0.18);
+    color: #ff6b6b;
+    border: 1px solid rgba(200, 16, 46, 0.35);
+  }
+
+  .sectionTitle {
+    color: #ffffff;
+  }
+
+  .sectionSub {
+    color: rgba(255, 255, 255, 0.55);
+  }
 }
 
 .highlightsInner {
@@ -471,33 +486,35 @@
   }
 }
 
-// ── MD3 tonal card grid ───────────────────────────────────────────────────────
+// ── Card grid ─────────────────────────────────────────────────────────────────
 .cardsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
-// MD3 "secondary container" tonal surface — matches designprompts.dev lavender cards
 .card {
-  background: #ede7f6;          // M3 secondary container tint
+  background: #161616;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   padding: 32px 28px 36px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  transition: box-shadow 200ms ease, transform 200ms ease;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 200ms ease, transform 200ms ease, border-color 200ms ease;
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(103, 58, 183, 0.14), 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
     transform: translateY(-3px);
+    border-color: rgba(200, 16, 46, 0.45);
   }
 }
 
 .cardIcon {
   width: 52px;
   height: 52px;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -507,15 +524,15 @@
   svg {
     width: 24px;
     height: 24px;
-    color: #4a148c;
-    stroke: #4a148c;
+    color: #ffffff;
+    stroke: #ffffff;
   }
 }
 
 .cardTitle {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #1c1b1f;
+  color: #ffffff;
   line-height: 1.3;
   letter-spacing: -0.01em;
   margin: 0;
@@ -523,7 +540,7 @@
 
 .cardDesc {
   font-size: 0.9rem;
-  color: #49454f;
+  color: rgba(255, 255, 255, 0.55);
   line-height: 1.65;
   margin: 0;
 }

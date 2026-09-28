@@ -1,5 +1,6 @@
 import styles from './IbmCicsPage.module.scss'
 import fncVideo from './assets/IBMFNC.mp4'
+import { useFadeIn } from '../../hooks/useFadeIn'
 
 const COUNTRY_INFO = [
   {
@@ -134,6 +135,10 @@ const CAPABILITIES = [
 ]
 
 export default function IbmCicsPage() {
+  const { ref: introRef }        = useFadeIn<HTMLElement>()
+  const { ref: capabilitiesRef } = useFadeIn<HTMLElement>()
+  const { ref: locationsRef }    = useFadeIn<HTMLElement>()
+
   return (
     <div className={styles.page}>
 
@@ -167,7 +172,7 @@ export default function IbmCicsPage() {
       </div>
 
       {/* ── Intro / Welcome section ───────────────────────────────────── */}
-      <section className={styles.intro}>
+      <section ref={introRef} className={`${styles.intro} fade-in`}>
         <div className={styles.introInner}>
           <div className={styles.introLabel}>Global Delivery Network</div>
           <h2 className={styles.introHeading}>Powering Innovation Worldwide</h2>
@@ -180,7 +185,7 @@ export default function IbmCicsPage() {
       </section>
 
       {/* ── Capabilities — icon card grid (IbmGuidingPrinciples pattern) */}
-      <section className={styles.capabilities} aria-labelledby="capabilities-heading">
+      <section ref={capabilitiesRef} className={`${styles.capabilities} fade-in`} aria-labelledby="capabilities-heading">
         <div className={styles.sectionHeader}>
           <div className={styles.sectionLabel}>What We Deliver</div>
           <h2 id="capabilities-heading" className={styles.sectionTitle}>Core Capabilities</h2>
@@ -201,7 +206,7 @@ export default function IbmCicsPage() {
       </section>
 
       {/* ── Country cards — icon card grid ────────────────────────────── */}
-      <section className={styles.locations} aria-labelledby="locations-heading">
+      <section ref={locationsRef} className={`${styles.locations} fade-in`} aria-labelledby="locations-heading">
         <div className={styles.locationsInner}>
           <div className={styles.sectionHeaderCentered}>
             <div className={styles.sectionLabel}>AEP Locations</div>

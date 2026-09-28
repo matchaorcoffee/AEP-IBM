@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styles from './ProjectsPage.module.scss'
+import { useFadeIn } from '../../hooks/useFadeIn'
 import projectsImg from './assets/Projects.png'
 import averageFulfillmentImg from './assets/AverageFulfillment.png'
 import demandManagementImg from './assets/DemandManagement.png'
@@ -165,6 +166,10 @@ function ChartCardPanel({ card }: { card: ChartCard }) {
 }
 
 export default function ProjectsPage() {
+  const { ref: introRef }     = useFadeIn<HTMLElement>()
+  const { ref: highlightsRef } = useFadeIn<HTMLElement>()
+  const { ref: analyticsRef } = useFadeIn<HTMLElement>()
+
   return (
     <div className={styles.page} id="top">
 
@@ -183,7 +188,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* ── Intro / stats ── */}
-      <section className={styles.intro}>
+      <section ref={introRef} className={`${styles.intro} fade-in`}>
         <div className={styles.introInner}>
           <div className={styles.introLabel}>Resource Intelligence</div>
           <h2 className={styles.introHeading}>Project &amp; Resource Visibility</h2>
@@ -209,7 +214,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* ── Highlights — icon card grid ── */}
-      <section className={styles.highlights} aria-labelledby="highlights-heading">
+      <section ref={highlightsRef} className={`${styles.highlights} fade-in`} aria-labelledby="highlights-heading">
         <div className={styles.sectionHeader}>
           <div className={styles.sectionLabel}>What's Inside</div>
           <h2 id="highlights-heading" className={styles.sectionTitle}>Dashboard Highlights</h2>
@@ -230,7 +235,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* ── Charts section ── */}
-      <section id="analytics" className={styles.analyticsSection} aria-labelledby="analytics-heading">
+      <section ref={analyticsRef} id="analytics" className={`${styles.analyticsSection} fade-in`} aria-labelledby="analytics-heading">
         <div className={styles.analyticsInner}>
 
           {/* Section heading */}
