@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from './ProjectsPage.module.scss'
 import { useFadeIn } from '../../hooks/useFadeIn'
-import projectsImg from './assets/Projects.png'
+import projectsVideo from './assets/Projects Header.mp4'
 import averageFulfillmentImg from './assets/AverageFulfillment.png'
 import demandManagementImg from './assets/DemandManagement.png'
 import ProjectsDashboard from '../../components/shared/ProjectsDashboard/ProjectsDashboard'
@@ -175,7 +175,16 @@ export default function ProjectsPage() {
 
       {/* ── Hero ── */}
       <div className={styles.hero} role="region" aria-label="Projects">
-        <img src={projectsImg} alt="Projects" className={styles.heroImg} />
+        <video
+          className={styles.heroVideo}
+          src={projectsVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
         <div className={styles.heroOverlay} aria-hidden="true" />
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>IBM · AEP</div>
@@ -184,6 +193,14 @@ export default function ProjectsPage() {
             A centralized hub for project and resource insights, enabling structured visibility
             into allocation, distribution, resource movements, fulfillment performance, and demand forecasts.
           </p>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className={styles.scrollIndicator} aria-hidden="true">
+          <span>Scroll</span>
+          <svg className={styles.scrollChevron} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </div>
       </div>
 
